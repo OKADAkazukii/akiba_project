@@ -22,3 +22,25 @@ Route::get('/test', function () {
 Route::get('/home', function () {
     return view('home');
 });
+
+Route::get('/admin', function () {
+    return view('/Admin.login');
+});
+
+Route::get('/signin', function() {
+    return view('/Admin.signin');
+});
+
+Route::get('/user', function() {
+    return view('/Admin.user');
+});
+
+Route::get('/conf', function() {
+    return view('/Admin.conf');
+});
+
+Route::get('/add', function() {
+    return view('/Admin.add');
+});
+
+Route::get('/holyday','AdminController@holyday');
