@@ -74,7 +74,9 @@
                 <div class="links">
                     <a href="/home">home</a>
                     <a href="/user/login">login</a>
+                    <a href="/adduser">create user</a>
                     <a href="/admin">admin</a>
+                    <a href="/signin">admin menu</a>
                     <a href="https://github.com/OKADAkazukii/akiba_project">GitHub</a>
                 </div>
             </div>

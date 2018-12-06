@@ -15,12 +15,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test', function () {
-    return view('test');
+Route::get('/home', function () {
+    return view('user.home');
 });
 
-Route::get('/home', function () {
-    return view('home');
+Route::get('/adduser','UserController@createuser');
+
+Route::get('/user/login', 'LoginController@login');
+
+Route::get('/test', function () {
+    return view('test');
 });
 
 Route::get('/admin', function () {

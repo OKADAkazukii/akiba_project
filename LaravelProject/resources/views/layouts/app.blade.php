@@ -26,11 +26,11 @@
             <div class="container">
             @guest
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'AKIBAホールディングス 勤怠システム') }}
+                    AKIBAホールディングス 勤怠システム
                 </a>
             @else
                 <a class="navbar-brand" href="{{ url('/home') }}">
-                    {{ config('app.name', 'AKIBAホールディングス 勤怠システム') }}
+                    AKIBAホールディングス 勤怠システム
                 </a>
             @endguest
 
