@@ -24,23 +24,30 @@ Route::get('/home', function () {
 });
 
 Route::get('/admin', function () {
-    return view('/Admin.login');
+    return view('/Admin.signin');
 });
 
 Route::get('/signin', function() {
     return view('/Admin.signin');
 });
 
-Route::get('/user', function() {
-    return view('/Admin.user');
+Route::get('/overtime', function() {
+    return view('/Admin.overtime');
 });
 
 Route::get('/conf', function() {
     return view('/Admin.conf');
 });
 
-Route::get('/add', function() {
-    return view('/Admin.add');
+Route::get('/holyday',function() {
+    return view('/Admin.holyday');
 });
 
-Route::get('/holyday','AdminController@holyday');
+Route::get('/manager',function() {
+    return view('/Admin.manager');
+});
+
+Route::get('/detail',function() {
+    return view('/Admin.detail');
+});
+
