@@ -16,12 +16,13 @@ class CreateEmploystatusTable extends Migration
         Schema::create('employstatus', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->double('');
-            $table->double('');
-            $table->double('');
-            $table->double('');
-            $table->double('');
-            $table->int('');
+            $table->string('employment_status');
+            $table->double('in_overtime');
+            $table->double('out_overtime');
+            $table->double('late_overtime');
+            $table->double('holiday_work');
+            $table->double('late_holiday_work');
+            $table->int('closing_day');
         });
     }
 

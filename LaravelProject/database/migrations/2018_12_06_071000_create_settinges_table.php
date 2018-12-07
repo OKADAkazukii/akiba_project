@@ -16,8 +16,8 @@ class CreateSettingesTable extends Migration
         Schema::create('settinges', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->time('');
-            $table->time('');
+            $table->time('change_date_time');
+            $table->time('late_overtime_time');
         });
     }
 
