@@ -22,7 +22,7 @@ class CreateEmploystatusTable extends Migration
             $table->double('late_overtime');
             $table->double('holiday_work');
             $table->double('late_holiday_work');
-            $table->int('closing_day');
+            $table->integer('closing_day');
         });
     }
 
