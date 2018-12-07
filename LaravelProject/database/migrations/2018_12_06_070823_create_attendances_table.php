@@ -16,10 +16,10 @@ class CreateAttendancesTable extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->int('emp_id');
+            $table->integer('emp_id');
             $table->date('day');
             $table->time('start_time');
-            $table->int('rest_time');
+            $table->integer('rest_time');
             $table->time('finish_time');
             $table->time('late_rest_time');
         });
