@@ -16,11 +16,11 @@ class CreateSalariesTable extends Migration
         Schema::create('salaries', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->int('');
-            $table->int('');
-            $table->int('');
-            $table->int('');
-            $table->int('');
+            $table->int('emp_id');
+            $table->int('allowance_id');
+            $table->int('salary_year');
+            $table->int('salary_month');
+            $table->int('salary_amount');
         });
     }
 
