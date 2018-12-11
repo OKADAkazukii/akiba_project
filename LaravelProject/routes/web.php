@@ -15,9 +15,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', function () {
-    return view('user.home');
-});
+Route::get('/home', 'UserController@home');
+
+Route::post('/starttime','AttendanceController@starttime');
+
+Route::post('/finishtime','AttendanceController@finishtime');
+
+Route::post('/resttime','AttendanceController@resttime');
 
 Route::get('/adduser','UserController@createuser');
 
