@@ -1,8 +1,18 @@
 <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
-
+<script type="text/javascript">
+function submitcheck() {
+    var check = confirm('退勤処理をすると、休憩時間も併せて確定します');
+    return check;
+}
+</script>
 @extends('layouts.app')
 @section('content')
-<div class="container-fluid" style="margin-top:30px;">
+<div class="container-fluid">
+    <div>
+        @if (session('message'))
+            <div class="alert alert-danger">{{ session('message') }}</div>
+        @endif
+    </div>
     <div class="row">
         <div class="col-md-4">
             <div class="time-area">
@@ -15,19 +25,37 @@
                 </div>
                 <div class="container">
                     <div class="row justify-content-center">
-                        <form>
-                            <button type="button" class="btn btn-info" style="padding:10px 20px;font-size:30px;color:white;margin-right:15px;">出勤</button>
+                        <form action="/starttime" method="post">
+                            {{ csrf_field() }}
+                            @if($start_time != "---------")
+                                <button type="submit" class="btn btn-default" style="padding:10px 20px;font-size:30px;color:gray;margin-right:15px;">出勤</button>
+                            @else
+                                <button type="submit" class="btn btn-info" style="padding:10px 20px;font-size:30px;color:white;margin-right:15px;">出勤</button>
+                            @endif
+                            <div style="position:relative; left:20%;">
+                                <?php
+                                    if(isset($start_time)){
+                                        echo $start_time;
+                                    }
+                                ?>
+                            </div>
                         </form>
-                        <form>
-                            <button type="button" class="btn btn-success" style="padding:10px 20px;font-size:30px;">退勤</button>
+                        <form action="/finishtime" method="post">
+                            {{ csrf_field() }}
+                            @if($start_time == "---------")
+                                <button type="submit" class="btn btn-default" style="padding:10px 20px;font-size:30px; color:gray;">退勤</button>
+                            @else
+                                <button type="submit" class="btn btn-success" style="padding:10px 20px;font-size:30px;" onclick="return submitcheck();">退勤</button>
+                            @endif
                         </form>
                     </div>
                     <div class="row justify-content-center">
-                        <form>
+                        <form action="/resttime" method="post">
+                            {{ csrf_field() }}
                             <p class="rest-text">休憩時間 :</p>
-                            <input type="text" size="20" class="rest-text-form" maxlength="8" value="1:00"></input><br>
+                            <input type="text" size="20" name="rest" class="rest-text-form" maxlength="8" value="01:00"></input><br>
                             <p class="rest-text2">深夜休憩 :</p>
-                            <input type="text" size="20" class="rest-text-form" maxlength="8" value="0:00"></input>
+                            <input type="text" size="20" name="late_rest" class="rest-text-form" maxlength="8" value="00:00"></input>
                             <div class="row justify-content-end">
                                 <input type="submit" value="更新"></input>
                             </div>
@@ -51,15 +79,15 @@
                 </div>
 
 
-        </div>            
+        </div>
         <div class="col-md-8">
             <div class="main-time-area" style="margin-bottom:0;width:944px;">
                 <?php
-                    //一ヶ月前日時取得の場合の記述→  $countdate = date("t", strtotime("-1 month"));
+                    //一ヶ月前日時取得の場合の記述→  $countdate = date("m", strtotime("-1 month"));
                     $countdate = date("t");
                     $now_year = date("Y");
                     $now_month = date("m");
-                    $now_day = date("j"); 
+                    $now_day = date("j");
                     echo $now_year."年".$now_month."月"."1日〜".$countdate."日";
                 ?>
             </div>
@@ -101,7 +129,7 @@
                     $holidays = array_flatten($holidays);
                 ?>
                 @for($day=1;$day<=$countdate;$day++)
-                    <div style="border-bottom:solid 1px gray;"> 
+                    <div style="border-bottom:solid 1px gray;">
                         <div 
                             <?php
                                 $w = date("w", mktime( 0, 0, 0, $now_month, $day, $now_year ));
@@ -127,37 +155,120 @@
                             ?>
                         </div>
                         <div class="excel">
-                            <div>09:55</div>
+                            <div>
+                                <?php
+                                    $brank_check=0;
+                                    foreach ($attendances as $attendance){
+                                        if($attendance->day == $d){
+                                            echo $attendance->start_time;
+                                            $brank_check=1;
+                                            break;
+                                        }
+                                    }
+                                    if($brank_check==0){
+                                        echo "---";
+                                    }
+                                ?>
+                            </div>
                         </div>
                         <div class="excel">
-                            <div>19:15</div>
+                            <div>
+                                <?php
+                                    $brank_check=0;
+                                    foreach ($attendances as $attendance){
+                                        if($attendance->day == $d && $attendance->finish_time != "00:00:00"){
+                                            echo $attendance->finish_time;
+                                            $brank_check=1;
+                                            break;
+                                        }
+                                    }
+                                    if($brank_check==0){
+                                        echo "---";
+                                    }
+                                ?>
+                            </div>
                         </div>
                         <div class="excel">
-                            <div>01:00</div>
+                            <div>
+                                <?php
+                                    $brank_check=0;
+                                    foreach ($attendances as $attendance){
+                                        if($attendance->day == $d){
+                                            echo $attendance->rest_time;
+                                            $brank_check=1;
+                                            break;
+                                        }
+                                    }
+                                    if($brank_check==0){
+                                        echo "---";
+                                    }
+                                ?>
+                            </div>
                         </div>
                         <div class="excel">
-                            <div>08:20</div>
+                            <div>
+                            <?php
+                                $brank_check=0;
+                                foreach ($attendances as $attendance){
+                                    if($attendance->day == $d){
+                                        //退勤時間-出勤時間-休憩時間
+                                        $diff = date_diff(new DateTime($attendance->finish_time), new DateTime($attendance->start_time))->format('%H:%I:%S');
+                                        $diff = date_diff(new DateTime($attendance->rest_time), new DateTime($diff))->format('%R%H:%I:%S');
+                                        //--↑おわり↑--
+                                        if($attendance->finish_time != "00:00:00"){
+                                            echo $diff;
+                                            $brank_check=1;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if($brank_check==0){
+                                    echo "---";
+                                }
+                            ?>
+                            </div>
                         </div>
                         <div class="excel">
-                            <div>00:00</div>
+                            <div>
+                                <?php
+                                    $from = '2013-09-02 09:00';
+                                    $to   = '05:30';
+
+                                    echo date_diff(new DateTime($from),new DateTime($to))->format('%H:%I:%S');
+                                ?>
+                            </div>
                         </div>
                         <div class="excel">
-                            <div>00:20</div>
+                            <div>---</div>
                         </div>
                         <div class="excel">
-                            <div>00:00</div>
+                            <div>---</div>
                         </div>
                         <div class="excel">
-                            <div>00:00</div>
+                            <div>---</div>
                         </div>
                         <div class="excel">
-                            <div>00:00</div>
+                            <div>
+                                <?php
+                                    $brank_check=0;
+                                    foreach ($attendances as $attendance){
+                                        if($attendance->day == $d){
+                                            echo $attendance->late_rest_time;
+                                            $brank_check=1;
+                                            break;
+                                        }
+                                    }
+                                    if($brank_check==0){
+                                        echo "---";
+                                    }
+                                ?>
+                            </div>
                         </div>
                         <div class="excel">
-                            <div>00:00</div>
+                            <div>---</div>
                         </div>
                         <div class="excel">
-                            <div>00:00</div>
+                            <div>---</div>
                         </div>
                     </div>
                 @endfor
