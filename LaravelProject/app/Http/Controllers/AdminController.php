@@ -3,25 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Carbon\Carbon;
+use DB;
 
-class AdminControoller extends Controller
+class AdminController extends Controller
 {
-    public function getCalendarDates($year,$month)
+
+    public function addholyday(Request $req)
     {
-        $datestr = sprintf('%04d-%02d-01',$year,$month);
-        $date = new Carbon($datestr);
+        $postholyday = $req->all();
+        $date = $postholyday["date"]; 
 
-        $date->subDay($date->dayOfWeek);
-     
-        $count = 31 + $date->dayOfWeek;
-        $count = ceil($count / 7)* 7;
-        $dates = [];
-
-        for ($i = 0; $i < $count; $i++, $date->addDay()){
-
-            $dates[] = $date->copy();
-        }
-        return $dates;
+        DB::table('holyday')->
+        
     }
-    }
+}

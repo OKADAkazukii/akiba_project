@@ -55,3 +55,4 @@ Route::get('/detail',function() {
     return view('/Admin.detail');
 });
 
+Route::post('/test','Holydays@addholyday');
