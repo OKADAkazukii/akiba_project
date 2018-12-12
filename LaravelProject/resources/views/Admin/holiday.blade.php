@@ -12,10 +12,14 @@
         <br><br>
         <form action="/test" method="post">
         {{ csrf_field() }}
-        <label>日付 :<input type="date" name="date"></label>
+        <label>日付 :<input type="date" name="date" required></label>
         <input type="submit" value="送信">
         </form>
   <?php
+
+
+
+
     $conf_horiday = true;
     $cals = array();
     $res = file_get_contents('http://www8.cao.go.jp/chosei/shukujitsu/syukujitsu_kyujitsu.csv');
@@ -24,11 +28,16 @@
     $dummy = array_shift($pieces);
     $dummy = array_pop($pieces);
 
+
     foreach ($pieces as $key => $value) {
      $temp = explode(',', $value);
-      $horidays[] = $temp[0];  
-      $horiname[] = $temp[1];  
+      $horidays[] = $temp[0];
+      $horiname[] = $temp[1];
     }
+
+
+
+
 
     $ym_now = date("Ym");
     $y = substr($ym_now,0,4);
@@ -56,9 +65,9 @@
   for ($i = 1; $i <= $wd1; $i++) {
       echo "<td> </td>";
       }
-  $day = date('Y-m-d', mktime(0, 0, 0, date('m'), date('1') + $i, date('Y'))); 
-  
-  $lastday = $day;  
+  $day = date('Y-m-d', mktime(0, 0, 0, date('m'), date('1') + $i, date('Y')));
+
+  $lastday = $day;
 
   $days[$i]['day'] = $day;
 
@@ -73,12 +82,12 @@
         $days[$i]['hori'] = '';
       }
        if ($day == $lastday){
-      
+
       $target_day = date("Y-m-1", strtotime($lastday));
       $lastday = date("Y-m-t",strtotime($target_day . "+1 month"));
       $cals[] = $days;
       $days = array();
-      }  
+      }
   $d = 1;
    while(checkdate($m,$d,$y)){
        echo "<td>$d</td>";

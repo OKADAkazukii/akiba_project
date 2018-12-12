@@ -45,8 +45,8 @@ Route::get('/conf', function() {
     return view('/Admin.conf');
 });
 
-Route::get('/holyday',function() {
-    return view('/Admin.holyday');
+Route::get('/holiday',function() {
+    return view('/Admin.holiday');
 });
 
 Route::get('/manager',function() {
@@ -60,3 +60,11 @@ Route::get('/detail',function() {
 Route::post('/test','Holydays@addholyday');
 
 Route::post('/holidayupdate','HolidayController@updataholiday');
+
+Route::post('/test', 'HolidayController@addholiday');
+
+Route::get('/employ',function(){
+    return view('/Admin.employ');
+});
+
+Route::post('/addemp','EmployController@addemp');

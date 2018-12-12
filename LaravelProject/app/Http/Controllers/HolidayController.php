@@ -30,4 +30,19 @@ class HolidayController extends Controller
 		}
 	return redirect("/signin");
 	}
+
+    public function addholiday(Request $req)
+    {
+        $date = $req->input('date');
+
+        $shd = DB::table('holidays')->where('holiday','=',$date)->count();
+        if($shd==0)
+    {
+        DB::table('holidays')->insert([
+        'holiday' =>  $date ,
+        'holiday_name' => '会社指定休日'
+            ]);
+        }
+    }
+
 }
