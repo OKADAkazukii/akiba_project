@@ -1,12 +1,24 @@
 <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
 <script type="text/javascript">
 function submitcheck() {
-    var check = confirm('退勤処理をすると、休憩時間も併せて確定します');
+    var check = confirm('退勤処理をすると、休憩時間の変更ができなくなります');
     return check;
 }
 </script>
+
 @extends('layouts.app')
 @section('content')
+<?php
+$hour_check = date("H");
+if($hour_check >= 5 && $hour_check <= 10){
+    $hello = "おはようございます、";
+}elseif($hour_check >= 11 && $hour_check <= 17){
+    $hello = "こんにちは、";
+}elseif($hour_check >= 18 || $hour_check <= 4){
+    $hello = "こんばんは、";
+}
+?>
+<h4 class="hello">{{$hello}}<p class="hello-name">{{$current_employee->name}}</p>さん</h4>
 <div class="container-fluid">
     <div>
         @if (session('message'))
@@ -27,6 +39,7 @@ function submitcheck() {
                     <div class="row justify-content-center">
                         <form action="/starttime" method="post">
                             {{ csrf_field() }}
+                            <input type="hidden" value="{{$current_employee->id}}" name="emp_id">
                             @if($start_time != "---------")
                                 <button type="submit" class="btn btn-default" style="padding:10px 20px;font-size:30px;color:gray;margin-right:15px;">出勤</button>
                             @else
@@ -41,6 +54,7 @@ function submitcheck() {
                             </div>
                         </form>
                         <form action="/finishtime" method="post">
+                            <input type="hidden" value="{{$current_employee->id}}" name="emp_id">
                             {{ csrf_field() }}
                             @if($start_time == "---------")
                                 <button type="submit" class="btn btn-default" style="padding:10px 20px;font-size:30px; color:gray;">退勤</button>
@@ -52,10 +66,11 @@ function submitcheck() {
                     <div class="row justify-content-center">
                         <form action="/resttime" method="post">
                             {{ csrf_field() }}
+                            <input type="hidden" value="{{$current_employee->id}}" name="emp_id">
                             <p class="rest-text">休憩時間 :</p>
-                            <input type="text" size="20" name="rest" class="rest-text-form" maxlength="8" value="01:00"></input><br>
+                            <input style="width:80px;" type="time" size="20" name="rest" class="rest-text-form" value="01:00"></input><br>
                             <p class="rest-text2">深夜休憩 :</p>
-                            <input type="text" size="20" name="late_rest" class="rest-text-form" maxlength="8" value="00:00"></input>
+                            <input style="width:80px;" type="time" size="20" name="late_rest" class="rest-text-form" value="00:00"></input>
                             <div class="row justify-content-end">
                                 <input type="submit" value="更新"></input>
                             </div>
@@ -67,7 +82,8 @@ function submitcheck() {
                     <div class="sum-area">集計勤務時間</div>
                     <div style="margin-left:10px;">
                         <div>11/21~12/20<br>(締め日の次の日〜次の月の締め日)</div>
-                        <br><div>勤務時間：</div>
+                        <div>基本月給：{{$current_employee->basic_salary}}円</div>
+                        <div>勤務時間：</div>
                         <div>勤務時間：</div>
                         <div>所定内残業：</div>
                         <div>所定外残業：</div>
@@ -107,26 +123,20 @@ function submitcheck() {
             </div>
             <div style="width:944px;">
                 <?php
-                    $data = file_get_contents('http://www8.cao.go.jp/chosei/shukujitsu/syukujitsu_kyujitsu.csv');
-                    $data = mb_convert_encoding($data, "UTF-8", "SJIS");
-                    $ex_lines = explode("\r\n", $data);
-                    $holidays = [];
-                    foreach($ex_lines as $line){
-                        $parts = explode(",", $line);
-                        $holidays[]= [trim($parts[0])];
+                    foreach($holidays_list as $holiday){
+                        $holidays[] = $holiday->holiday;
                     }
-                    //--↓年末休みの定義↓--
+                     //--↓年末休みの定義↓--
                     $currentYear = intval(date('Y'));
                     for ($i = 0; $i < 1; $i++) { // 1年分取得、変更可
                         $y = $currentYear + $i;
-                        $date = date("Y-m-d", mktime(0,0,0,12,29,$y)); // 12月29日の取得、いつから休みなのか再度確認必要一応今の実装では30〜3日
+                        $date = date("Y-m-d", mktime(0,0,0,12,29,$y)); // 12月29日の取得、いつから休みなのか再度確認必要一応今の実装では30?3日
                             for ($j = 0; $j < 5; $j++) { // 5日間
                                 $date = date("Y-m-d", strtotime("$date +1 day"));
                                 $holidays[] = $date;
                             }
                     }
                     //--↑年末休みの定義↑--
-                    $holidays = array_flatten($holidays);
                 ?>
                 @for($day=1;$day<=$countdate;$day++)
                     <div style="border-bottom:solid 1px gray;">
@@ -176,7 +186,7 @@ function submitcheck() {
                                 <?php
                                     $brank_check=0;
                                     foreach ($attendances as $attendance){
-                                        if($attendance->day == $d && $attendance->finish_time != "00:00:00"){
+                                        if($attendance->day == $d && $attendance->finish_time != "00:00:01"){
                                             echo $attendance->finish_time;
                                             $brank_check=1;
                                             break;
@@ -194,7 +204,10 @@ function submitcheck() {
                                     $brank_check=0;
                                     foreach ($attendances as $attendance){
                                         if($attendance->day == $d){
-                                            echo $attendance->rest_time;
+                                            $minutes = str_pad($attendance->rest_time%60, 2, 0, STR_PAD_LEFT);
+                                            $hours = str_pad(floor(($attendance->rest_time/60)%60), 2, 0, STR_PAD_LEFT);
+                                            $display_rest_time = $hours.":".$minutes.":00";
+                                            echo $display_rest_time;
                                             $brank_check=1;
                                             break;
                                         }
@@ -210,16 +223,26 @@ function submitcheck() {
                             <?php
                                 $brank_check=0;
                                 foreach ($attendances as $attendance){
-                                    if($attendance->day == $d){
+                                    if($attendance->day == $d && $attendance->finish_time != "00:00:01"){
                                         //退勤時間-出勤時間-休憩時間
-                                        $diff = date_diff(new DateTime($attendance->finish_time), new DateTime($attendance->start_time))->format('%H:%I:%S');
-                                        $diff = date_diff(new DateTime($attendance->rest_time), new DateTime($diff))->format('%R%H:%I:%S');
-                                        //--↑おわり↑--
-                                        if($attendance->finish_time != "00:00:00"){
-                                            echo $diff;
-                                            $brank_check=1;
-                                            break;
+                                        $finish = strtotime("$attendance->day $attendance->finish_time");
+                                        $start = strtotime("$attendance->day $attendance->start_time");
+                                        $diff = $finish-$start;
+                                        if($diff<0){
+                                                $diff = (24*3600)+$diff;
                                         }
+                                        $rest = $attendance->rest_time*60;
+                                        $diff -= $rest;
+                                        $seconds = str_pad($diff%60, 2, 0, STR_PAD_LEFT);
+                                        $minutes = str_pad(floor(($diff/60)%60), 2, 0, STR_PAD_LEFT);
+                                        $hours = str_pad(floor($diff/3600), 2, 0, STR_PAD_LEFT);
+                                        if($diff>=0){
+                                            echo $hours.":".$minutes.":".$seconds;
+                                        }else{
+                                            echo "Error";
+                                        }
+                                        $brank_check=1;
+                                        break;
                                     }
                                 }
                                 if($brank_check==0){
@@ -229,14 +252,7 @@ function submitcheck() {
                             </div>
                         </div>
                         <div class="excel">
-                            <div>
-                                <?php
-                                    $from = '2013-09-02 09:00';
-                                    $to   = '05:30';
-
-                                    echo date_diff(new DateTime($from),new DateTime($to))->format('%H:%I:%S');
-                                ?>
-                            </div>
+                            <div>---</div>
                         </div>
                         <div class="excel">
                             <div>---</div>
@@ -253,7 +269,10 @@ function submitcheck() {
                                     $brank_check=0;
                                     foreach ($attendances as $attendance){
                                         if($attendance->day == $d){
-                                            echo $attendance->late_rest_time;
+                                            $minutes = str_pad($attendance->late_rest_time%60, 2, 0, STR_PAD_LEFT);
+                                            $hours = str_pad(floor(($attendance->late_rest_time/60)%60), 2, 0, STR_PAD_LEFT);
+                                            $display_late_rest_time = $hours.":".$minutes.":00";
+                                            echo $display_late_rest_time;
                                             $brank_check=1;
                                             break;
                                         }

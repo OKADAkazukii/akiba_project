@@ -1,10 +1,25 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>残業発生時間変更</title>
-    </head>
-    <body>
-    <h3>残業発生時間変更ページ</h3>
-    </body>
-<html>
+@extends('layouts.app')
+@section('content')
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10">
+			<div style="margin-bottom: 30px;">
+				<h4>日付変更時刻</h4>
+				<form action="/timesettingse/change_date_time" method="post">
+				@csrf
+					<input type="time" name="change_date_time">
+					<input type="submit" value="適用">
+				</form>
+			</div>
+			<div style="margin-bottom: 30px;">
+				<h4>深夜残業認定時刻</h4>
+				<form action="/timesettingse/late_overtime_time" method="post">
+				@csrf
+					<input type="time" name="late_overtime_time">
+					<input type="submit" value="適用">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+@endsection

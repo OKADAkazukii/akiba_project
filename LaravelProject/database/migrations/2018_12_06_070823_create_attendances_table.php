@@ -19,9 +19,9 @@ class CreateAttendancesTable extends Migration
             $table->integer('emp_id');
             $table->date('day');
             $table->time('start_time');
-            $table->time('rest_time')->default("01:00:00");
-            $table->time('finish_time');
-            $table->time('late_rest_time');
+            $table->integer('rest_time')->default(60);
+            $table->time('finish_time')->default("00:00:01");
+            $table->integer('late_rest_time');
         });
     }
 

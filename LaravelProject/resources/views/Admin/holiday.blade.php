@@ -106,3 +106,9 @@
 
     ?>
 
+
+
+<form action="/holidayupdate" method="post">
+  {{ csrf_field() }}
+  <button style="position:relative; top:600px;" type="submit" class="btn btn-success">祝日更新</button>
+</form>
