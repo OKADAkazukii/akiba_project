@@ -5,10 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-4">
             <h3>管理者ページ</h3>
-            <a href="/holyday">休日設定</a><br>
+            <a href="/holiday">休日設定</a><br>
             <a href="/timesettingse">時間関連設定</a><br>
             <a href="/conf">設定</a><br>
-            <a href="/detail">ユーザ詳細</a><br>
+            <a href="/employ">勤務形態</a><br>
         </div>
         <div class="col-md-8">
             <h3>雇用者一覧</h3>
