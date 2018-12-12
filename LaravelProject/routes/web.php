@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', 'UserController@home');
+Route::get('/home/{login_hash}', 'EmployeeController@home');
 
 Route::post('/starttime','AttendanceController@starttime');
 
@@ -23,25 +23,23 @@ Route::post('/finishtime','AttendanceController@finishtime');
 
 Route::post('/resttime','AttendanceController@resttime');
 
-Route::get('/adduser','UserController@createuser');
+Route::get('/addemployee','EmployeeController@addemployee');
 
-Route::get('/user/login', 'LoginController@login');
+Route::post('/create/employee','EmployeeController@create');
+
+Route::get('/employee/login', 'EmployeeController@login');
 
 Route::get('/test', function () {
     return view('test');
 });
 
-Route::get('/admin', function () {
-    return view('/Admin.signin');
-});
+Route::get('/admin/home/', 'AdminController@home');
 
-Route::get('/signin', function() {
-    return view('/Admin.signin');
-});
+Route::get('/timesettingse', 'SettingController@edit');
 
-Route::get('/overtime', function() {
-    return view('/Admin.overtime');
-});
+Route::post('/timesettingse/change_date_time', 'SettingController@changedatetime');
+
+Route::post('/timesettingse/late_overtime_time', 'SettingController@lateovertimetime');
 
 Route::get('/conf', function() {
     return view('/Admin.conf');
@@ -60,3 +58,5 @@ Route::get('/detail',function() {
 });
 
 Route::post('/test','Holydays@addholyday');
+
+Route::post('/holidayupdate','HolidayController@updataholiday');

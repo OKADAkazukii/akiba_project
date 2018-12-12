@@ -56,7 +56,6 @@
  border:solid 1px #778899;
 }
 .main-sum-area{
- height:300px;
  border:solid 1px #778899;
  margin-top:40px;
  margin-bottom:40px;
@@ -103,6 +102,21 @@
  display:inline-block;
  text-align:center;
  width:75px;
+}
+.hello{
+ padding: 5px 10px;
+ color: #494949;
+ background: #FFFF99;
+ border-left: solid 5px #3296ff;
+ border-bottom: solid 3px #d3d3d3;
+ width: 400px;
+ margin: 0 0 15px 5px;
+}
+.hello-name{
+ display: inline-block;
+ margin-bottom: 0;
+ font-weight: bold;
+ font-size: 28px;
 }
 //--↑ユーザーホーム画面のCSS↑--
 
