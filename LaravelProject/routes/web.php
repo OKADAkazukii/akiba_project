@@ -49,10 +49,6 @@ Route::get('/holiday',function() {
     return view('/Admin.holiday');
 });
 
-Route::get('/manager',function() {
-    return view('/Admin.manager');
-});
-
 Route::get('/detail',function() {
     return view('/Admin.detail');
 });
@@ -68,3 +64,5 @@ Route::get('/employ',function(){
 });
 
 Route::post('/addemp','EmployController@addemp');
+
+Route::post('/manager','UpdateController@update');
