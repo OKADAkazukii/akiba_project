@@ -31,7 +31,8 @@ class EmployeeController extends Controller
 	}
 
 	public function addemployee(){
-		return view("employee.addemployee");
+		$emp_status = DB::table("employstatus")->get();
+		return view("employee.addemployee",compact('emp_status'));
 	}
 
 	public function create(Request $req){
@@ -53,7 +54,7 @@ class EmployeeController extends Controller
 			'basic_salary'=>$validated_data["basic_salary"],
 			'basic_work_time'=>$work_time_m
 		]);
-		return redirect('/');
+		return redirect('/admin/home');
 	}
 
 	public function login(){

@@ -5,6 +5,11 @@
   <title>カレンダー</title>
 </head>
 <body>
+  <div>
+    @if (session('message'))
+        <div class="alert alert-success">{{ session('message') }}</div>
+    @endif
+</div>
  <div class="container">
     <div class="row">
         <div class="col-md-8">

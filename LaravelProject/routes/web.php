@@ -35,6 +35,14 @@ Route::get('/test', function () {
 
 Route::get('/admin/home/', 'AdminController@home');
 
+Route::get('/admin/home/search', 'AdminController@search');
+
+Route::get('/admin/show/{id}', 'AdminController@show');
+
+Route::get('/admin/show/{id}/edit', 'AdminController@edit');
+
+Route::post('/admin/show/{id}/updata', 'AdminController@updata');
+
 Route::get('/timesettingse', 'SettingController@edit');
 
 Route::post('/timesettingse/change_date_time', 'SettingController@changedatetime');
