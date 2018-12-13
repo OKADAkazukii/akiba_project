@@ -28,7 +28,7 @@ class HolidayController extends Controller
 				}
 			}
 		}
-	return redirect("/signin");
+	return redirect("/holiday")->with('message', 'CSVファイルを読み込み、カレンダーに反映しました！');
 	}
 
     public function addholiday(Request $req)

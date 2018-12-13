@@ -15,9 +15,13 @@
             <div class="form_text">勤務形態</div>
             <select name="emp_status_id" style="width:30%;">
                 <option value="" selected disabled hidden>データベースから値取得する予定</option>
-                <option value="1">管理職</option>
-                <option value="2">正社員</option>
-                <option value="3">アルバイト</option>
+                <?php
+                    $status_count = 0;
+                    foreach($emp_status as $status){
+                        $status_count++ ;
+                        echo "<option value=".$status_count.">".$status->employment_status."</option>";
+                    }
+                ?>
             </select>
             <input type="hidden" value="1" name="admin_id"/>
             <?php

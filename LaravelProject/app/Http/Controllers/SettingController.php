@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\DB;
 class SettingController extends Controller
 {
 	public function edit(){
-    	return view('/Admin.overtime');
+		$setting = DB::table("settinges")->first();
+    	return view('/Admin.overtime',compact("setting"));
 	}
 
 	public function changedatetime(Request $req){
@@ -26,7 +27,7 @@ class SettingController extends Controller
 				'change_date_time' => $validated_time["change_date_time"]
 			]);
 		}
-		return back();
+		return back()->with('message', '日付変更時刻を変更しました！');
 	}
 
 	public function lateovertimetime(Request $req){
@@ -44,6 +45,6 @@ class SettingController extends Controller
 				'late_overtime_time' => $validated_time["late_overtime_time"]
 			]);
 		}
-		return back();
+		return back()->with('message', '深夜残業認定時刻を変更しました！');
 	}
 }

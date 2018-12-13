@@ -72,8 +72,6 @@
                 </div>
 
                 <div class="links">
-                    <a href="/addemployee">create employee</a>
-                    <a href="/admin">admin</a>
                     <a href="/admin/home">admin menu</a>
                     <a href="https://github.com/OKADAkazukii/akiba_project">GitHub</a>
                 </div>
