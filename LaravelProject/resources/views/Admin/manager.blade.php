@@ -6,5 +6,6 @@
 </head>
     <body>
     <h3>管理者料率変更</h3>
+    
     </body>
 </html>
