@@ -7,17 +7,26 @@ use DB;
 
 class UpdateController extends Controller
 {
-    public function update(Request $req)
-    {
-        $up = $req->input('name');
-        $date = DB::table('employees')->where('name','=',$up)->count();
+    public function update()
+   { 
+    $status = DB::table('employstatus')->get();
 
-        if($date>0){
-        $emp_id = DB::table('employees')->where('name','=',$up)->get(['emp_status_id']);
-        $hash = DB::table('employees')->where('name','=',$up)->get(['login_hash']); 
-        
-        
-        }
+    return view ('Admin.conf',compact('status'));
+
+   }
+    public function employ($id){
+
+    $emp_status = DB::table("employstatus")->where("id","=",$id)->get();
+
+    return view('Admin.manager',compact("emp_status"));
+    }
+
+    public function editempstatus(Request $req){
+    $id = $req-> input('id');
+    $inover = $req->input('emp');
+    DB::table('employstatus')->where("id","=",$id)->update(['in_overtime' => $inover]);
+    
+
+    
     }    
 }
-
