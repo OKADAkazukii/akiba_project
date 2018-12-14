@@ -49,10 +49,6 @@ Route::post('/timesettingse/change_date_time', 'SettingController@changedatetime
 
 Route::post('/timesettingse/late_overtime_time', 'SettingController@lateovertimetime');
 
-Route::get('/conf', function() {
-    return view('/Admin.conf');
-});
-
 Route::get('/holiday',function() {
     return view('/Admin.holiday');
 });
@@ -73,4 +69,9 @@ Route::get('/employ',function(){
 
 Route::post('/addemp','EmployController@addemp');
 
-Route::post('/manager','UpdateController@update');
+Route::get('/conf','UpdateController@update');
+
+Route::get('/manager/{id}','UpdateController@employ');
+
+Route::post('/status/update','UpdateController@editempstatus');
+
