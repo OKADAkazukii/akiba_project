@@ -8,7 +8,14 @@ use Illuminate\Support\Facades\DB;
 class SettingController extends Controller
 {
 	public function edit(){
-		$setting = DB::table("settinges")->first();
+		$setting_count = DB::table("settinges")->count();
+		if($setting_count == 0){
+			DB::table("settinges")->insert([
+				'change_date_time' => "00:00",
+				'late_overtime_time' => "00:00"
+			]);
+		}
+		$setting = DB::table("settinges")->get();
     	return view('/Admin.overtime',compact("setting"));
 	}
 
