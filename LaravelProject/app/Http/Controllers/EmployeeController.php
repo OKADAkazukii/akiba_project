@@ -15,6 +15,7 @@ class EmployeeController extends Controller
 			$attendance = DB::table("attendances")->where("emp_id","=",$current_employee->id)->orderBy('id','desc')->first();
 			$holidays = DB::table("holidays")->get(['holiday']);
 			$holidays_list = array_flatten($holidays);
+			$settinges = DB::table("settinges")->get();
 			if($attendance){
 				if($attendance->finish_time =='00:00:01'){
 					$start_time = $attendance->start_time;
@@ -24,7 +25,7 @@ class EmployeeController extends Controller
 			}else{
 				$start_time = "---------";
 			}
-			return view("employee.home",compact('attendances','holidays_list','start_time','current_employee'));
+			return view("employee.home",compact('attendances','holidays_list','start_time','current_employee','settinges','current_employee'));
 		}else{
 			return redirect("/");
 		}

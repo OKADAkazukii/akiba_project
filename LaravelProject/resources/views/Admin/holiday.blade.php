@@ -21,6 +21,11 @@
         <input type="submit" value="送信">
         </form>
 
+        <form action="/holidayupdate" method="post">
+          {{ csrf_field() }}
+          <button type="submit" class="btn btn-success">祝日更新</button>
+        </form> 
+
 <?php
   //Control 日付作成処理
   // １ヶ月分の日付を格納

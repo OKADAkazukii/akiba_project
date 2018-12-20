@@ -74,7 +74,7 @@ if($hour_check >= 5 && $hour_check <= 10){
                             <div class="row justify-content-end">
                                 <input type="submit" value="更新"></input>
                             </div>
-                        <form>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -93,13 +93,11 @@ if($hour_check >= 5 && $hour_check <= 10){
                         <div>休日深夜：</div>
                     </div>
                 </div>
-
-
         </div>
         <div class="col-md-8">
-            <div class="main-time-area" style="margin-bottom:0;width:944px;">
+            <div class="main-time-area" style="margin-bottom:0;width:758px;">
                 <?php
-                    //一ヶ月前日時取得の場合の記述→  $countdate = date("m", strtotime("-1 month"));
+                    //一ヶ月前の日時を取得したい場合の記述→  例)$now_month = date("m", strtotime("-1 month"));
                     $countdate = date("t");
                     $now_year = date("Y");
                     $now_month = date("m");
@@ -107,193 +105,243 @@ if($hour_check >= 5 && $hour_check <= 10){
                     echo $now_year."年".$now_month."月"."1日〜".$countdate."日";
                 ?>
             </div>
-            <div style="border-bottom:solid 2px gray;width:944px; background-color:#FFFFDD;">
+            <div style="border-bottom:solid 2px gray;width:758px; background-color:#FFFFDD;">
                 <div class="excel" style="border-left:solid 1px gray;">日付</div>
-                <div class="excel">出勤時間</div>
-                <div class="excel">退勤時間</div>
-                <div class="excel">休憩時間</div>
-                <div class="excel">実働時間</div>
-                <div class="excel">所定内残業</div>
-                <div class="excel">所定外残業</div>
-                <div class="excel">深夜勤務</div>
-                <div class="excel">深夜残業</div>
-                <div class="excel">深夜休憩</div>
-                <div class="excel">休日勤務</div>
-                <div class="excel">休日深夜</div>
+                <div class="excel2">出勤時間</div>
+                <div class="excel2">退勤時間</div>
+                <div class="excel2">休憩時間</div>
+                <div class="excel2">実働時間</div>
+                <div class="excel2">所定内残業</div>
+                <div class="excel2">所定外残業</div>
+                <div class="excel2">深夜勤務</div>
+                <div class="excel2">深夜残業</div>
+                <div class="excel2">深夜休憩</div>
             </div>
-            <div style="width:944px;">
-                <?php
-                    foreach($holidays_list as $holiday){
-                        $holidays[] = $holiday->holiday;
-                    }
-                     //--↓年末休みの定義↓--
-                    $currentYear = intval(date('Y'));
-                    for ($i = 0; $i < 1; $i++) { // 1年分取得、変更可
-                        $y = $currentYear + $i;
-                        $date = date("Y-m-d", mktime(0,0,0,12,29,$y)); // 12月29日の取得、いつから休みなのか再度確認必要一応今の実装では30?3日
-                            for ($j = 0; $j < 5; $j++) { // 5日間
-                                $date = date("Y-m-d", strtotime("$date +1 day"));
-                                $holidays[] = $date;
-                            }
-                    }
-                    //--↑年末休みの定義↑--
-                ?>
+            <div style="width:755px;">
+            <?php
+                foreach($holidays_list as $holiday){
+                    $holidays[] = $holiday->holiday;
+                }
+                 //--↓年末休みの定義 settingesテーブルにカラム作って変更できるようにしたほうが良いかも↓--
+                $currentYear = intval(date('Y'));
+                for ($i = 0; $i < 1; $i++) { // 1年分取得、変更可
+                    $y = $currentYear + $i;
+                    $date = date("Y-m-d", mktime(0,0,0,12,29,$y)); // 12月29日の取得、いつから休みなのか再度確認必要　今の実装では30日から休み開始
+                        for ($j = 0; $j < 5; $j++) { // 5日間
+                            $date = date("Y-m-d", strtotime("$date +1 day"));
+                            $holidays[] = $date;
+                        }
+                }
+                //--↑年末休みの定義↑--
+                $sum_worktime = 0;
+            ?>
+
                 @for($day=1;$day<=$countdate;$day++)
                     <div style="border-bottom:solid 1px gray;">
-                        <div 
-                            <?php
-                                $w = date("w", mktime( 0, 0, 0, $now_month, $day, $now_year ));
-                                $d = date("Y-m-d", mktime( 0, 0, 0, $now_month, $day, $now_year ));
-                                switch($w){
-                                    case 0:
-                                        echo 'class="excel" style="color:red;border-left:solid 1px gray;">'.$now_month.'/'.$day.'('.$week[date("$w")].')';
-                                        break;
-                                    case 6:
-                                        if(in_array($d,$holidays)){
-                                            echo 'class="excel" style="color:red;border-left:solid 1px gray;">'.$now_month.'/'.$day.'('.$week[date("$w")].')';
-                                        }else{
-                                            echo 'class="excel" style="color:#3366FF;border-left:solid 1px gray;">'.$now_month.'/'.$day.'('.$week[date("$w")].')';
-                                        }
-                                        break;
-                                    default:
-                                        if(in_array($d,$holidays)){
-                                            echo 'class="excel" style="color:red;border-left:solid 1px gray;">'.$now_month.'/'.$day.'('.$week[date("$w")].')';
-                                        }else{
-                                            echo 'class="excel" style="border-left:solid 1px gray";>'.$now_month.'/'.$day.'('.$week[date("$w")].')';
-                                        }
+                    <?php
+                        $w = date("w", mktime( 0, 0, 0, $now_month, $day, $now_year ));
+                        $d = date("Y-m-d", mktime( 0, 0, 0, $now_month, $day, $now_year ));
+                        switch($w){
+                            case 0:
+                                echo '<div class="excel" style="color:red;border-left:solid 1px gray;">'.$now_month.'/'.$day.'('.$week[date("$w")].')</div>';
+                                break;
+                            case 6:
+                                if(in_array($d,$holidays)){
+                                    echo '<div class="excel" style="color:red;border-left:solid 1px gray;">'.$now_month.'/'.$day.'('.$week[date("$w")].')</div>';
+                                }else{
+                                    echo '<div class="excel" style="color:#3366FF;border-left:solid 1px gray;">'.$now_month.'/'.$day.'('.$week[date("$w")].')</div>';
                                 }
-                            ?>
-                        </div>
-                        <div class="excel">
-                            <div>
-                                <?php
-                                    $brank_check=0;
-                                    foreach ($attendances as $attendance){
-                                        if($attendance->day == $d){
-                                            echo $attendance->start_time;
-                                            $brank_check=1;
-                                            break;
-                                        }
-                                    }
-                                    if($brank_check==0){
-                                        echo "---";
-                                    }
-                                ?>
-                            </div>
-                        </div>
-                        <div class="excel">
-                            <div>
-                                <?php
-                                    $brank_check=0;
-                                    foreach ($attendances as $attendance){
-                                        if($attendance->day == $d && $attendance->finish_time != "00:00:01"){
-                                            echo $attendance->finish_time;
-                                            $brank_check=1;
-                                            break;
-                                        }
-                                    }
-                                    if($brank_check==0){
-                                        echo "---";
-                                    }
-                                ?>
-                            </div>
-                        </div>
-                        <div class="excel">
-                            <div>
-                                <?php
-                                    $brank_check=0;
-                                    foreach ($attendances as $attendance){
-                                        if($attendance->day == $d){
-                                            $minutes = str_pad($attendance->rest_time%60, 2, 0, STR_PAD_LEFT);
-                                            $hours = str_pad(floor(($attendance->rest_time/60)%60), 2, 0, STR_PAD_LEFT);
-                                            $display_rest_time = $hours.":".$minutes.":00";
-                                            echo $display_rest_time;
-                                            $brank_check=1;
-                                            break;
-                                        }
-                                    }
-                                    if($brank_check==0){
-                                        echo "---";
-                                    }
-                                ?>
-                            </div>
-                        </div>
-                        <div class="excel">
-                            <div>
-                            <?php
-                                $brank_check=0;
-                                foreach ($attendances as $attendance){
-                                    if($attendance->day == $d && $attendance->finish_time != "00:00:01"){
-                                        //退勤時間-出勤時間-休憩時間
-                                        $finish = strtotime("$attendance->day $attendance->finish_time");
-                                        $start = strtotime("$attendance->day $attendance->start_time");
-                                        $diff = $finish-$start;
-                                        if($diff<0){
-                                                $diff = (24*3600)+$diff;
-                                        }
-                                        $rest = $attendance->rest_time*60;
-                                        $diff -= $rest;
-                                        $seconds = str_pad($diff%60, 2, 0, STR_PAD_LEFT);
-                                        $minutes = str_pad(floor(($diff/60)%60), 2, 0, STR_PAD_LEFT);
-                                        $hours = str_pad(floor($diff/3600), 2, 0, STR_PAD_LEFT);
-                                        if($diff>=0){
-                                            echo $hours.":".$minutes.":".$seconds;
-                                        }else{
-                                            echo "Error";
-                                        }
-                                        $brank_check=1;
-                                        break;
-                                    }
+                                break;
+                            default:
+                                if(in_array($d,$holidays)){
+                                    echo '<div class="excel" style="color:red;border-left:solid 1px gray;">'.$now_month.'/'.$day.'('.$week[date("$w")].')</div>';
+                                }else{
+                                    echo '<div class="excel" style="border-left:solid 1px gray";>'.$now_month.'/'.$day.'('.$week[date("$w")].')</div>';
                                 }
-                                if($brank_check==0){
-                                    echo "---";
-                                }
-                            ?>
-                            </div>
-                        </div>
-                        <div class="excel">
-                            <div>---</div>
-                        </div>
-                        <div class="excel">
-                            <div>---</div>
-                        </div>
-                        <div class="excel">
-                            <div>---</div>
-                        </div>
-                        <div class="excel">
-                            <div>---</div>
-                        </div>
-                        <div class="excel">
-                            <div>
-                                <?php
-                                    $brank_check=0;
-                                    foreach ($attendances as $attendance){
-                                        if($attendance->day == $d){
-                                            $minutes = str_pad($attendance->late_rest_time%60, 2, 0, STR_PAD_LEFT);
-                                            $hours = str_pad(floor(($attendance->late_rest_time/60)%60), 2, 0, STR_PAD_LEFT);
-                                            $display_late_rest_time = $hours.":".$minutes.":00";
-                                            echo $display_late_rest_time;
-                                            $brank_check=1;
-                                            break;
-                                        }
-                                    }
-                                    if($brank_check==0){
-                                        echo "---";
-                                    }
-                                ?>
-                            </div>
-                        </div>
-                        <div class="excel">
-                            <div>---</div>
-                        </div>
-                        <div class="excel">
-                            <div>---</div>
-                        </div>
+                        }
+                    ?>
                     </div>
+
+                    <?php
+                        $samedays = 0;
+                        foreach ($attendances as $attendance){
+                            if($attendance->day != $d){
+                                continue;
+                            }
+
+                            //--↓出勤時間の計算・表示処理 & 同日複数出勤の場合の表示形式調整↓--
+                            $samedays++;
+                            if($samedays>1){
+                                echo '<div style="position: relative; left: 80px; bottom: 24px; margin-bottom:-23px; border-bottom:solid 1px gray;width:675px;">';
+                                echo '<br><div class="excel">'.$attendance->start_time.'</div>';
+                            }else{
+                                echo '<div style="position: relative; left: 80px; bottom: 24px; margin-bottom:-23px;">';
+                                echo '<div class="excel">'.$attendance->start_time.'</div>';
+                            }
+
+                            //--↑おわり↑--
+
+                            //退勤時間の表示処理↓--
+                            if($attendance->finish_time != "00:00:01"){
+                                echo '<div class="excel">'.$attendance->finish_time.'</div>';
+                            }else{
+                                echo '<div class="excel">00:00:00</div>';
+                            }
+                            //--↑おわり↑--
+
+                            //休憩時間の計算・表示処理↓--
+                            $minutes = str_pad($attendance->rest_time%60, 2, 0, STR_PAD_LEFT);
+                            $hours = str_pad(floor($attendance->rest_time/60), 2, 0, STR_PAD_LEFT);
+                            $display_rest_time = $hours.":".$minutes.":00";
+                            echo '<div class="excel">'.$display_rest_time.'</div>';
+                            //--↑おわり↑--
+
+                            //実働時間の計算・表示処理↓--
+                            if($attendance->finish_time != "00:00:01"){
+                                $finish = strtotime("$attendance->day $attendance->finish_time");
+                                $start = strtotime("$attendance->day $attendance->start_time");
+                                $diff = $finish-$start;
+                                if($diff<0){
+                                        $diff = (24*3600)+$diff;
+                                }
+                                $rest = $attendance->rest_time*60;
+                                $late_rest = $attendance->late_rest_time*60;
+                                $diff = $diff-($rest+$late_rest);
+                                if($diff>=0){
+                                    $work_time = $diff;
+                                    $sum_worktime += $work_time;
+                                    $minutes = str_pad(floor(($diff/60)%60), 2, 0, STR_PAD_LEFT);
+                                    $hours = str_pad(floor($diff/3600), 2, 0, STR_PAD_LEFT);
+                                    echo '<div class="excel">'.$hours.":".$minutes.":00".'</div>';
+                                }else{
+                                    echo '<div class="excel">Error</div>';
+                                }
+                            }else{
+                                echo '<div class="excel">00:00:00</div>';
+                            }
+                            //--↑おわり↑--
+
+                            //所定内残業の計算処理↓--
+                            if($attendance->finish_time != "00:00:01"){
+                                if($work_time>$current_employee->basic_work_time*60){
+                                    $diff = min($work_time,480*60)-$current_employee->basic_work_time*60;
+                                }else{
+                                    $diff = 0;
+                                }
+                                $in_overtime = $diff;
+                                $minutes = str_pad(floor(($diff/60)%60), 2, 0, STR_PAD_LEFT);
+                                $hours = str_pad(floor($diff/3600), 2, 0, STR_PAD_LEFT);
+                                if($diff>=0){
+                                    echo '<div class="excel">'.$hours.":".$minutes.":00".'</div>';
+                                }else{
+                                    echo '<div class="excel">Error</div>';
+                                }
+                            }else{
+                                echo '<div class="excel">00:00:00</div>';
+                            }
+                            //--↑おわり↑--
+
+                            //所定外残業の計算処理↓--
+                            if($attendance->finish_time != "00:00:01"){
+                                $diff = $finish-$start;
+                                if($diff<0){
+                                        $finish += 24*3600;
+                                }
+                                $late_overtime_time = strtotime($attendance->day." ".$settinges[0]->late_overtime_time);
+                                $rest = $attendance->rest_time*60;
+                                $basic_work_time =$current_employee->basic_work_time*60;
+                                $diff = min($finish,$late_overtime_time)-$start-$rest-$basic_work_time-$in_overtime;
+                                $overtime = $diff;
+                                if($diff>=0){
+                                    $minutes = str_pad(floor(($diff/60)%60), 2, 0, STR_PAD_LEFT);
+                                    $hours = str_pad(floor($diff/3600), 2, 0, STR_PAD_LEFT);
+                                    echo '<div class="excel">'.$hours.":".$minutes.":00".'</div>';
+                                }else{
+                                    echo '<div class="excel">00:00:00</div>';
+                                }
+                            }else{
+                                echo '<div class="excel">00:00:00</div>';
+                            }
+                            //--↑おわり↑--
+
+                            //深夜勤務(深夜残業も求める)の計算処理↓--
+                            if($attendance->finish_time != "00:00:01"){
+                                $finish = strtotime("$attendance->day $attendance->finish_time");
+                                $start = strtotime("$attendance->day $attendance->start_time");
+                                $change_date_time = strtotime($attendance->day." ".$settinges[0]->change_date_time);
+                                $late_overtime_time = strtotime($attendance->day." ".$settinges[0]->late_overtime_time);
+                                $diff = $finish-$start;
+                                if($diff<0){
+                                    $finish += 24*3600;
+                                }
+                                $diff = $change_date_time-$finish;
+                                if($diff<0){
+                                    $change_date_time += 24*3600;
+                                }
+                                $diff = $change_date_time-$late_overtime_time;
+                                if($diff<0){
+                                    $late_overtime_time -= 24*3600;
+                                }
+                                $late = min($change_date_time,$finish)-max($late_overtime_time,$start)-$late_rest;
+                                if($late > 0){
+                                    $remain_work_time = $start+8*3600+$rest-$late_overtime_time;
+                                    if($remain_work_time>0){
+                                        $diff = $late - $remain_work_time;
+                                        if($diff<=0){
+                                            $late_overtime = 0;
+                                            $late_work = $late;
+                                        }else{
+                                            $late_overtime = $diff;
+                                            $late_work = $late - $late_overtime;
+                                        }
+                                    }else{
+                                        $late_overtime = $late;
+                                        $late_work = 0;
+                                    }
+                                }else{
+                                    $late_overtime = 0;
+                                    $late_work = 0;
+                                }
+                                $minutes = str_pad(floor(($late_work/60)%60), 2, 0, STR_PAD_LEFT);
+                                $hours = str_pad(floor($late_work/3600), 2, 0, STR_PAD_LEFT);
+                                echo '<div class="excel">'.$hours.":".$minutes.":00".'</div>';
+                            }else{
+                                echo '<div class="excel">00:00:00</div>';
+                            }
+                            //--↑おわり↑--
+
+                            //深夜残業の表示↓--
+                            if($attendance->finish_time != "00:00:01"){
+                                $minutes = str_pad(floor(($late_overtime/60)%60), 2, 0, STR_PAD_LEFT);
+                                $hours = str_pad(floor($late_overtime/3600), 2, 0, STR_PAD_LEFT);
+                                echo '<div class="excel">'.$hours.":".$minutes.":00".'</div>';
+                            }else{
+                                echo '<div class="excel">00:00:00</div>';
+                            }
+                            //--↑おわり↑--
+
+                            //深夜休憩の表示↓--
+                            $minutes = str_pad($attendance->late_rest_time%60, 2, 0, STR_PAD_LEFT);
+                            $hours = str_pad(floor(($attendance->late_rest_time/60)%60), 2, 0, STR_PAD_LEFT);
+                            $display_late_rest_time = $hours.":".$minutes.":00";
+                            echo '<div class="excel">'.$display_late_rest_time.'</div>';
+                            //--↑おわり↑--
+
+                            echo '</div>';
+                        }
+
+                    ?>
+
                 @endfor
 
+                <?php
+                    $minutes = str_pad(floor(($sum_worktime/60)%60), 2, 0, STR_PAD_LEFT);
+                    $hours = str_pad(floor($sum_worktime/3600), 2, 0, STR_PAD_LEFT);
+                    echo '<div>'.$hours.":".$minutes.':00</div>';
+                ?>
+
             </div>
-        <div>
+        </div>
     </div>
 </div>
 @endsection

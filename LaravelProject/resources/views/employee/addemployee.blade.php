@@ -14,7 +14,7 @@
                 <input class="form" type="text" name="name" maxlength="12"/><br>
             <div class="form_text">勤務形態</div>
             <select name="emp_status_id" style="width:30%;">
-                <option value="" selected disabled hidden>データベースから値取得する予定</option>
+                <option value="" selected disabled hidden>--選択する--</option>
                 <?php
                     $status_count = 0;
                     foreach($emp_status as $status){
