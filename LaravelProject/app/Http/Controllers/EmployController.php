@@ -45,6 +45,7 @@ class EmployController extends Controller
             'holiday_work' => $holi,
             'late_holiday_work' => $late_h,
             'closing_day' => $clo  
+
         ]);
 
         return redirect("/admin/home")->with('insertemp','登録完了!');
