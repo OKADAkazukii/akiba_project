@@ -1,21 +1,9 @@
- <!DOCTYPE html>
-<head>
-  <meta chareset="utf-8">
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-  <title>カレンダー</title>
-</head>
-<body>
-  <div>
-    @if (session('message'))
-        <div class="alert alert-success">{{ session('message') }}</div>
-    @endif
-</div>
- <div class="container">
-    <div class="row">
-        <div class="col-md-8">
-        <h3>休日設定</h3>
-        <br><br>
-        <form action="/test" method="post">
+@extends('layouts.app')
+@section('content')
+<div align='center'><h3>{{session('addholiday')}}</h3></div>
+ <h3>休日設定</h3>
+   <br><br>
+      <form action="/addholiday" method="post">
         {{ csrf_field() }}
         <label>日付 :<input type="date" name="date" required></label>
         <input type="submit" value="送信">
@@ -107,61 +95,45 @@
       <table class="table table-bordered">
         <thead>
           <tr>
-            <th class="danger"><span class="text-danger">日</span></th>
+            <th>日</th>
             <th>月</th>
             <th>火</th>
             <th>水</th>
             <th>木</th>
             <th>金</th>
-            <th class="info"><span class="text-info">土</span></th>
-         </tr>
-        </thead>
-        <tbody>
-          <tr>
-<?php
-    $j = 0;
-    $first = true;
-    foreach ($mm as $key => $dd) {
-      $dayD = new DateTime($dd['day']);
-      $ww = $dayD->format('w');
-
-      if ($first){
-        //月の初めの開始位置を設定する
-        for ($j = 0; $j < $ww; $j++) {
-          //$jはこの後も使用する
-          echo '<td></td>';
-        }
-        $first = false;
-      }
-      if ($dd['hori']){
-        //祝日
-        echo '<td class="danger"><span class="text-danger">'.$dayD->format('j').'</span></td>';
-      } elseif($j == 0) {
-        //日曜日
-        echo '<td class="danger"><span class="text-danger">'.$dayD->format('j').'</span></td>';
-      } elseif($j == 6) {
-        //土曜日
-        echo '<td class="info"><span class="text-info">'.$dayD->format('j').'</span></td>';
-      } else {
-        //その他平日
-        echo '<td>'.$dayD->format('j').'</td>';
-      }
-
-      $j = $j + 1;
-      if ($j >= 7){
-        //土曜日で折り返す
-        echo '</tr><tr>';
-        $j = 0;
-      }
-    }  //月ごとの foreach ここまで
-?>
+            <th>土</th>
           </tr>
-        </tbody>
-      </table>
-    </div><!-- table-responsive end -->
+        </thead>
+      <tbody>
 <?php
-  }  //１年分の foreach ここまで
-?>
-  </div><!-- container end -->
-</body>
-</html>
+  $now = new DateTime();
+  $max = $now->format('Y-m-t');
+  for($i = 0; $i <= 365; $i++ ){
+    $day = date('Y-m-d', mktime(0, 0, 0, date('m'), date('1') + $i , date('Y')));
+    $datetime = new DateTime($day);
+
+    $days = $datetime->format('j');
+    echo "<td>$days</td>"; 
+    $week = array("日","月","火","水","木","金","土");
+    $w = (int)$datetime->format('w');
+    $aaa = $week[$w];
+    if($w === 6){
+      echo "</tr>";
+    }
+  } 
+    if($day == $max){
+      echo "</tr>";
+    }
+    $aaa = date('w',mktime(0,0,0,date('m'),date('1'),date('Y')));
+    for ($td = 1; $td <= $aaa; $td++){
+      echo "<td> </td>";
+    } 
+          
+          
+                 
+
+    ?>
+  </tbody>
+</table>
+
+@endsection

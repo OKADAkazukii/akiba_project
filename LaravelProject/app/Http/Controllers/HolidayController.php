@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use DB;
+
 
 class HolidayController extends Controller
 {
@@ -36,13 +37,20 @@ class HolidayController extends Controller
         $date = $req->input('date');
 
         $shd = DB::table('holidays')->where('holiday','=',$date)->count();
-        if($shd==0)
-    {
-        DB::table('holidays')->insert([
-        'holiday' =>  $date ,
-        'holiday_name' => '会社指定休日'
+        if($shd==0) {
+            DB::table('holidays')->insert([
+                'holiday' =>  $date ,
+                'holiday_name' => '会社指定休日'
             ]);
+
+        return redirect("/holiday")->with('addholiday','休日設定完了！');
+        }else{
+        return redirect("/holiday")->with('addholiday',"$date はすでに休日に設定されております！");
         }
     }
-
+    public function holiget()
+    {
+        $holiget = DB::table('holidays')->select('holiday')->get();
+        return view ('Admin.holiday',compact('holiget'));
+   }
 }
