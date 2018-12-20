@@ -10,7 +10,8 @@ class AdminController extends Controller
 	public function home(){
 		$employees = DB::table("employees")->get();
 		$emp_status = DB::table("employstatus")->get();
-        return view('Admin.signin',compact("employees"),compact("emp_status"));
+		$settinges = DB::table("settinges")->get();
+        return view('Admin.signin',compact("employees","emp_status"));
     }
 
     public function search(Request $req){

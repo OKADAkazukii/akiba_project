@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\AutoFinish::class
     ];
 
     /**
@@ -24,8 +24,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule
+        ->command('attendance:finish')
+        ->withoutOverlapping()
+        ->dailyAt('05:00');
+        //↑を日付変更時刻にする（セッティングから持ってくる）
     }
 
     /**

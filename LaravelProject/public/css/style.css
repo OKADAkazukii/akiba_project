@@ -103,6 +103,13 @@
  text-align:center;
  width:75px;
 }
+.excel2{
+ border-right:solid 1px gray;
+ display:inline-block;
+ text-align:center;
+ font-size: 12px;
+ width:72px;
+}
 .hello{
  padding: 5px 10px;
  color: #494949;
