@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\DB;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,11 +25,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule
+	$change_time = DB::table("settinges")->get();
+	$change_time = explode(":",$change_time[0]->change_date_time);
+	$change_time = $change_time[0].":".$change_time[1];
+	$schedule        
         ->command('attendance:finish')
-        ->withoutOverlapping()
-        ->dailyAt('05:00');
-        //↑を日付変更時刻にする（セッティングから持ってくる）
+	->withoutOverlapping()
+	->dailyAt($change_time);
     }
 
     /**
