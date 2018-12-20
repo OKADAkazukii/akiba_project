@@ -82,26 +82,4 @@ class AttendanceController extends Controller
 		return back();
 	}
 
-	//--↓コマンドで起動する↓--
-	public function autofinish(){
-		$nofinish_attendances = DB::table("attendances")->where("finish_time","=","00:00:01")->get();
-		$start_daytime = date('Y-m-d H:i');
-		$daytime = explode(" ", $start_daytime);
-		$day = $daytime[0];
-		$time = $daytime[1];
-		if($nofinish_attendances){
-			foreach ($nofinish_attendances as $attendance) {
-				DB::table("attendances")->where("id","=",$attendance->id)->update([
-					'finish_time' => $time
-				]);
-				DB::table("attendances")->insert([
-					'emp_id'=> $attendance->emp_id,
-					'day'=> $day,
-					'start_time'=> $time,
-				]);
-			}
-		}
-	}
-	//--↑おわり↑--
-
 }
