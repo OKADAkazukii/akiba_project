@@ -29,10 +29,6 @@ Route::post('/create/employee','EmployeeController@create');
 
 Route::get('/employee/login', 'EmployeeController@login');
 
-Route::get('/test', function () {
-    return view('test');
-});
-
 Route::get('/admin/home/', 'AdminController@home');
 
 Route::get('/admin/home/search', 'AdminController@search');
@@ -49,19 +45,15 @@ Route::post('/timesettingse/change_date_time', 'SettingController@changedatetime
 
 Route::post('/timesettingse/late_overtime_time', 'SettingController@lateovertimetime');
 
-Route::get('/holiday',function() {
-    return view('/Admin.holiday');
-});
+Route::get('/holiday','HolidayController@holiget');
 
 Route::get('/detail',function() {
     return view('/Admin.detail');
 });
 
-Route::post('/test','Holydays@addholyday');
-
 Route::post('/holidayupdate','HolidayController@updataholiday');
 
-Route::post('/test', 'HolidayController@addholiday');
+Route::post('/addholiday', 'HolidayController@addholiday');
 
 Route::get('/employ',function(){
     return view('/Admin.employ');
@@ -74,4 +66,5 @@ Route::get('/conf','UpdateController@update');
 Route::get('/manager/{id}','UpdateController@employ');
 
 Route::post('/status/update','UpdateController@editempstatus');
+
 
