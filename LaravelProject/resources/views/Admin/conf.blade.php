@@ -1,16 +1,12 @@
-<!DOCTYPE html> 
-<html>
-<head>
-    <meta charset= "utf-8">
-    <title>管理者料率変更</title>
-</head>
-    <body>
-    <h3>管理者料率変更</h3>
+@extends('layouts.app')
+@section('content')
+
+    <h3>雇用形態別料率変更</h3>
 
     <?php
+    dd($status); 
     foreach ($status as $value){
-    echo '<a href="/manager/',$value->id,'">',$value->employment_status,'</a>','<br>'; 
+    echo '<font size="5">','<a href="/manager/',$value->id,'">',$value->employment_status,'</font>','</a>','<br>'; 
     }
-
-
     ?>
+@endsection

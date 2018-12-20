@@ -1,6 +1,8 @@
 <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
 @extends('layouts.app')
 @section('content')
+<div align="center"><h3>{{session('empupdate')}}</h3></div>
+<div align="center"><h3>{{session('insertemp')}}</h3></div>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-3">
@@ -8,8 +10,8 @@
             <a href="/addemployee">雇用者の追加</a><br>
             <a href="/holiday">休日設定</a><br>
             <a href="/timesettingse">時間関連設定</a><br>
-            <a href="/conf">設定</a><br>
-            <a href="/employ">勤務形態</a><br>
+            <a href="/conf">料率変更</a><br>
+            <a href="/employ">雇用形態追加</a><br>
         </div>
         <div class="col-md-9">
             <form action="/admin/home/search" method="get">
