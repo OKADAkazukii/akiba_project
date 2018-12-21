@@ -106,7 +106,7 @@ if($hour_check >= 5 && $hour_check <= 10){
                 ?>
             </div>
             <div style="border-bottom:solid 2px gray;width:758px; background-color:#FFFFDD;">
-                <div class="excel2" style="border-left:solid 1px gray;">日付</div>
+                <div class="excel" style="border-left:solid 1px gray;">日付</div>
                 <div class="excel2">出勤時間</div>
                 <div class="excel2">退勤時間</div>
                 <div class="excel2">休憩時間</div>
