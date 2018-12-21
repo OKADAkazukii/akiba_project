@@ -3,6 +3,10 @@
 <div align='center'><h3>{{session('addholiday')}}</h3></div>
  <h3>休日設定</h3>
    <br><br>
+      <form action="/holidayupdate" method="post">
+        {{ csrf_field() }}
+        <button style="position:relative; top:600px;" type="submit" class="btn btn-success">祝日更新</button>
+      </form>
       <form action="/addholiday" method="post">
         {{ csrf_field() }}
           <label>日付 :<input type="date" name="date" required></label>

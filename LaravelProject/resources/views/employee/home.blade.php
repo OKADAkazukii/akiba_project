@@ -5,6 +5,14 @@ function submitcheck() {
     return check;
 }
 </script>
+<?php
+    function seconds_change_to_time($seconds){
+        $minutes = str_pad(floor(($seconds/60)%60), 2, 0, STR_PAD_LEFT);
+        $hours = str_pad(floor($seconds/3600), 2, 0, STR_PAD_LEFT);
+        $time = $hours.":".$minutes.':00';
+        return $time;
+    }
+?>
 
 @extends('layouts.app')
 @section('content')
@@ -79,30 +87,37 @@ if($hour_check >= 5 && $hour_check <= 10){
                 </div>
             </div>
                 <div class="main-sum-area">
-                    <div class="sum-area">集計勤務時間</div>
+                    <div class="sum-area">ユーザー情報</div>
                     <div style="margin-left:10px;">
-                        <div>11/21~12/20<br>(締め日の次の日〜次の月の締め日)</div>
+                        <div>従業員名：{{$current_employee->name}}</div>
                         <div>基本月給：{{$current_employee->basic_salary}}円</div>
-                        <div>勤務時間：</div>
-                        <div>勤務時間：</div>
-                        <div>所定内残業：</div>
-                        <div>所定外残業：</div>
-                        <div>深夜勤務：</div>
-                        <div>深夜残業：</div>
-                        <div>休日勤務：</div>
-                        <div>休日深夜：</div>
+                        <div>勤務形態：{{$emp_status->employment_status}}</div>
+                        <div>給与締日：毎月 {{$emp_status->closing_day}}日</div>
+                        <div>基本勤務：{{$current_employee->basic_work_time}}分 / 日</div>
                     </div>
                 </div>
         </div>
         <div class="col-md-8">
             <div class="main-time-area" style="margin-bottom:0;width:758px;">
                 <?php
-                    //一ヶ月前の日時を取得したい場合の記述→  例)$now_month = date("m", strtotime("-1 month"));
                     $countdate = date("t");
                     $now_year = date("Y");
                     $now_month = date("m");
+                    $before_month = date("Y-m", strtotime("-1 month"));
+                    $next_month = date("Y-m", strtotime("+1 month"));
                     $now_day = date("j");
-                    echo $now_year."年".$now_month."月"."1日〜".$countdate."日";
+                    if($now_day > $emp_status->closing_day){
+                        $closing_day = date('Y-m')."-".$emp_status->closing_day;
+                        $target_day = strtotime($closing_day." "."00:00:00");
+                        $closing_afterday = date('Y-m-d', strtotime('+1 day', $target_day));
+                        $next_closing_day = $next_month."-".$emp_status->closing_day;
+                    }else{
+                        $closing_day = $before_month."-".$emp_status->closing_day;
+                        $target_day = strtotime($closing_day." "."00:00:00");
+                        $closing_afterday = date('Y-m-d', strtotime('+1 day', $target_day));
+                        $next_closing_day = $now_year."-".$now_month."-".$emp_status->closing_day;
+                    }
+                    echo $closing_afterday." ~ ".$next_closing_day;
                 ?>
             </div>
             <div style="border-bottom:solid 2px gray;width:758px; background-color:#FFFFDD;">
@@ -110,7 +125,7 @@ if($hour_check >= 5 && $hour_check <= 10){
                 <div class="excel2">出勤時間</div>
                 <div class="excel2">退勤時間</div>
                 <div class="excel2">休憩時間</div>
-                <div class="excel2">実働時間</div>
+                <div class="excel2">勤務時間</div>
                 <div class="excel2">所定内残業</div>
                 <div class="excel2">所定外残業</div>
                 <div class="excel2">深夜勤務</div>
@@ -134,6 +149,10 @@ if($hour_check >= 5 && $hour_check <= 10){
                 }
                 //--↑年末休みの定義↑--
                 $sum_worktime = 0;
+                $sum_inover = 0;
+                $sum_outover = 0;
+                $sum_latework = 0;
+                $sum_lateover = 0;
             ?>
 
                 @for($day=1;$day<=$countdate;$day++)
@@ -210,9 +229,7 @@ if($hour_check >= 5 && $hour_check <= 10){
                                 if($diff>=0){
                                     $work_time = $diff;
                                     $sum_worktime += $work_time;
-                                    $minutes = str_pad(floor(($diff/60)%60), 2, 0, STR_PAD_LEFT);
-                                    $hours = str_pad(floor($diff/3600), 2, 0, STR_PAD_LEFT);
-                                    echo '<div class="excel">'.$hours.":".$minutes.":00".'</div>';
+                                    echo '<div class="excel">'.seconds_change_to_time($diff).'</div>';
                                 }else{
                                     echo '<div class="excel">Error</div>';
                                 }
@@ -229,10 +246,9 @@ if($hour_check >= 5 && $hour_check <= 10){
                                     $diff = 0;
                                 }
                                 $in_overtime = $diff;
-                                $minutes = str_pad(floor(($diff/60)%60), 2, 0, STR_PAD_LEFT);
-                                $hours = str_pad(floor($diff/3600), 2, 0, STR_PAD_LEFT);
                                 if($diff>=0){
-                                    echo '<div class="excel">'.$hours.":".$minutes.":00".'</div>';
+                                    $sum_inover += $in_overtime;
+                                    echo '<div class="excel">'.seconds_change_to_time($diff).'</div>';
                                 }else{
                                     echo '<div class="excel">Error</div>';
                                 }
@@ -253,9 +269,8 @@ if($hour_check >= 5 && $hour_check <= 10){
                                 $diff = min($finish,$late_overtime_time)-$start-$rest-$basic_work_time-$in_overtime;
                                 $overtime = $diff;
                                 if($diff>=0){
-                                    $minutes = str_pad(floor(($diff/60)%60), 2, 0, STR_PAD_LEFT);
-                                    $hours = str_pad(floor($diff/3600), 2, 0, STR_PAD_LEFT);
-                                    echo '<div class="excel">'.$hours.":".$minutes.":00".'</div>';
+                                    $sum_outover += $overtime;
+                                    echo '<div class="excel">'.seconds_change_to_time($diff).'</div>';
                                 }else{
                                     echo '<div class="excel">00:00:00</div>';
                                 }
@@ -302,9 +317,9 @@ if($hour_check >= 5 && $hour_check <= 10){
                                     $late_overtime = 0;
                                     $late_work = 0;
                                 }
-                                $minutes = str_pad(floor(($late_work/60)%60), 2, 0, STR_PAD_LEFT);
-                                $hours = str_pad(floor($late_work/3600), 2, 0, STR_PAD_LEFT);
-                                echo '<div class="excel">'.$hours.":".$minutes.":00".'</div>';
+                                $sum_latework += $late_work;
+                                $sum_lateover += $late_overtime;
+                                echo '<div class="excel">'.seconds_change_to_time($late_work).'</div>';
                             }else{
                                 echo '<div class="excel">00:00:00</div>';
                             }
@@ -312,9 +327,7 @@ if($hour_check >= 5 && $hour_check <= 10){
 
                             //深夜残業の表示↓--
                             if($attendance->finish_time != "00:00:01"){
-                                $minutes = str_pad(floor(($late_overtime/60)%60), 2, 0, STR_PAD_LEFT);
-                                $hours = str_pad(floor($late_overtime/3600), 2, 0, STR_PAD_LEFT);
-                                echo '<div class="excel">'.$hours.":".$minutes.":00".'</div>';
+                                echo '<div class="excel">'.seconds_change_to_time($late_overtime).'</div>';
                             }else{
                                 echo '<div class="excel">00:00:00</div>';
                             }
@@ -329,17 +342,24 @@ if($hour_check >= 5 && $hour_check <= 10){
 
                             echo '</div>';
                         }
-
                     ?>
 
                 @endfor
-
-                <?php
-                    $minutes = str_pad(floor(($sum_worktime/60)%60), 2, 0, STR_PAD_LEFT);
-                    $hours = str_pad(floor($sum_worktime/3600), 2, 0, STR_PAD_LEFT);
-                    echo '<div>'.$hours.":".$minutes.':00</div>';
-                ?>
-
+                <div>合計勤務時間
+                    <?php echo seconds_change_to_time($sum_worktime) ?>
+                </div>
+                <div>所定内残業時間
+                    <?php echo seconds_change_to_time($sum_inover) ?>
+                </div>
+                <div>所定外残業時間
+                    <?php echo seconds_change_to_time($sum_outover) ?>
+                </div>
+                <div>深夜勤務時間
+                    <?php echo seconds_change_to_time($sum_latework) ?>
+                </div>
+                <div>深夜残業時間
+                    <?php echo seconds_change_to_time($sum_lateover) ?>
+                </div>
             </div>
         </div>
     </div>
