@@ -1,7 +1,5 @@
 @extends('layouts.app')
 @section('content')
-<div align='center'><h3>{{session('addholiday')}}</h3></div>
- <h3>休日設定</h3>
    <br><br>
       <form action="/addholiday" method="post">
         {{ csrf_field() }}
@@ -22,43 +20,40 @@
   </thead>
       <tbody>
 <?php
+  $days = array();
+  $cals = array();
   $now = new DateTime();
-  $max = $now->format('Y-m-t');
-  $bbb = date('Y-m-d',mktime(0,0,0,date('m')+1,date('0'),date('Y')));
 
   //一日の曜日を取得してその日の一日前まで空にする
-  $aaa = date('w',mktime(0,0,0,date('m'),date('1'),date('Y')));
-  for ($td = 1; $td <= $aaa; $td++){
-      echo "<td> </td>";
+  $firstday = date('w',mktime(0,0,0,date('m'),date('1'),date('Y')));
+    for ($td = 1; $td <= $firstday; $td++){
+    echo "<td></td>"; 
     }
 
-  for($i = 0; $i <= 365; $i++ ){
-    $day = date('Y-m-d', mktime(0, 0, 0, date('m'), date('1') + $i , date('Y'))); 
-    $week = array("日","月","火","水","木","金","土");
-  
-    if($day == $max){
-    }
-  }
-   $datetime = new DateTime($day);
-   $days = $datetime->format('j');
-     echo "<td>$days</td>";
+  for ($i = 0; $i <= 365; $i++ ){
+  $day = date('Y-m-d', mktime(0, 0, 0, date('m'), date('1') + $i , date('Y')));
+  $days[$i] = $day;
+ 
+  $datetime = new DateTime($day);
+  $formday = $datetime->format('j');
+    echo "<td>$formday</td>";
+
    $w = (int)$datetime->format('w');
+   $max = $datetime->format('Y-m-t');
+
+    if($max == $day){
+      echo "</tr>" ;
+    }
     if($w == 6){
       echo "</tr>";
-    if($day);{
+    if($day){
       echo "<tr>";
-   }
-
-
+      }
     }
-   $ccc = date("Y-m-1", strtotime($max));
-dd($ccc);
+  }
 
-          
-          
-                 
+
     ?>
-  
 </table>
 
 @endsection
