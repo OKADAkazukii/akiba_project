@@ -125,4 +125,34 @@
  font-weight: bold;
  font-size: 28px;
 }
+.main-box{
+ height:40px;
+ background: linear-gradient(#3296ff,#1D62F0);
+ display:inline-block;
+ text-align:center;
+ border-bottom:solid 1px #778899;
+ font-size:18px;
+ color:white;
+ padding-top:8px;
+ margin-bottom:0;
+ width:758px;
+}
+.sum-box{
+ width:758px;
+ border: solid 1px gray;
+ margin-top: 10px;
+}
+.sub-cl{
+ padding:5px 10px;
+}
+#disp{
+ display:none;
+}
+#disp-show{
+ margin-top: 20px;
+}
+#disp-hidden{
+ margin-top: 20px;
+ display:none;
+}
 //--↑ユーザーホーム画面のCSS↑--
