@@ -17,11 +17,11 @@ class CreateEmploystatusTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->string('employment_status');
-            $table->double('in_overtime');
-            $table->double('out_overtime');
-            $table->double('late_overtime');
-            $table->double('holiday_work');
-            $table->double('late_holiday_work');
+            $table->decimal('in_overtime');
+            $table->decimal'out_overtime');
+            $table->decimal('late_overtime');
+            $table->decimal('holiday_work');
+            $table->decimal('late_holiday_work');
             $table->integer('closing_day');
         });
     }

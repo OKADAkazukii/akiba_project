@@ -82,7 +82,7 @@ if($hour_check >= 5 && $hour_check <= 10){
                     <div class="sum-area">集計勤務時間</div>
                     <div style="margin-left:10px;">
                         <div>11/21~12/20<br>(締め日の次の日〜次の月の締め日)</div>
-                        <div>基本月給：{{$current_employee->basic_salary}}円</div>
+                        <div> 基本月給：{{$current_employee->basic_salary}}円</div>
                         <div>勤務時間：</div>
                         <div>勤務時間：</div>
                         <div>所定内残業：</div>

@@ -17,10 +17,10 @@ class CreateAllowanceTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->integer('emp_id');
-            $table->integer('overtime_a');
-            $table->integer('late_overtime_a');
+            $table->decimal('overtime_a');
+            $table->decimal('late_overtime_a');
             $table->integer('tardiness');
-            $table->integer('absence');
+            $table->decimal('absence');
         });
     }
 

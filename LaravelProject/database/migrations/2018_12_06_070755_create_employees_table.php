@@ -20,7 +20,8 @@ class CreateEmployeesTable extends Migration
             $table->integer('admin_id');
             $table->string('name');
             $table->string('login_hash');
-            $table->string('basic_salary');
+            $table->decimal('basic_salary');
+            $table->decimal('timesalary');
             $table->integer('basic_work_time');
             $table->date('retirement_day');
         });
