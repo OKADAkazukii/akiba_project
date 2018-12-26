@@ -31,6 +31,15 @@
             <div class="form_text">基本給</div>
                 <input type="text" name="basic_salary" onblur="test(this)" size="19" maxlength="7" style="text-align: right"/>
                 <div>※半角数値以外を入力するとアラートが表示されます。</div>
+            <div class="form_text">時給</div>
+                <input type="text" name="time_salary" onblur="test(this)" size="19" maxlength="7" style="text-align: right"/>
+            <div style="margin-top: 20px;">
+                <select name="emp_status_id" style="width:30%;">
+                    <option value="" selected disabled hidden>--計算給与の選択--</option>
+                    <option value="0">基本給</option>
+                    <option value="1">時給（アルバイト等）</option>
+                </select>
+            </div>
             <div class="form_text">基本勤務時間(日)</div>
                 <input class="form" type="time" name="basic_work_time"　style="width:100px;font-size:18px;text-align:center;"/><br>
             <br>

@@ -1,6 +1,10 @@
 @extends('layouts.app')
 @section('content')
    <br><br>
+      <form action="/holidayupdate" method="post">
+        {{ csrf_field() }}
+        <button style="position:relative; top:600px;" type="submit" class="btn btn-success">祝日更新</button>
+      </form>
       <form action="/addholiday" method="post">
         {{ csrf_field() }}
           <label>日付 :<input type="date" name="date" required></label>
