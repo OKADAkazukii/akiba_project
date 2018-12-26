@@ -67,4 +67,4 @@ Route::get('/manager/{id}','UpdateController@employ');
 
 Route::post('/status/update','UpdateController@editempstatus');
 
-
+Route::get('/test','CalendarController@test');

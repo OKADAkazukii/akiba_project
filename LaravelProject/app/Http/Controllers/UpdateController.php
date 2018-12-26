@@ -28,7 +28,6 @@ class UpdateController extends Controller
     public function editempstatus(Request $req){
 
     $test = DB::table("employstatus")->where("closing_day",'>=',28)->get();
-dd($test);
 
 
 

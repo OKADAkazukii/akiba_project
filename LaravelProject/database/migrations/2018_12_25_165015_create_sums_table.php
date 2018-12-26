@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSalariesTable extends Migration
+class CreateSumsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,15 @@ class CreateSalariesTable extends Migration
      */
     public function up()
     {
-        Schema::create('salaries', function (Blueprint $table) {
+        Schema::create('sums', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->integer('emp_id');
-            $table->integer('allowance_id');
-            $table->integer('salary_year');
-            $table->integer('salary_month');
-            $table->decimal('salary_amount');
+            $table->date('y_m');
+            $table->integer('total_basic_worktime');
+            $table->integer('total_overtime');
+            $table->integer('total_late_worktime');
+            $table->integer('total_late_overtime');
+            $table->integer('total_worktime');
         });
     }
 
@@ -31,6 +32,6 @@ class CreateSalariesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('salaries');
+        Schema::dropIfExists('sums');
     }
 }
