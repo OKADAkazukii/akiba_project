@@ -17,9 +17,9 @@ class CreateSumsTable extends Migration
         Schema::create('sums', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->date('y_m');
-            $table->integer('total_basic_worktime');
-            $table->integer('total_overtime');
+            $table->date('pay_year_month');
+            $table->integer('total_in_overtime');
+            $table->integer('total_out_overtime');
             $table->integer('total_late_worktime');
             $table->integer('total_late_overtime');
             $table->integer('total_worktime');
