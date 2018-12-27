@@ -45,6 +45,8 @@ class EmployeeController extends Controller
 			'name' => 'required|max:255',
 			'login_hash' => 'required',
 			'basic_salary' => 'required|max:7',
+			'time_salary' => 'required|max:5',
+			'basic_or_time' => 'required',
 			'basic_work_time' => 'required'
 		]);
 		$work_time_ex = explode(":", $validated_data["basic_work_time"]);
@@ -55,6 +57,8 @@ class EmployeeController extends Controller
 			'name'=>$validated_data["name"],
 			'login_hash'=>$validated_data["login_hash"],
 			'basic_salary'=>$validated_data["basic_salary"],
+			'time_salary'=>$validated_data["time_salary"],
+			'basic_or_time'=>$validated_data["basic_or_time"],
 			'basic_work_time'=>$work_time_m
 		]);
 		return redirect('/admin/home');

@@ -21,7 +21,8 @@ class CreateEmployeesTable extends Migration
             $table->string('name');
             $table->string('login_hash');
             $table->decimal('basic_salary');
-            $table->decimal('timesalary');
+            $table->decimal('time_salary');
+            $table->integer('basic_or_time');
             $table->integer('basic_work_time');
             $table->date('retirement_day');
         });
