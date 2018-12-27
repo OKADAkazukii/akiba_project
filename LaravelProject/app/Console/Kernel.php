@@ -23,15 +23,16 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
-    protected function schedule(Schedule $schedule)
-    {
-	$change_time = DB::table("settinges")->get();
-	$change_time = explode(":",$change_time[0]->change_date_time);
-	$change_time = $change_time[0].":".$change_time[1];
-	$schedule        
-        ->command('attendance:finish')
-	->withoutOverlapping()
-	->dailyAt($change_time);
+    protected function schedule(Schedule $schedule){
+		$change_time = DB::table("settinges")->first();
+		if(!empty($change_time->change_date_time)){
+			$change_time = explode(":",$change_time->change_date_time);
+			$change_time = $change_time[0].":".$change_time[1];
+			$schedule
+			->command('attendance:finish')
+			->withoutOverlapping()
+			->dailyAt($change_time);
+		}
     }
 
     /**

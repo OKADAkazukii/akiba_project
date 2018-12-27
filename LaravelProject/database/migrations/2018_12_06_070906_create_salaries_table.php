@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-
+//
 class CreateSalariesTable extends Migration
 {
     /**
@@ -11,6 +11,7 @@ class CreateSalariesTable extends Migration
      *
      * @return void
      */
+
     public function up()
     {
         Schema::create('salaries', function (Blueprint $table) {
@@ -23,7 +24,6 @@ class CreateSalariesTable extends Migration
             $table->decimal('salary_amount');
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -34,3 +34,4 @@ class CreateSalariesTable extends Migration
         Schema::dropIfExists('salaries');
     }
 }
+//

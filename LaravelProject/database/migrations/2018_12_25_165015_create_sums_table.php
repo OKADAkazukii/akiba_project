@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-
+//
 class CreateSumsTable extends Migration
 {
     /**
@@ -11,6 +11,7 @@ class CreateSumsTable extends Migration
      *
      * @return void
      */
+
     public function up()
     {
         Schema::create('sums', function (Blueprint $table) {
@@ -24,7 +25,6 @@ class CreateSumsTable extends Migration
             $table->integer('total_worktime');
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -35,3 +35,4 @@ class CreateSumsTable extends Migration
         Schema::dropIfExists('sums');
     }
 }
+//

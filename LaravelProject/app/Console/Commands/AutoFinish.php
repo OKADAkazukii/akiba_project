@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+//----
 
 class AutoFinish extends Command
 {
@@ -57,3 +58,4 @@ class AutoFinish extends Command
 		}
     }
 }
+//----
