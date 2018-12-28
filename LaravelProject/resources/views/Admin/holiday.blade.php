@@ -1,5 +1,10 @@
 @extends('layouts.app')
 @section('content')
+    <div>
+        @if (session('message'))
+            <div class="alert alert-success">{{ session('message') }}</div>
+        @endif
+    </div>
    <br><br>
       <form action="/holidayupdate" method="post">
         {{ csrf_field() }}

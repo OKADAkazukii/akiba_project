@@ -14,6 +14,12 @@ class AdminController extends Controller
         return view('Admin.signin',compact("employees","emp_status"));
     }
 
+	public function index($id){
+		$employees = DB::table("employees")->where("emp_status_id","=",$id)->get();
+		$emp_status = DB::table("employstatus")->where("id","=",$id)->first(["employment_status"]);
+        return view('Admin.empindex',compact("employees","emp_status"));
+    }
+
     public function search(Request $req){
     	$validated_search = $req->validate([
 			'search' => 'required'

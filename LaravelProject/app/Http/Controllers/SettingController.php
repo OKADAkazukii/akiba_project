@@ -34,7 +34,7 @@ class SettingController extends Controller
 				'change_date_time' => $validated_time["change_date_time"]
 			]);
 		}
-		return back()->with('message', '日付変更時刻を変更しました！');
+		return back()->with('message', '日付変更時刻を変更しました');
 	}
 
 	public function lateovertimetime(Request $req){
@@ -52,6 +52,6 @@ class SettingController extends Controller
 				'late_overtime_time' => $validated_time["late_overtime_time"]
 			]);
 		}
-		return back()->with('message', '深夜残業認定時刻を変更しました！');
+		return back()->with('message', '深夜残業認定時刻を変更しました');
 	}
 }
