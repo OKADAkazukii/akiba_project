@@ -106,25 +106,25 @@ echo '訪問者IPアドレス : '.$ip_address;
                     </div>
                 </div>
             </div>
-                <div class="main-sum-area">
-                    <div class="sum-area">ユーザー情報</div>
-                    <div style="margin-left:10px;">
-                        <div>従業員名：{{$current_employee->name}}</div>
-                        <div>勤務形態：{{$emp_status->employment_status}}</div>
-                        <div>給与締日：{{$emp_status->closing_day}}日</div>
-                        <?php
-                            $view_time = $current_employee->basic_work_time*60;
-                            $minutes = str_pad(floor(($view_time/60)%60), 1, 0, STR_PAD_LEFT);
-                            $hours = str_pad(floor($view_time/3600), 1, 0, STR_PAD_LEFT);
-                        ?>
-                        <div>基本勤務：{{$hours}}時間{{$minutes}}分</div>
-                        <form>
-                            <div id="disp">基本月給：{{$current_employee->basic_salary}}円</div>
-                            <input id="disp-show" type="button" value="月収を表示する" onclick="display_income(0)">
-                            <input id="disp-hidden" type="button" value="月収を非表示" onclick="display_income(1)">
-                        </form>
-                    </div>
+            <div class="main-sum-area">
+                <div class="sum-area">ユーザー情報</div>
+                <div style="margin-left:10px;">
+                    <div>従業員名：{{$current_employee->name}}</div>
+                    <div>勤務形態：{{$emp_status->employment_status}}</div>
+                    <div>給与締日：{{$emp_status->closing_day}}日</div>
+                    <?php
+                        $view_time = $current_employee->basic_work_time*60;
+                        $minutes = str_pad(floor(($view_time/60)%60), 1, 0, STR_PAD_LEFT);
+                        $hours = str_pad(floor($view_time/3600), 1, 0, STR_PAD_LEFT);
+                    ?>
+                    <div>基本勤務：{{$hours}}時間{{$minutes}}分</div>
+                    <form>
+                        <div id="disp">基本月給：<?php echo floor($current_employee->basic_salary)?>円</div>
+                        <input id="disp-show" type="button" value="月収を表示する" onclick="display_income(0)">
+                        <input id="disp-hidden" type="button" value="月収を非表示" onclick="display_income(1)">
+                    </form>
                 </div>
+            </div>
         </div>
         <div class="col-md-8">
             <div class="main-box">
@@ -132,21 +132,24 @@ echo '訪問者IPアドレス : '.$ip_address;
                     $countdate = date("t");
                     $now_year = date("Y");
                     $now_month = date("m");
-                    $before_month = date("Y-m", strtotime("-1 month"));
+                    $before_month = date("m", strtotime("-1 month"));
                     $next_month = date("Y-m", strtotime("+1 month"));
                     $now_day = date("j");
-                    if($now_day > $emp_status->closing_day){
-                        $closing_day = date('Y-m')."-".$emp_status->closing_day;
-                        $target_day = strtotime($closing_day." "."00:00:00");
-                        $closing_afterday = date('Y-m-d', strtotime('+1 day', $target_day));
-                        $next_closing_day = $next_month."-".$emp_status->closing_day;
-                    }else{
-                        $closing_day = $before_month."-".$emp_status->closing_day;
-                        $target_day = strtotime($closing_day." "."00:00:00");
-                        $closing_afterday = date('Y-m-d', strtotime('+1 day', $target_day));
-                        $next_closing_day = $now_year."-".$now_month."-".$emp_status->closing_day;
+                    $starting_day = date("Y-m-01",strtotime('last day of this month'));
+                    $next_starting_day = date("Y-m-d",strtotime('last day of this month')+86400);
+                    $closing_day = date("Y-m-d",strtotime('last day of this month'));
+                    if($emp_status->closing_day > 27){ //末締めの場合は$emp_status->closing_dayに27以上が入る
+                        ;
+                    }else if($now_day > $emp_status->closing_day){ //日付が締日より大きい場合の処理
+                        $starting_day = date("Y-m-d", strtotime("{$now_year}-{$now_month}-{$emp_status->closing_day}"." "."00:00:00")+86400);
+                        $closing_day = date("Y-m-d", strtotime("{$next_month}-{$emp_status->closing_day}"." "."00:00:00"));
+                        $next_starting_day = date("Y-m-d", strtotime("{$next_month}-{$emp_status->closing_day}"." "."00:00:00")+86400);
+                    }else{ //日付が締日より小さい場合の処理
+                        $starting_day = date("Y-m-d", strtotime("{$now_year}-{$before_month}-{$emp_status->closing_day}"." "."00:00:00")+86400);
+                        $closing_day = date("Y-m-d", strtotime("{$now_year}-{$now_month}-{$emp_status->closing_day}"." "."00:00:00"));
+                        $next_starting_day = date("Y-m-d", strtotime("{$now_year}-{$now_month}-{$emp_status->closing_day}"." "."00:00:00")+86400);
                     }
-                    echo $closing_afterday." ~ ".$next_closing_day;
+                    echo $starting_day." ~ ".$closing_day;
                 ?>
             </div>
 
@@ -187,28 +190,28 @@ echo '訪問者IPアドレス : '.$ip_address;
                 $sum_outover = 0;
                 $sum_latework = 0;
                 $sum_lateover = 0;
-            ?>
-                @for($day=1;$day<=$countdate;$day++)
-                    <div style="border-bottom:solid 1px gray;">
-                    <?php
-                        $w = date("w", mktime( 0, 0, 0, $now_month, $day, $now_year ));
-                        $d = date("Y-m-d", mktime( 0, 0, 0, $now_month, $day, $now_year ));
+
+                for($day=$starting_day; $day<$next_starting_day; $day=date("Y-m-d", strtotime("$day +1 day"))){
+                    echo '<div style="border-bottom:solid 1px gray;">';
+
+                        $w = date("w", strtotime($day));
+                        $d = $day;
                         switch($w){
                             case 0:
-                                echo '<div class="excel" style="color:red;border-left:solid 1px gray;">'.$now_month.'/'.$day.'('.$week[date("$w")].')</div>';
+                                echo '<div class="excel" style="color:red;border-left:solid 1px gray;">'.$day.'('.$week[date("$w")].')</div>';
                                 break;
                             case 6:
                                 if(in_array($d,$holidays)){
-                                    echo '<div class="excel" style="color:red;border-left:solid 1px gray;">'.$now_month.'/'.$day.'('.$week[date("$w")].')</div>';
+                                    echo '<div class="excel" style="color:red;border-left:solid 1px gray;">'.$day.'('.$week[date("$w")].')</div>';
                                 }else{
-                                    echo '<div class="excel" style="color:#3366FF;border-left:solid 1px gray;">'.$now_month.'/'.$day.'('.$week[date("$w")].')</div>';
+                                    echo '<div class="excel" style="color:#3366FF;border-left:solid 1px gray;">'.$day.'('.$week[date("$w")].')</div>';
                                 }
                                 break;
                             default:
                                 if(in_array($d,$holidays)){
-                                    echo '<div class="excel" style="color:red;border-left:solid 1px gray;">'.$now_month.'/'.$day.'('.$week[date("$w")].')</div>';
+                                    echo '<div class="excel" style="color:red;border-left:solid 1px gray;">'.$day.'('.$week[date("$w")].')</div>';
                                 }else{
-                                    echo '<div class="excel" style="border-left:solid 1px gray";>'.$now_month.'/'.$day.'('.$week[date("$w")].')</div>';
+                                    echo '<div class="excel" style="border-left:solid 1px gray";>'.$day.'('.$week[date("$w")].')</div>';
                                 }
                         }
                     ?>
@@ -290,8 +293,8 @@ echo '訪問者IPアドレス : '.$ip_address;
                             //--↑各時間の表示ここまで↑--
                             echo '</div>';
                         }
+                    }
                     ?>
-                @endfor
 
             </div>
             <div class="container-fluid">

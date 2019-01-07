@@ -47,12 +47,14 @@
                                 </div>
                             @endif
                             @if($forcount>=2)
-                                <div style="margin-left: 15px;">{{$status->employment_status}} 一覧...</div>
+                                <div style="margin-left: 15px;">
+                                    <a href="/admin/home/empindex/{{ $employee->emp_status_id }}">{{$status->employment_status}} 一覧へ</a>
+                                </div>
                                 <?php break;?>
                             @endif
                         @endforeach
                         @if($forcount==0)
-                            <div style="position: relative; left:15px;">登録 0件</div>
+                            <div style="position: relative; left:15px;">{{$status->employment_status}}の登録はありません</div>
                         @endif
                     </div>
                 </div>
@@ -61,39 +63,5 @@
         </div>
     </div>
 </div>
-
-<?php
-//--↓ページネーション↓--
-$employees_a=array();
-foreach($employees as $employee){
-    $employees_a[]=array('name' => $employee->name,'login_hash' => $employee->login_hash);
-    $test=array();
-}
-define('MAX','3'); // 1ページの記事の表示数
-$employees_num = count($employees_a); // トータルデータ件数
-$max_page = ceil($employees_num / MAX); // トータルページ数※ceilは小数点を切り捨てる関数
-if(!isset($_GET['page_id'])){ // $_GET['page_id'] はURLに渡された現在のページ数
-    $now = 1; // 設定されてない場合は1ページ目にする
-}else{
-    $now = $_GET['page_id'];
-}
-$start_no = ($now - 1) * MAX; // 配列の何番目から取得すればよいか
-// array_sliceは、配列の何番目($start_no)から何番目(MAX)まで切り取る関数
-$disp_data = array_slice($employees_a, $start_no, MAX, true);
-
-// データ表示
-foreach($disp_data as $val){
-    echo $val["name"]."<br>".$val["login_hash"]."<br>";
-}
-
-for($i = 1; $i <= $max_page; $i++){ // 最大ページ数分リンクを作成
-    if ($i == $now) { // 現在表示中のページ数の場合はリンクを貼らない
-        echo $now. '　';
-    } else {
-        echo '<a href=\'/admin/home/?page_id='. $i. '\')>'. $i. '</a>'. '　';
-    }
-}
-//--↑ページネーション↑--
-?>
 
 @endsection

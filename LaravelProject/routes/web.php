@@ -31,6 +31,8 @@ Route::get('/employee/login', 'EmployeeController@login');
 
 Route::get('/admin/home/', 'AdminController@home');
 
+Route::get('/admin/home/empindex/{id}', 'AdminController@index');
+
 Route::get('/admin/home/search', 'AdminController@search');
 
 Route::get('/admin/show/{id}', 'AdminController@show');

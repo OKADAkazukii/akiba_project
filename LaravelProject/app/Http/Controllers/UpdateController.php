@@ -14,9 +14,9 @@ class UpdateController extends Controller
         $status = DB::table('employstatus')->get();
 
         return view ('Admin.conf',compact('status'));
-    }else{ 
-        return redirect('/employ')->with('result', '雇用形態を登録してください!');   
-        }    
+    }else{
+        return redirect('/employ')->with('result', '雇用形態を登録してください');
+        }
     }
      public function employ($id){
 
@@ -47,13 +47,11 @@ class UpdateController extends Controller
     if(!empty($closing)){
         $clo = $closing;
     }elseif($closing == "" && empty($check)){
-        return redirect("/manager/$id")->with('else','締め日が未入力になっておりました');
+        return redirect("/manager/$id")->with('else','締め日が未入力です');
     }else{
         $clo = date('d' , mktime(0,0,0,date('m')+1,0,date('Y')));
-    }     
+    }
 
-
-   
     DB::table('employstatus')->where("id","=",$id)->update(['employment_status' => $status]);
     DB::table('employstatus')->where("id","=",$id)->update(['in_overtime' => $in]);
     DB::table('employstatus')->where("id","=",$id)->update(['out_overtime' => $out]);
@@ -67,9 +65,6 @@ class UpdateController extends Controller
     if($eom == 1){
         DB::table('employstatus')->where("id","=",$id)->update(['closing_day' => $clos]);
         }
-    return redirect("/admin/home/")->with('empupdate','更新完了!');   
+    return redirect("/admin/home/")->with('empupdate','更新完了');
      }
  }
-    
-
-
