@@ -86,7 +86,7 @@ function salarychange(){
       document.getElementById('s_form').readOnly = false;
       document.getElementById('t_form').readOnly = true;
     }else if (id == '1'){
-      document.getElementById('s_form').reaOnly = true;
+      document.getElementById('s_form').readOnly = true;
       document.getElementById('t_form').readOnly = false;
      };
    };

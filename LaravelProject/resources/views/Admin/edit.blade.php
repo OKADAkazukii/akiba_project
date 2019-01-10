@@ -8,10 +8,19 @@
 			<h5>名前</h5>
 			<input type="text" name="name" value="{{$employee->name}}"></input>
 		</div>
-		<div>
-			<h5>基本給(円)</h5>
-			<input type="text" name="basic_salary" value="{{$employee->basic_salary}}"></input>
-		</div>
+		@if($employee->basic_or_time == 0)
+			<div>
+				<h5>基本月給(円)</h5>
+				<input type="text" name="basic_salary" value="{{$employee->basic_salary}}"></input>
+				<input type="hidden" name="time_salary" value=""></input>
+			</div>
+		@else
+			<div>
+				<h5>基本時給(円)</h5>
+				<input type="hidden" name="basic_salary" value=""></input>
+				<input type="text" name="time_salary" value="{{$employee->time_salary}}"></input>
+			</div>
+		@endif
 		<div>
 			<h5>基本勤務時間(分)</h5>
 			<input type="text" name="basic_work_time" value="{{$employee->basic_work_time}}"></input>

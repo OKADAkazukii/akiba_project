@@ -119,7 +119,11 @@ echo '訪問者IPアドレス : '.$ip_address;
                     ?>
                     <div>基本勤務：{{$hours}}時間{{$minutes}}分</div>
                     <form>
-                        <div id="disp">基本月給：<?php echo floor($current_employee->basic_salary)?>円</div>
+                        @if($current_employee->basic_or_time == 0)
+                            <div id="disp">基本月給：<?php echo floor($current_employee->basic_salary)?>円</div>
+                        @else
+                            <div id="disp">基本時給：<?php echo floor($current_employee->time_salary)?>円</div>
+                        @endif
                         <input id="disp-show" type="button" value="月収を表示する" onclick="display_income(0)">
                         <input id="disp-hidden" type="button" value="月収を非表示" onclick="display_income(1)">
                     </form>

@@ -5,7 +5,11 @@
             <div class="container" style="margin-bottom: 20px;">
                 <div>雇用者名：{{$employee->name}}</div>
                 <div>勤務形態：{{$employee->emp_status_id}}</div>
-                <div>基本月給：{{$employee->basic_salary}}円</div>
+                @if($employee->basic_or_time == 0)
+                    <div>基本月給：<?php echo floor($employee->basic_salary) ?>円</div>
+                @else
+                    <div>基本時給：<?php echo floor($employee->time_salary) ?>円</div>
+                @endif
                 <div>勤務時間：{{$employee->basic_work_time}}分 / 日</div>
                 @if($employee->retirement_day != "0000-00-00")
                     <div style="color: red">退職処理済み</div>

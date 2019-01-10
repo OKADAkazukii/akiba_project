@@ -43,10 +43,11 @@ class AdminController extends Controller
     }
 
     public function updata(Request $req){
-    	$post_data = $req->all();
+    	$post_data = $req->all();dd($post_data);
 		DB::table("employees")->where("id","=",$post_data["id"])->update([
 			'name' => $post_data['name'],
 			'basic_salary' => $post_data['basic_salary'],
+			'time_salary' => $post_data['time_salary'],
 			'basic_work_time' => $post_data['basic_work_time']
 		]);
 		if($post_data['retirement_day'] == 1){
