@@ -17,7 +17,7 @@ class EmployeeController extends Controller
 			$holidays = DB::table("holidays")->get(['holiday']);
 			$holidays_list = array_flatten($holidays);
 			$settinges = DB::table("settinges")->get();
-			$db_view = DB::table("late6_late_overtime")->get();
+			$db_view = DB::table("late6_late_overtime")->where("emp_id","=",$current_employee->id)->get();
 			if($attendance){
 				if($attendance->finish_time =='00:00:01'){
 					$start_time = $attendance->start_time;
