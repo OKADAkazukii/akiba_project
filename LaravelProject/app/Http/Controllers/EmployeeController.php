@@ -40,15 +40,16 @@ class EmployeeController extends Controller
 
 	public function create(Request $req){
 		$validated_data = $req->validate([
-			'emp_status_id' => 'required',
-			'admin_id' => 'required',
-			'name' => 'required|max:255',
-			'login_hash' => 'required',
-			'basic_salary' => 'required|max:7',
-			'time_salary' => 'required|max:5',
-			'basic_or_time' => 'required',
-			'basic_work_time' => 'required'
-		]);
+                     'emp_status_id' => 'required',
+                     'admin_id' => 'required',
+                     'name' => 'required|max:255',
+                     'login_hash' => 'required',
+                     'basic_salary' => 'required|max:7',
+                     'time_salary' => 'required|max:5',
+                     'basic_or_time' => 'required',
+                     'basic_work_time' => 'required'
+                ]);
+
 		$work_time_ex = explode(":", $validated_data["basic_work_time"]);
 		$work_time_m = $work_time_ex[0]*60+$work_time_ex[1];
 		DB::table("employees")->insert([

@@ -156,3 +156,43 @@
  display:none;
 }
 //--↑ユーザーホーム画面のCSS↑--
+
+//--↓休日設定ページのCSS↓--
+body{
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+a{
+  text-decoration: none;
+}
+table{
+  margin: 15px auto;
+  border: 1px solid  #ddd;
+  border-collapse: collapse;
+}
+
+th {
+  background: #eee;
+}
+th,td{
+  padding: 7px;
+  text-align: center;
+}
+
+.youbi_0 {
+  color: red;
+}
+
+.youbi_6 {
+  color: blue; 
+}
+
+.today {
+  font-weight: bold;
+}
+.gray {
+  color: #dedede;
+}
+.holiday {
+  color: red;
+}
