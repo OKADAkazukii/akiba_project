@@ -38,9 +38,9 @@
             </div>
 
             <div>
-            <div class="form_text">時給</div>
-                <input type="text" name="time_salary" onblur="test(this)" size="19" maxlength="7" style="text-align: right" id="t_form" value=""/>円
-            </div> 
+                <div class="form_text">時給</div>
+                    <input type="text" name="time_salary" onblur="test(this)" size="19" maxlength="7" style="text-align: right" id="t_form" value=""/>円
+                </div> 
             <br>
                 <select name="basic_or_time" style="width:30%;" id="changeSelect"  onchange="salarychange();">
                     <option value="" selected disabled hidden>--計算給与の選択--</option>
@@ -58,7 +58,6 @@
 <script>
 $(function() {
   var $input = $('#s_form');
-  var $time = $('#time');
   $input.on('change', function(event) {
     var value = eval($input.val()) / eval(20.33*8);
     var result= Math.ceil(value);
@@ -69,7 +68,6 @@ $(function() {
 
 $(function(){
   var $tms = $('#t_form');
-  var $basic = $('#basic');
   $tms.on('change', function(event){
     var value = eval($tms.val()) * eval(20.33*8);
     var result = Math.ceil(value);

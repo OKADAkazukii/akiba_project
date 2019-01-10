@@ -49,8 +49,6 @@ Route::post('/timesettingse/late_overtime_time', 'SettingController@lateovertime
 
 Route::get('/holiday','HolidayController@holiget');
 
-Route::get('/holiday/{?t}','HolidayController@');
-
 Route::get('/detail',function() {
     return view('/Admin.detail');
 });
