@@ -53,4 +53,10 @@ class HolidayController extends Controller
         $holiget = DB::table('holidays')->select('holiday')->get();
         return view ('Admin.holiday',compact('holiget'));
    }
+
+    public function calendar(Request $request, $t)
+    {
+
+    }
 }
+
