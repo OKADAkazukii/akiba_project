@@ -20,6 +20,7 @@ class CreateEmploystatusTable extends Migration
             $table->string('employment_status');
             $table->decimal('in_overtime');
             $table->decimal('out_overtime');
+            $table->decimal('late_worktime');
             $table->decimal('late_overtime');
             $table->decimal('holiday_work');
             $table->decimal('late_holiday_work');
