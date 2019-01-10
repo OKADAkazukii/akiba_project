@@ -1,3 +1,6 @@
+<script type="text/javascript" src="/js/style.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 @extends('layouts.app')
 @section('content')
 <div class="container">
@@ -11,14 +14,14 @@
 		@if($employee->basic_or_time == 0)
 			<div>
 				<h5>基本月給(円)</h5>
-				<input type="text" name="basic_salary" value="{{$employee->basic_salary}}"></input>
-				<input type="hidden" name="time_salary" value=""></input>
+				<input type="text" name="basic_salary" id="basic" value="{{$employee->basic_salary}}"></input>
+				<input type="hidden" name="time_salary" id="h_time" value="{{$employee->time_salary}}"></input>
 			</div>
 		@else
 			<div>
 				<h5>基本時給(円)</h5>
-				<input type="hidden" name="basic_salary" value=""></input>
-				<input type="text" name="time_salary" value="{{$employee->time_salary}}"></input>
+				<input type="hidden" name="basic_salary" id="h_basic" value="{{$employee->basic_salary}}"></input>
+				<input type="text" name="time_salary" id="time" value="{{$employee->time_salary}}"></input>
 			</div>
 		@endif
 		<div>
@@ -48,4 +51,23 @@
 		</div>
 	</form>
 </div>
+<script>
+$(function() {
+  var $basic_s = $('#basic');
+  $basic_s.on('change', function(event) {
+    var value = eval($basic_s.val()) / eval(20.33*8);
+    var result= Math.ceil(value);
+    document.getElementById('h_time').value = (result);
+  });
+});
+
+$(function() {
+  var $time_s = $('#time');
+  $time_s.on('change', function(event) {
+    var value = eval($time_s.val()) * eval(20.33*8);
+    var result= Math.ceil(value);
+    document.getElementById('h_basic').value = (result);
+  });
+});
+</script>
 @endsection

@@ -7,7 +7,7 @@ function h($s){
 }
 
 try{
-  if(!isset($GET{$t})|| !preg_match('/|A|d{4}-|d{2}|z/',$_GET{$t})){
+  if(!isset($_GET{$t})|| !preg_match('/\A\d{4}-\d{2}\z/',$_GET{$t})){
     throw new Exception();
   }
   $thisMonth = new DateTime($_GET{$t});
