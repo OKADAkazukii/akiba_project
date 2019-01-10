@@ -38,6 +38,7 @@ class UpdateController extends Controller
     $id = $req->input('id');
     $in = $req->input('in_overtime');
     $out = $req->input('out_overtime');
+    $late_work = $req->input('late_worktime');
     $late_over = $req->input('late_overtime');
     $holi = $req->input('holiday_work');
     $late_holi = $req->input('late_holiday');
@@ -55,6 +56,7 @@ class UpdateController extends Controller
     DB::table('employstatus')->where("id","=",$id)->update(['employment_status' => $status]);
     DB::table('employstatus')->where("id","=",$id)->update(['in_overtime' => $in]);
     DB::table('employstatus')->where("id","=",$id)->update(['out_overtime' => $out]);
+    DB::table('employstatus')->where("id","=",$id)->update(['late_worktime' => $late_work]);
     DB::table('employstatus')->where("id","=",$id)->update(['late_overtime' => $late_over]);
     DB::table('employstatus')->where("id","=",$id)->update(['holiday_work' => $holi]);
     DB::table('employstatus')->where("id","=",$id)->update(['late_holiday_work' => $late_holi]);

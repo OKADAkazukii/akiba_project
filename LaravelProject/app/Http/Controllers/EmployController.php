@@ -13,6 +13,7 @@ class EmployController extends Controller
         $emp = $req->input('emp');
         $in = $req->input('in_overtime');
         $out = $req->input('out_overtime');
+        $late_w = $req->input('late_worktime');
         $late_o = $req->input('late_overtime');
         $holi = $req->input('holiday_work');
         $late_h = $req->input('late_holiday');
@@ -25,6 +26,7 @@ class EmployController extends Controller
             return redirect("/employ")->with('emp',"$emp")
                                       ->with('in',"$in")
                                       ->with('out',"$out")
+                                      ->with('late_work',"$late_w")
                                       ->with('late_over',"$late_o")
                                       ->with('holiday',"$holi")
                                       ->with('late_holi',"$late_h")
@@ -32,20 +34,18 @@ class EmployController extends Controller
         }else{
             $clo = date('d' , mktime(0,0,0,date('m')+1,0,date('Y')));
         }
-     
-                 
-      
+
         $addemp = DB::table('employstatus')->where('employment_status','=',$emp)->count();
-    if($addemp==0) { 
+    if($addemp==0) {
         DB::table('employstatus')->insert([
             'employment_status' => $emp,
             'in_overtime' => $in,
             'out_overtime' => $out,
+            'late_worktime' => $late_w,
             'late_overtime' => $late_o,
             'holiday_work' => $holi,
             'late_holiday_work' => $late_h,
-            'closing_day' => $clo  
-
+            'closing_day' => $clo
         ]);
 
         return redirect("/admin/home")->with('insertemp','登録完了!');
