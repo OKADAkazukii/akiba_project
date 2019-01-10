@@ -132,7 +132,7 @@ echo '訪問者IPアドレス : '.$ip_address;
                     $countdate = date("t");
                     $now_year = date("Y");
                     $now_month = date("m");
-                    $before_month = date("m", strtotime("-1 month"));
+                    $before_month = date("Y-m", strtotime("-1 month"));
                     $next_month = date("Y-m", strtotime("+1 month"));
                     $now_day = date("j");
                     $starting_day = date("Y-m-01",strtotime('last day of this month'));
@@ -145,7 +145,7 @@ echo '訪問者IPアドレス : '.$ip_address;
                         $closing_day = date("Y-m-d", strtotime("{$next_month}-{$emp_status->closing_day}"." "."00:00:00"));
                         $next_starting_day = date("Y-m-d", strtotime("{$next_month}-{$emp_status->closing_day}"." "."00:00:00")+86400);
                     }else{ //日付が締日より小さい場合の処理
-                        $starting_day = date("Y-m-d", strtotime("{$now_year}-{$before_month}-{$emp_status->closing_day}"." "."00:00:00")+86400);
+                        $starting_day = date("Y-m-d", strtotime("{$before_month}-{$emp_status->closing_day}"." "."00:00:00")+86400);
                         $closing_day = date("Y-m-d", strtotime("{$now_year}-{$now_month}-{$emp_status->closing_day}"." "."00:00:00"));
                         $next_starting_day = date("Y-m-d", strtotime("{$now_year}-{$now_month}-{$emp_status->closing_day}"." "."00:00:00")+86400);
                     }
@@ -195,32 +195,31 @@ echo '訪問者IPアドレス : '.$ip_address;
                     echo '<div style="border-bottom:solid 1px gray;">';
 
                         $w = date("w", strtotime($day));
-                        $d = $day;
+                        $d = explode("-",$day);
+                        $d = $d[1]."/".$d[2];
                         switch($w){
                             case 0:
-                                echo '<div class="excel" style="color:red;border-left:solid 1px gray;">'.$day.'('.$week[date("$w")].')</div>';
+                                echo '<div class="excel" style="color:red;border-left:solid 1px gray;">'.$d.'('.$week[date("$w")].')</div>';
                                 break;
                             case 6:
-                                if(in_array($d,$holidays)){
-                                    echo '<div class="excel" style="color:red;border-left:solid 1px gray;">'.$day.'('.$week[date("$w")].')</div>';
+                                if(in_array($day,$holidays)){
+                                    echo '<div class="excel" style="color:red;border-left:solid 1px gray;">'.$d.'('.$week[date("$w")].')</div>';
                                 }else{
-                                    echo '<div class="excel" style="color:#3366FF;border-left:solid 1px gray;">'.$day.'('.$week[date("$w")].')</div>';
+                                    echo '<div class="excel" style="color:#3366FF;border-left:solid 1px gray;">'.$d.'('.$week[date("$w")].')</div>';
                                 }
                                 break;
                             default:
-                                if(in_array($d,$holidays)){
-                                    echo '<div class="excel" style="color:red;border-left:solid 1px gray;">'.$day.'('.$week[date("$w")].')</div>';
+                                if(in_array($day,$holidays)){
+                                    echo '<div class="excel" style="color:red;border-left:solid 1px gray;">'.$d.'('.$week[date("$w")].')</div>';
                                 }else{
-                                    echo '<div class="excel" style="border-left:solid 1px gray";>'.$day.'('.$week[date("$w")].')</div>';
+                                    echo '<div class="excel" style="border-left:solid 1px gray";>'.$d.'('.$week[date("$w")].')</div>';
                                 }
                         }
-                    ?>
-                    </div>
+                    echo '</div>';
 
-                    <?php
                         $samedays = 0;
                         foreach ($db_view as $attendance){
-                            if($attendance->day != $d){
+                            if($attendance->day != $day){
                                 continue;
                             }
                             //--↓出勤時間↓--
