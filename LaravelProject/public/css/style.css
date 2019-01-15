@@ -22,6 +22,7 @@
  left:7%;
  margin:20px 0 120px 0;
 }
+
 .button1{
  display:inline-block;
  border-radius:5%;
@@ -158,41 +159,20 @@
 //--↑ユーザーホーム画面のCSS↑--
 
 //--↓休日設定ページのCSS↓--
-body{
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-}
-a{
-  text-decoration: none;
-}
-table{
-  margin: 15px auto;
-  border: 1px solid  #ddd;
-  border-collapse: collapse;
+
+
+.insertholiday{
+ color: #1d643b;
+ background-color: #d7f3e3;
+ border-color: #c7eed8;
 }
 
-th {
-  background: #eee;
+#float_test{
+  height: 150px;              /* 高さ指定 */
+    width: 150px;               /* 幅指定 */
+    background-color: #f00;     /* 背景色指定 */
+    margin:  10px;              /* 周りの余白指定 */
 }
-th,td{
-  padding: 7px;
-  text-align: center;
-}
-
-.youbi_0 {
-  color: red;
-}
-
-.youbi_6 {
-  color: blue; 
-}
-
-.today {
-  font-weight: bold;
-}
-.gray {
-  color: #dedede;
-}
-.holiday {
-  color: red;
+#aaa{
+    float:  left;   /* 回り込み指定 */
 }

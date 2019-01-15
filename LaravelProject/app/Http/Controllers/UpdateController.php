@@ -21,7 +21,6 @@ class UpdateController extends Controller
      public function employ($id){
 
      $emp_status = DB::table("employstatus")->where("id","=",$id)->get();
-
      return view('Admin.manager',compact("emp_status"));
     }
 

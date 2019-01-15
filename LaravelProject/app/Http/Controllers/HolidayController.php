@@ -43,9 +43,9 @@ class HolidayController extends Controller
                 'holiday_name' => '会社指定休日'
             ]);
 
-        return redirect("/holiday")->with('addholiday','休日設定完了！');
+        return redirect("/holiday")->with('addholiday',"$date を休日に設定しました");
         }else{
-        return redirect("/holiday")->with('addholiday',"$date はすでに休日に設定されております！");
+        return redirect("/holiday")->with('addholiday',"$date はすでに休日です");
         }
     }
     public function holiget()

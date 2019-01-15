@@ -14,7 +14,6 @@
         <label>雇用形態名変更：<input type="text" name="emp" value=<?php echo $emp_status[0]->employment_status; ?>></label><br>
         <label>所定内残業料率：<input type="number" name="in_overtime" step="0.01" min="0" value=<?php echo $emp_status[0]->in_overtime; ?>></label><br>
         <label>所定外残業料率：<input type="number" name="out_overtime" step="0.01" min="0" value=<?php echo $emp_status[0]->out_overtime; ?>></label><br>
-        <label>所定外深夜勤務料率：<input type="number" name="late_worktime" step="0.01" min="0" value=<?php echo $emp_status[0]->late_worktime; ?>></label><br>
         <label>所定外深夜残業料率：<input type="number" name="late_overtime" step="0.01" min="0" value=<?php echo $emp_status[0]->late_overtime; ?>></label><br>
         <label>法定外休日出勤料率：<input type="number" name="holiday_work" step="0.01" min="0" value=<?php echo $emp_status[0]->holiday_work; ?>></label><br>
         <label>法定外休日残業料率：<input type="number" name="late_holiday" step="0.01" min="0" value=<?php echo $emp_status[0]->late_holiday_work; ?>></label><br>
