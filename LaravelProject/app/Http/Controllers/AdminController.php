@@ -43,7 +43,7 @@ class AdminController extends Controller
     }
 
     public function updata(Request $req){
-    	$post_data = $req->all();dd($post_data);
+    	$post_data = $req->all();
 		DB::table("employees")->where("id","=",$post_data["id"])->update([
 			'name' => $post_data['name'],
 			'basic_salary' => $post_data['basic_salary'],

@@ -17,7 +17,11 @@ class EmployeeController extends Controller
 			$holidays = DB::table("holidays")->get(['holiday']);
 			$holidays_list = array_flatten($holidays);
 			$settinges = DB::table("settinges")->get();
-			$db_view = DB::table("late6_late_overtime")->where("emp_id","=",$current_employee->id)->get();
+			$db_view_time = DB::table("late6_late_overtime")->where("emp_id","=",$current_employee->id)->get();
+			$db_view_albait = DB::table("time_salary_sum_on_closingday")->where("emp_id","=",$current_employee->id)->first();
+			$db_view_teate = DB::table("teate_month")->where("emp_id","=",$current_employee->id)->first();
+			$db_view_sun_teate = DB::table("sunday_teate")->where("emp_id","=",$current_employee->id)->get();
+			$db_view_holi_teate = DB::table("holiday_teate")->where("emp_id","=",$current_employee->id)->get();
 			if($attendance){
 				if($attendance->finish_time =='00:00:01'){
 					$start_time = $attendance->start_time;
@@ -27,7 +31,7 @@ class EmployeeController extends Controller
 			}else{
 				$start_time = "---------";
 			}
-			return view("employee.home",compact('db_view','attendances','emp_status','holidays_list','start_time','current_employee','settinges','current_employee'));
+			return view("employee.home",compact('db_view_time','attendances','emp_status','holidays_list','start_time','current_employee','settinges','current_employee','db_view_albait','db_view_teate','db_view_sun_teate','db_view_holi_teate'));
 		}else{
 			return redirect("/");
 		}
