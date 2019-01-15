@@ -121,11 +121,13 @@ echo '訪問者IPアドレス : '.$ip_address;
                     <form>
                         @if($current_employee->basic_or_time == 0)
                             <div id="disp">基本月給：<?php echo floor($current_employee->basic_salary)?>円</div>
+                            <input id="disp-show" type="button" value="月収を表示する" onclick="display_income(0)">
+                            <input id="disp-hidden" type="button" value="月収を非表示" onclick="display_income(1)">
                         @else
                             <div id="disp">基本時給：<?php echo floor($current_employee->time_salary)?>円</div>
+                            <input id="disp-show" type="button" value="時給を表示する" onclick="display_income(0)">
+                            <input id="disp-hidden" type="button" value="時給を非表示" onclick="display_income(1)">
                         @endif
-                        <input id="disp-show" type="button" value="月収を表示する" onclick="display_income(0)">
-                        <input id="disp-hidden" type="button" value="月収を非表示" onclick="display_income(1)">
                     </form>
                 </div>
             </div>
@@ -194,6 +196,8 @@ echo '訪問者IPアドレス : '.$ip_address;
                 $sum_outover = 0;
                 $sum_latework = 0;
                 $sum_lateover = 0;
+                $t_holiwork = 0;
+                $t_holilate = 0;
 
                 for($day=$starting_day; $day<$next_starting_day; $day=date("Y-m-d", strtotime("$day +1 day"))){
                     echo '<div style="border-bottom:solid 1px gray;">';
@@ -222,7 +226,7 @@ echo '訪問者IPアドレス : '.$ip_address;
                     echo '</div>';
 
                         $samedays = 0;
-                        foreach ($db_view as $attendance){
+                        foreach ($db_view_time as $attendance){
                             if($attendance->day != $day){
                                 continue;
                             }
@@ -296,14 +300,30 @@ echo '訪問者IPアドレス : '.$ip_address;
                             //--↑各時間の表示ここまで↑--
                             echo '</div>';
                         }
-                    }
-                    ?>
+
+                        foreach ($db_view_sun_teate as $teate){
+                            if($teate->day != $day){
+                                continue;
+                            }
+                            $t_holiwork += $teate->t_sun_work;
+                            $t_holilate += $teate->t_sun_late;
+                        }
+
+                        foreach ($db_view_holi_teate as $teate){
+                            if($teate->day != $day){
+                                continue;
+                            }
+                            $t_holiwork += $teate->t_holi_work;
+                            $t_holilate += $teate->t_holi_late;
+                        }
+                }
+            ?>
 
             </div>
             <div class="container-fluid">
                 <div class="row sum-box">
                     <div class="col-md-4 sub-cl">
-                        <h4>合計</h4>
+                        <h4>時間合計</h4>
                         <div>勤務時間
                             <?php echo minutes_change_to_time($sum_worktime) ?>
                         </div>
@@ -321,10 +341,37 @@ echo '訪問者IPアドレス : '.$ip_address;
                         </div>
                     </div>
                     <div class="col-md-4 sub-cl">
-                        <h4>給料計算</h4>
+                        <h4>各種手当</h4>
+                        <div>所定内残業手当
+                             {{$db_view_teate->t_inover}}円
+                        </div>
+                        <div>所定外残業手当
+                             {{$db_view_teate->t_outover}}円
+                        </div>
+                        <div>深夜勤務手当
+                             {{$db_view_teate->t_latework}}円
+                        </div>
+                        <div>深夜残業手当
+                             {{$db_view_teate->t_lateover}}円
+                        </div>
+                        <div>休日出勤手当
+                             {{$t_holiwork}}円
+                        </div>
+                        <div>休日深夜手当
+                             {{$t_holilate}}円
+                        </div>
                     </div>
                     <div class="col-md-4 sub-cl">
-                        <h4>未定</h4>
+                        <h4>支払い給与額</h4>
+                        @if($current_employee->basic_or_time == 0)
+                            <div>正社員↓<br>
+                                 <?php echo $current_employee->basic_salary+$db_view_teate->t_inover+$db_view_teate->t_outover+$db_view_teate->t_latework+$db_view_teate->t_lateover+$t_holiwork+$t_holilate ?>円　ここも隠す
+                            </div>
+                        @else
+                        <div>アルバイト↓<br>
+                            <?php echo $db_view_albait->sum_time_salary+$db_view_teate->t_inover+$db_view_teate->t_outover+$db_view_teate->t_latework+$db_view_teate->t_lateover+$t_holiwork+$t_holilate ?>円　ここも隠す
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
