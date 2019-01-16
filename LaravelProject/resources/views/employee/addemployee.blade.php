@@ -36,7 +36,7 @@
                 <div class="form_text" >基本給</div>
                 <input type="text" name="basic_salary" onblur="test(this)" size="19" maxlength="7" style="text-align: right" id="s_form" value=""/>
                 <div>※半角数値以外を入力するとアラートが表示されます。</div>
-                <div>※基本給または時給を入力し基本勤務時間を選択すると、もう一方の値が自動計算されます。</div> 
+                <div>※基本給を入力し基本勤務時間を選択すると、時給が自動計算されます。</div> 
             </div> 
             <div style="position:relative; left:210px;bottom:120px; ">        
             <div class="form_text">時給</div>
@@ -81,6 +81,7 @@ $(function(){
   var basic_work_time = $('#basic_work_time');
   $tms.on('change', function(event){
     document.getElementById('changeSelect').value = ('1');
+    document.getElementById('s_form').style.visibility = "hidden";
   basic_work_time.on('change', function(event){
     var time = $('#basic_work_time').val();
     var numberHh = Number(moment(time, 'HH:mm').format('H'));

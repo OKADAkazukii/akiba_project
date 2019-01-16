@@ -1,3 +1,6 @@
+<script type="text/javascript" src="/js/style.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 @extends('layouts.app')
 @section('content')
 <div align="center"><h3>{{ session('result') }}</h3></div>
@@ -20,3 +23,19 @@
                    <input type="submit" value="送信">
                </table>
 @endsection
+<script>
+  $(function(){
+    var check = $('#closingday');
+    check.on('change', function(event){
+    document.getElementById('endmonch_day').checked = false;
+    });
+  });
+
+  $(function() {
+    var endmonch = $('#endmonch_day');
+    endmonch.on('click',function(event){
+      document.getElementById('closingday').value = ("");
+    });
+  });
+
+</script>

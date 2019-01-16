@@ -42,8 +42,8 @@ class EmployeeController extends Controller
 		return view("employee.addemployee",compact('emp_status'));
 	}
 
-	public function create(Request $req){
-		$validated_data = $req->validate([
+	 public function create(Request $req){
+                $validated_data = $req->validate([
                      'emp_status_id' => 'required',
                      'admin_id' => 'required',
                      'name' => 'required|max:255',
@@ -52,7 +52,7 @@ class EmployeeController extends Controller
                      'time_salary' => 'required|max:5',
                      'basic_or_time' => 'required',
                      'basic_work_time' => 'required'
-                ]);
+                ]);            
 
 		$work_time_ex = explode(":", $validated_data["basic_work_time"]);
 		$work_time_m = $work_time_ex[0]*60+$work_time_ex[1];

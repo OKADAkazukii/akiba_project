@@ -17,9 +17,19 @@
     </form>
   </div>
   <div>
+    <?php
+      foreach ($holiget as $holigets){
+        echo $holigets->holiday.$holigets->holiday_name,'<br>';
+      }
+    ?>
+  </div>  
+  <div>
+  <?php echo $yyyy; ?>>
+  </div>
+  <div>
     <form action="/holidayupdate" method="post">
       {{ csrf_field() }}
-      <button style="position:relative; top:225px;" type="submit" class="btn btn-success">祝日更新</button>
+      <button style="position:relative; top:160px;" type="submit" class="btn btn-success">祝日更新</button>
     </form>
   </div>
 </body>
