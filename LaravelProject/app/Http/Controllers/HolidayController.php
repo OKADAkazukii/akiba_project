@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use DateTime;
 
 
 class HolidayController extends Controller
@@ -50,8 +51,19 @@ class HolidayController extends Controller
     }
     public function holiget()
     {
-        $holiget = DB::table('holidays')->select('holiday')->get();
-        return view ('Admin.holiday',compact('holiget'));
+        $datetime = new DateTime();
+        $year = $datetime->format('Y');
+
+
+        $holiget = DB::table('holidays')->select('holiday','holiday_name')->orderBy('holiday','asc')->get();
+        $yyyy = "" ;       
+foreach ($holiget as $holigets){
+  $yyyy = date('Y',strtotime($holigets->holiday));
+  $y = $year > $yyyy;   
+dd($y);
+   }
+
+        return view ('Admin.holiday',compact('holiget'),compact('yyyy'));
    }
 
     public function calendar(Request $request, $t)

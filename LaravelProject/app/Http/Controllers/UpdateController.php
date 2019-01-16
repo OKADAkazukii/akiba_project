@@ -18,20 +18,32 @@ class UpdateController extends Controller
         return redirect('/employ')->with('result', '雇用形態を登録してください');
         }
     }
-     public function employ($id){
 
-     $emp_status = DB::table("employstatus")->where("id","=",$id)->get();
-     return view('Admin.manager',compact("emp_status"));
+
+
+    public function employ($id){
+
+    $emp_status = DB::table("employstatus")->where("id","=",$id)->get();
+    $emp_closing_day = $emp_status[0]->closing_day;
+    $checked = "" ;
+    
+    
+    if($emp_status[0]->closing_day > 27 ){
+        $checked = 'checked';
+        $emp_closing_day = "" ;
+
+        return view('Admin.manager',compact('emp_status','checked','emp_closing_day'));  
+
+    }else{
+
+        return view('Admin.manager',compact('emp_status','checked','emp_closing_day'));
+
+        }
     }
 
+
+
     public function editempstatus(Request $req){
-
-    $test = DB::table("employstatus")->where("closing_day",'>=',28)->get();
-
-
-
-
-
 
     $status = $req->input('emp');
     $id = $req->input('id');
@@ -55,7 +67,6 @@ class UpdateController extends Controller
     DB::table('employstatus')->where("id","=",$id)->update(['employment_status' => $status]);
     DB::table('employstatus')->where("id","=",$id)->update(['in_overtime' => $in]);
     DB::table('employstatus')->where("id","=",$id)->update(['out_overtime' => $out]);
-    DB::table('employstatus')->where("id","=",$id)->update(['late_worktime' => $late_work]);
     DB::table('employstatus')->where("id","=",$id)->update(['late_overtime' => $late_over]);
     DB::table('employstatus')->where("id","=",$id)->update(['holiday_work' => $holi]);
     DB::table('employstatus')->where("id","=",$id)->update(['late_holiday_work' => $late_holi]);
