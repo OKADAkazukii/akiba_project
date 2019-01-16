@@ -15,7 +15,6 @@ class CreateAllowanceTable extends Migration
     {
         Schema::create('allowance', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
             $table->integer('emp_id');
             $table->decimal('overtime_a');
             $table->decimal('late_overtime_a');

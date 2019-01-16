@@ -342,35 +342,43 @@ echo '訪問者IPアドレス : '.$ip_address;
                     </div>
                     <div class="col-md-4 sub-cl">
                         <h4>各種手当</h4>
-                        <div>所定内残業手当
-                             {{$db_view_teate->t_inover}}円
-                        </div>
-                        <div>所定外残業手当
-                             {{$db_view_teate->t_outover}}円
-                        </div>
-                        <div>深夜勤務手当
-                             {{$db_view_teate->t_latework}}円
-                        </div>
-                        <div>深夜残業手当
-                             {{$db_view_teate->t_lateover}}円
-                        </div>
-                        <div>休日出勤手当
-                             {{$t_holiwork}}円
-                        </div>
-                        <div>休日深夜手当
-                             {{$t_holilate}}円
-                        </div>
+                        @if($db_view_teate)
+                            <div>所定内残業手当
+                                 {{$db_view_teate->t_inover}}円
+                            </div>
+                            <div>所定外残業手当
+                                 {{$db_view_teate->t_outover}}円
+                            </div>
+                            <div>深夜勤務手当
+                                 {{$db_view_teate->t_latework}}円
+                            </div>
+                            <div>深夜残業手当
+                                 {{$db_view_teate->t_lateover}}円
+                            </div>
+                            <div>休日出勤手当
+                                 {{$t_holiwork}}円
+                            </div>
+                            <div>休日深夜手当
+                                 {{$t_holilate}}円
+                            </div>
+                        @else
+                            <div>出勤がありません</div>
+                        @endif
                     </div>
                     <div class="col-md-4 sub-cl">
                         <h4>支払い給与額</h4>
-                        @if($current_employee->basic_or_time == 0)
-                            <div>正社員↓<br>
-                                 <?php echo $current_employee->basic_salary+$db_view_teate->t_inover+$db_view_teate->t_outover+$db_view_teate->t_latework+$db_view_teate->t_lateover+$t_holiwork+$t_holilate ?>円　ここも隠す
-                            </div>
+                        @if($db_view_teate)
+                            @if($current_employee->basic_or_time == 0)
+                                <div>
+                                     <?php echo $current_employee->basic_salary+$db_view_teate->t_inover+$db_view_teate->t_outover+$db_view_teate->t_latework+$db_view_teate->t_lateover+$t_holiwork+$t_holilate ?>円　ここも隠す
+                                </div>
+                            @else
+                                <div>
+                                    <?php echo $db_view_albait->sum_time_salary+$db_view_teate->t_inover+$db_view_teate->t_outover+$db_view_teate->t_latework+$db_view_teate->t_lateover+$t_holiwork+$t_holilate ?>円　ここも隠す
+                                </div>
+                            @endif
                         @else
-                        <div>アルバイト↓<br>
-                            <?php echo $db_view_albait->sum_time_salary+$db_view_teate->t_inover+$db_view_teate->t_outover+$db_view_teate->t_latework+$db_view_teate->t_lateover+$t_holiwork+$t_holilate ?>円　ここも隠す
-                        </div>
+                            <div>出勤がありません</div>
                         @endif
                     </div>
                 </div>
