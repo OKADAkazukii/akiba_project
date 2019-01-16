@@ -16,7 +16,6 @@ class CreateEmploystatusTable extends Migration
     {
         Schema::create('employstatus', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
             $table->string('employment_status');
             $table->decimal('in_overtime');
             $table->decimal('out_overtime');
@@ -25,6 +24,8 @@ class CreateEmploystatusTable extends Migration
             $table->decimal('holiday_work');
             $table->decimal('late_holiday_work');
             $table->integer('closing_day');
+            $table->date('apply_start');
+            $table->date('apply_finish');
         });
     }
     /**

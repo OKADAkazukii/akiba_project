@@ -26,7 +26,7 @@
 		@endif
 		<div>
 			<h5>基本勤務時間(分)</h5>
-			<input type="text" name="basic_work_time" value="{{$employee->basic_work_time}}"></input>
+			<input type="time" name="basic_work_time" value="{{$employee->basic_work_time}}"></input>
 		</div>
 		@if($employee->retirement_day != "0000-00-00")
 		<div>

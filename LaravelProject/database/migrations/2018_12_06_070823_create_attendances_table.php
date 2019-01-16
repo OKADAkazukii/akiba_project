@@ -15,13 +15,13 @@ class CreateAttendancesTable extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
             $table->integer('emp_id');
             $table->date('day');
             $table->time('start_time');
             $table->integer('rest_time')->default(60);
             $table->time('finish_time')->default("00:00:01");
             $table->integer('late_rest_time');
+            $table->integer('auto_finish_flag')->default(0);
         });
     }
 
