@@ -26,6 +26,7 @@ class CreateEmploystatusTable extends Migration
             $table->integer('closing_day');
             $table->date('apply_start');
             $table->date('apply_finish');
+            $table->integer('status_id');
         });
     }
     /**

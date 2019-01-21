@@ -18,20 +18,30 @@ class EmployeeController extends Controller
 			$holidays_list = array_flatten($holidays);
 			$settinges = DB::table("settinges")->get();
 			$db_view_time = DB::table("late6_late_overtime")->where("emp_id","=",$current_employee->id)->get();
+			$db_view_sumtime = DB::table("weekdays_sum_worktime")->where("emp_id","=",$current_employee->id)->first();
 			$db_view_albait = DB::table("time_salary_sum_on_closingday")->where("emp_id","=",$current_employee->id)->first();
-			$db_view_teate = DB::table("teate_month")->where("emp_id","=",$current_employee->id)->first();
-			$db_view_sun_teate = DB::table("sunday_teate")->where("emp_id","=",$current_employee->id)->get();
-			$db_view_holi_teate = DB::table("holiday_teate")->where("emp_id","=",$current_employee->id)->get();
+			$db_view_teate = DB::table("teate")->where("emp_id","=",$current_employee->id)->first();
+			$db_view_restday_teate = DB::table("holi_and_sunday_teate")->where("emp_id","=",$current_employee->id)->first();
+			$db_view_salary = DB::table("salary")->where("emp_id","=",$current_employee->id)->first();
+			if($db_view_salary){
+				$db_view_salary->salary = floor($db_view_salary->salary);
+			}
 			if($attendance){
 				if($attendance->finish_time =='00:00:01'){
 					$start_time = $attendance->start_time;
+					$form_rest_time = str_pad(floor($attendance->rest_time / 60), 2, 0, STR_PAD_LEFT).":".str_pad(floor($attendance->rest_time % 60), 2, 0, STR_PAD_LEFT);
+					$form_late_rest_time = str_pad(floor($attendance->late_rest_time / 60), 2, 0, STR_PAD_LEFT).":".str_pad(floor($attendance->late_rest_time % 60), 2, 0, STR_PAD_LEFT);
 				}else{
 					$start_time = "---------";
+					$form_rest_time = '01:00';
+					$form_late_rest_time = '00:00';
 				}
 			}else{
 				$start_time = "---------";
+				$form_rest_time = '01:00';
+				$form_late_rest_time = '00:00';
 			}
-			return view("employee.home",compact('db_view_time','attendances','emp_status','holidays_list','start_time','current_employee','settinges','current_employee','db_view_albait','db_view_teate','db_view_sun_teate','db_view_holi_teate'));
+			return view("employee.home",compact('current_employee','emp_status','attendances','holidays_list','settinges','db_view_time','db_view_sumtime','db_view_albait','db_view_teate','db_view_restday_teate','start_time','form_rest_time','form_late_rest_time','db_view_salary'));
 		}else{
 			return redirect("/");
 		}
@@ -52,7 +62,7 @@ class EmployeeController extends Controller
                      'time_salary' => 'required|max:5',
                      'basic_or_time' => 'required',
                      'basic_work_time' => 'required'
-                ]);            
+                ]);
 
 		$work_time_ex = explode(":", $validated_data["basic_work_time"]);
 		$work_time_m = $work_time_ex[0]*60+$work_time_ex[1];

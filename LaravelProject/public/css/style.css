@@ -156,6 +156,12 @@
  margin-top: 20px;
  display:none;
 }
+#disp-hidden2,#disp-hidden3{
+ color: red;
+}
+#disp-show2, #disp-show3{
+ display:none;
+}
 //--↑ユーザーホーム画面のCSS↑--
 
 //--↓休日設定ページのCSS↓--

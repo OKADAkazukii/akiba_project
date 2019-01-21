@@ -47,6 +47,13 @@ class AttendanceController extends Controller
 				DB::table("attendances")->where("id","=",$attendance->id)->update([
 					'finish_time' => $finish_time
 				]);
+				$db_view_time = DB::table("work_time")->where("id","=",$attendance->id)->first();
+				if($db_view_time->worktime < 0){
+					DB::table("attendances")->where("id","=",$attendance->id)->update([
+					'finish_time' => '00:00:01'
+					]);
+					return back()->with('message', '実働時間より休憩時間が多い為、退勤できません。休憩時間を再設定してください');
+				}
 			}else{
 				return back()->with('message', '出勤していないため、退社時間の記録はできません');
 			}
