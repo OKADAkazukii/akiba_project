@@ -34,7 +34,7 @@
                     <div class="row">
                         <?php $forcount = 0; ?>
                         @foreach($employees as $employee)
-                            @if($status->id == $employee->emp_status_id)
+                            @if($status->status_id == $employee->emp_status_id)
                                 <?php $forcount++; ?>
                                 <div class="container" style="margin-bottom: 20px;">
                                     <div>雇用者名：{{$employee->name}}</div>

@@ -17,25 +17,26 @@
                    <label>所定外深夜勤務料率 ：<input type="number" name="late_worktime" step="0.01" min="0" value="{{ session('late_work') }}"required></label><br>
                    <label>所定外深夜残業料率 ：<input type="number" name="late_overtime" step="0.01" min="0" value="{{ session('late_over') }}"required></label><br>
                    <label>法定外休日出勤料率 ：<input type="number" name="holiday_work" step="0.01" min="0" value="{{ session('holiday') }}"required></label><br>
-                   <label>法定外深夜残業料率 ：<input type="number" name="late_holiday" step="0.01" min="0" value="{{ session('late_holi') }}"required></label><br>
-                   <label>締め日 ：<input type="number" min="1" max="27" name="closing" ></label>
-                   <label>(末日)<input type="checkbox" name="check"></label><br>
+                   <label>法定外深夜残業料率 ：<input type="number" name="late_holiday" step="0.01" min="0" value="{{ session('late_holi') }}" required></label><br>
+                   <label>締め日 ：<input type="number" min="1" max="27" name="closing" id ="closingday"></label>
+                   <label>月末締め：<input type="checkbox" name="check" id="last_day"></label><br>
+                   <label>新料率開始日：<input type="date" name="new" value="{{ session('new') }}"required></label><br>
                    <input type="submit" value="送信">
                </table>
-@endsection
 <script>
   $(function(){
     var check = $('#closingday');
     check.on('change', function(event){
-    document.getElementById('endmonch_day').checked = false;
+    document.getElementById('last_day').checked = false;
     });
   });
 
   $(function() {
-    var endmonch = $('#endmonch_day');
-    endmonch.on('click',function(event){
+    var lastday = $('#last_day');
+    lastday.on('click',function(event){
       document.getElementById('closingday').value = ("");
     });
   });
 
 </script>
+@endsection

@@ -46,22 +46,19 @@ class HolidayController extends Controller
         }else{
         return redirect("/holiday")->with('addholiday',"$date はすでに休日です");
         }
+        
     }
     public function holiget()
     {
         $datetime = new DateTime();
-        $year = $datetime->format('Y');
+        $year = $datetime->format('Y');//今年を取得
+        $yearmodify = $datetime->modify('next year ');   
+        $nextyear = $yearmodify->format('Y');    
 
+        $holiget = DB::table('holidays')->select('holiday','holiday_name')->orderBy('holiday','asc')->get();//DBの祝日を取得 
+            
 
-        $holiget = DB::table('holidays')->select('holiday','holiday_name')->orderBy('holiday','asc')->get();
-        $yyyy = "" ;       
-foreach ($holiget as $holigets){
-  $yyyy = date('Y',strtotime($holigets->holiday));
-  $y = $year > $yyyy;   
-dd($y);
-   }
-
-        return view ('Admin.holiday',compact('holiget'),compact('yyyy'));
+        return view ('Admin.holiday',compact('holiget','year','nextyear'));
    }
 
     public function calendar(Request $request, $t)

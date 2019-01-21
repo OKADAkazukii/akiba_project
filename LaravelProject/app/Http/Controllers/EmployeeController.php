@@ -38,7 +38,7 @@ class EmployeeController extends Controller
 	}
 
 	public function addemployee(){
-		$emp_status = DB::table("employstatus")->get();
+		$emp_status = DB::table("employstatus")->groupBy('status_id')->get();
 		return view("employee.addemployee",compact('emp_status'));
 	}
 
