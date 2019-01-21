@@ -10,10 +10,18 @@ function display_income(num)
     document.getElementById("disp").style.display="block";
     document.getElementById("disp-show").style.display="none";
     document.getElementById("disp-hidden").style.display="block";
+    document.getElementById("disp-show2").style.display="block";
+    document.getElementById("disp-hidden2").style.display="none";
+    document.getElementById("disp-show3").style.display="block";
+    document.getElementById("disp-hidden3").style.display="none";
   }else{
     document.getElementById("disp").style.display="none";
     document.getElementById("disp-show").style.display="block";
     document.getElementById("disp-hidden").style.display="none";
+    document.getElementById("disp-show2").style.display="none";
+    document.getElementById("disp-hidden2").style.display="block";
+    document.getElementById("disp-show3").style.display="none";
+    document.getElementById("disp-hidden3").style.display="block";
   }
 }
 </script>
@@ -74,11 +82,9 @@ echo '訪問者IPアドレス : '.$ip_address;
                                 <button type="submit" class="btn btn-info" style="padding:10px 20px;font-size:30px;color:white;margin-right:15px;">出勤</button>
                             @endif
                             <div style="position:relative; left:20%;">
-                                <?php
-                                    if(isset($start_time)){
-                                        echo $start_time;
-                                    }
-                                ?>
+                                @if(isset($start_time))
+                                    {{$start_time}}
+                                @endif
                             </div>
                         </form>
                         <form action="/finishtime" method="post">
@@ -96,9 +102,9 @@ echo '訪問者IPアドレス : '.$ip_address;
                             {{ csrf_field() }}
                             <input type="hidden" value="{{$current_employee->id}}" name="emp_id">
                             <p class="rest-text">休憩時間 :</p>
-                            <input style="width:80px;" type="time" size="20" name="rest" class="rest-text-form" value="01:00"></input><br>
+                            <input style="width:80px;" type="time" size="20" name="rest" class="rest-text-form" value="{{$form_rest_time}}"></input><br>
                             <p class="rest-text2">深夜休憩 :</p>
-                            <input style="width:80px;" type="time" size="20" name="late_rest" class="rest-text-form" value="00:00"></input>
+                            <input style="width:80px;" type="time" size="20" name="late_rest" class="rest-text-form" value="{{$form_late_rest_time}}"></input>
                             <div class="row justify-content-end">
                                 <input type="submit" value="更新"></input>
                             </div>
@@ -121,12 +127,12 @@ echo '訪問者IPアドレス : '.$ip_address;
                     <form>
                         @if($current_employee->basic_or_time == 0)
                             <div id="disp">基本月給：<?php echo floor($current_employee->basic_salary)?>円</div>
-                            <input id="disp-show" type="button" value="月収を表示する" onclick="display_income(0)">
-                            <input id="disp-hidden" type="button" value="月収を非表示" onclick="display_income(1)">
+                            <input class="btn btn-danger" id="disp-show" type="button" value="月収を表示する" onclick="display_income(0)">
+                            <input class="btn btn-danger" id="disp-hidden" type="button" value="月収を非表示" onclick="display_income(1)">
                         @else
                             <div id="disp">基本時給：<?php echo floor($current_employee->time_salary)?>円</div>
-                            <input id="disp-show" type="button" value="時給を表示する" onclick="display_income(0)">
-                            <input id="disp-hidden" type="button" value="時給を非表示" onclick="display_income(1)">
+                            <input class="btn btn-danger" id="disp-show" type="button" value="時給を表示する" onclick="display_income(0)">
+                            <input class="btn btn-danger" id="disp-hidden" type="button" value="時給を非表示" onclick="display_income(1)">
                         @endif
                     </form>
                 </div>
@@ -192,12 +198,6 @@ echo '訪問者IPアドレス : '.$ip_address;
             <?php
             //--↓カレンダーの記述↓--
                 $sum_worktime = 0;
-                $sum_inover = 0;
-                $sum_outover = 0;
-                $sum_latework = 0;
-                $sum_lateover = 0;
-                $t_holiwork = 0;
-                $t_holilate = 0;
 
                 for($day=$starting_day; $day<$next_starting_day; $day=date("Y-m-d", strtotime("$day +1 day"))){
                     echo '<div style="border-bottom:solid 1px gray;">';
@@ -264,7 +264,6 @@ echo '訪問者IPアドレス : '.$ip_address;
 
                             //--↓所定内残業↓--
                             if($attendance->finish_time != "00:00:01" && $attendance->in_overtime > 0){
-                                $sum_inover += $attendance->in_overtime;
                                 echo '<div class="excel">'.minutes_change_to_time($attendance->in_overtime).'</div>';
                             }else{
                                 echo '<div class="excel">00:00</div>';
@@ -272,7 +271,6 @@ echo '訪問者IPアドレス : '.$ip_address;
 
                             //--↓所定外残業↓--
                             if($attendance->finish_time != "00:00:01" && $attendance->out_overtime > 0){
-                                $sum_outover += $attendance->out_overtime;
                                 echo '<div class="excel">'.minutes_change_to_time($attendance->out_overtime).'</div>';
                             }else{
                                 echo '<div class="excel">00:00</div>';
@@ -280,7 +278,6 @@ echo '訪問者IPアドレス : '.$ip_address;
 
                             //--↓深夜勤務↓--
                             if($attendance->finish_time != "00:00:01" && $attendance->late_work > 0){
-                                $sum_latework += $attendance->late_work;
                                 echo '<div class="excel">'.minutes_change_to_time($attendance->late_work).'</div>';
                             }else{
                                 echo '<div class="excel">00:00</div>';
@@ -288,7 +285,6 @@ echo '訪問者IPアドレス : '.$ip_address;
 
                             //--↓深夜残業↓--
                             if($attendance->finish_time != "00:00:01" && $attendance->late_overtime > 0){
-                                $sum_lateover += $attendance->late_overtime;
                                 echo '<div class="excel">'.minutes_change_to_time($attendance->late_overtime).'</div>';
                             }else{
                                 echo '<div class="excel">00:00</div>';
@@ -300,22 +296,6 @@ echo '訪問者IPアドレス : '.$ip_address;
                             //--↑各時間の表示ここまで↑--
                             echo '</div>';
                         }
-
-                        foreach ($db_view_sun_teate as $teate){
-                            if($teate->day != $day){
-                                continue;
-                            }
-                            $t_holiwork += $teate->t_sun_work;
-                            $t_holilate += $teate->t_sun_late;
-                        }
-
-                        foreach ($db_view_holi_teate as $teate){
-                            if($teate->day != $day){
-                                continue;
-                            }
-                            $t_holiwork += $teate->t_holi_work;
-                            $t_holilate += $teate->t_holi_late;
-                        }
                 }
             ?>
 
@@ -324,62 +304,88 @@ echo '訪問者IPアドレス : '.$ip_address;
                 <div class="row sum-box">
                     <div class="col-md-4 sub-cl">
                         <h4>時間合計</h4>
-                        <div>勤務時間
-                            <?php echo minutes_change_to_time($sum_worktime) ?>
-                        </div>
-                        <div>所定内残業時間
-                            <?php echo minutes_change_to_time($sum_inover) ?>
-                        </div>
-                        <div>所定外残業時間
-                            <?php echo minutes_change_to_time($sum_outover) ?>
-                        </div>
-                        <div>深夜勤務時間
-                            <?php echo minutes_change_to_time($sum_latework) ?>
-                        </div>
-                        <div>深夜残業時間
-                            <?php echo minutes_change_to_time($sum_lateover) ?>
-                        </div>
+                        <div>勤務時間 <?php echo minutes_change_to_time($sum_worktime) ?></div>
+                        @if($db_view_sumtime)
+                            <div>所定内残業時間
+                                <?php echo minutes_change_to_time($db_view_sumtime->sum_in_overtime) ?>
+                            </div>
+                            <div>所定外残業時間
+                                <?php echo minutes_change_to_time($db_view_sumtime->sum_out_overtime) ?>
+                            </div>
+                            <div>深夜勤務時間
+                                <?php echo minutes_change_to_time($db_view_sumtime->sum_late_work) ?>
+                            </div>
+                            <div>深夜残業時間
+                                <?php echo minutes_change_to_time($db_view_sumtime->sum_late_overtime) ?>
+                            </div>
+                        @else
+                            <div>所定内残業時間 00:00</div>
+                            <div>所定外残業時間 00:00</div>
+                            <div>深夜勤務時間 00:00</div>
+                            <div>深夜残業時間 00:00</div>
+                        @endif
+                        @if($db_view_restday_teate)
+                            <div>休日出勤時間
+                                <?php echo minutes_change_to_time($db_view_restday_teate->holiday_worktime) ?>
+                            </div>
+                            <div>休日深夜時間
+                                <?php echo minutes_change_to_time($db_view_restday_teate->holiday_late_time) ?>
+                            </div>
+                        @else
+                            <div>休日出勤時間 00:00</div>
+                            <div>休日深夜時間 00:00</div>
+                        @endif
                     </div>
                     <div class="col-md-4 sub-cl">
                         <h4>各種手当</h4>
-                        @if($db_view_teate)
-                            <div>所定内残業手当
-                                 {{$db_view_teate->t_inover}}円
-                            </div>
-                            <div>所定外残業手当
-                                 {{$db_view_teate->t_outover}}円
-                            </div>
-                            <div>深夜勤務手当
-                                 {{$db_view_teate->t_latework}}円
-                            </div>
-                            <div>深夜残業手当
-                                 {{$db_view_teate->t_lateover}}円
-                            </div>
-                            <div>休日出勤手当
-                                 {{$t_holiwork}}円
-                            </div>
-                            <div>休日深夜手当
-                                 {{$t_holilate}}円
-                            </div>
-                        @else
-                            <div>出勤がありません</div>
-                        @endif
+                        <div id="disp-show2">
+                            @if($db_view_teate)
+                                <div>所定内残業手当
+                                     {{$db_view_teate->t_inover}}円
+                                </div>
+                                <div>所定外残業手当
+                                     {{$db_view_teate->t_outover}}円
+                                </div>
+                                <div>深夜勤務手当
+                                     {{$db_view_teate->t_latework}}円
+                                </div>
+                                <div>深夜残業手当
+                                     {{$db_view_teate->t_lateover}}円
+                                </div>
+                            @else
+                                <div>所定内残業手当 0円</div>
+                                <div>所定外残業手当 0円</div>
+                                <div>深夜勤務手当 0円</div>
+                                <div>深夜残業手当 0円</div>
+                            @endif
+                            @if($db_view_restday_teate)
+                                <div>休日出勤手当
+                                     {{$db_view_restday_teate->t_holi_work}}円
+                                </div>
+                                <div>休日深夜手当
+                                     {{$db_view_restday_teate->t_holi_late}}円
+                                </div>
+                            @else
+                                <div>休日出勤手当 0円</div>
+                                <div>休日深夜手当 0円</div>
+                            @endif
+                        </div>
+                        <div id="disp-hidden2">
+                            非表示
+                        </div>
                     </div>
                     <div class="col-md-4 sub-cl">
                         <h4>支払い給与額</h4>
-                        @if($db_view_teate)
-                            @if($current_employee->basic_or_time == 0)
-                                <div>
-                                     <?php echo $current_employee->basic_salary+$db_view_teate->t_inover+$db_view_teate->t_outover+$db_view_teate->t_latework+$db_view_teate->t_lateover+$t_holiwork+$t_holilate ?>円　ここも隠す
-                                </div>
+                        <div id="disp-show3">
+                            @if($db_view_salary)
+                                <div>{{$db_view_salary->salary}}円</div>
                             @else
-                                <div>
-                                    <?php echo $db_view_albait->sum_time_salary+$db_view_teate->t_inover+$db_view_teate->t_outover+$db_view_teate->t_latework+$db_view_teate->t_lateover+$t_holiwork+$t_holilate ?>円　ここも隠す
-                                </div>
+                                出勤がありません
                             @endif
-                        @else
-                            <div>出勤がありません</div>
-                        @endif
+                        </div>
+                        <div id="disp-hidden3">
+                            非表示
+                        </div>
                     </div>
                 </div>
             </div>

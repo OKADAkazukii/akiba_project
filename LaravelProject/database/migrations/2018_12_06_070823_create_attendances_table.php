@@ -22,6 +22,7 @@ class CreateAttendancesTable extends Migration
             $table->time('finish_time')->default("00:00:01");
             $table->integer('late_rest_time');
             $table->integer('auto_finish_flag')->default(0);
+            $table->integer('relation_attendance_id')->default(0);
         });
     }
 

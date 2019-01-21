@@ -36,13 +36,13 @@
                 <div class="form_text" >基本給</div>
                 <input type="text" name="basic_salary" onblur="test(this)" size="19" maxlength="7" style="text-align: right" id="s_form" value=""/>
                 <div>※半角数値以外を入力するとアラートが表示されます。</div>
-                <div>※基本給を入力し基本勤務時間を選択すると、時給が自動計算されます。</div> 
-            </div> 
-            <div style="position:relative; left:210px;bottom:120px; ">        
+                <div>※基本給を入力し基本勤務時間を選択すると、時給が自動計算されます。</div>
+            </div>
+            <div style="position:relative; left:210px;bottom:120px; ">
             <div class="form_text">時給</div>
                 <input type="text" name="time_salary" onblur="test(this)" size="19" maxlength="7" style="text-align: right" id="t_form" value=""/>
             </div>
-           
+
                 <select name="basic_or_time" style="width:30%;position:relative; bottom:35px;" id="changeSelect"  onchange="salarychange();">
                     <option value="" selected disabled hidden>--計算給与の選択--</option>
                     <option value="0">基本給</option>
