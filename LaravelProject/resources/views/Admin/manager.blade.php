@@ -13,7 +13,7 @@
     <div class="col-md-6">
     <form action="/status/update" method="post">
     @csrf
-        <input type="hidden" name="emp_id" value=<?php echo $emp_status[0]->employstatus_id; ?>> 
+        <input type="hidden" name="emp_id" value=<?php echo $emp_status[0]->status_id; ?>> 
         <input type="hidden" name="id" value=<?php echo $emp_status[0]->id; ?>>
         <label>雇用形態名：<input type="text" name="emp" value=<?php echo $emp_status[0]->employment_status; ?>></label><br>
         <label>所定内残業料率：<input type="number" name="in_overtime" step="0.01" min="0" value=<?php echo $emp_status[0]->in_overtime; ?>></label><br>

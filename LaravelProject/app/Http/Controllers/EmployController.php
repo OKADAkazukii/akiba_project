@@ -23,7 +23,7 @@ class EmployController extends Controller
         $id_count = DB::table('employstatus')->count();
         if($id_count > 0){
         $emp_id = DB::table('employstatus')->orderBy('status_id','desc')->take(1)->get(); 
-        $plus_id = $emp_id[0]->employstatus_id+1;
+        $plus_id = $emp_id[0]->status_id+1;
         }else{
         $plus_id = 1;
         }

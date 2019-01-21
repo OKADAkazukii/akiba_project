@@ -6,7 +6,7 @@
     <?php
      
       foreach ($status as $value){
-        echo '<font size="5">','<a href="/manager/',$value->employstatus_id,'">',$value->employment_status,'</font>','</a>','<br>'; 
+        echo '<font size="5">','<a href="/manager/',$value->status_id,'">',$value->employment_status,'</font>','</a>','<br>'; 
       }
     ?>
 @endsection
