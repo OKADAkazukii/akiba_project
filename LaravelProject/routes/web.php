@@ -71,7 +71,7 @@ Route::post('/addemp','EmployController@addemp');
 
 Route::get('/conf','UpdateController@update');
 
-Route::get('/manager/{id}','UpdateController@employ');
+Route::get('/manager/{employstatus_id}','UpdateController@employ');
 
 Route::post('/status/update','UpdateController@editempstatus');
 

@@ -9,15 +9,15 @@ class AdminController extends Controller
 {
 	public function home(){
 		$employees = DB::table("employees")->get();
-		$emp_status = DB::table("employstatus")->get();
+		$emp_status = DB::table("employstatus")->groupBy('status_id')->get();
 		$settinges = DB::table("settinges")->get();
         return view('Admin.signin',compact("employees","emp_status"));
     }
 
 	public function index($id){
 		$employees = DB::table("employees")->where("emp_status_id","=",$id)->get();
-		$emp_status = DB::table("employstatus")->where("id","=",$id)->first(["employment_status"]);
-        return view('Admin.empindex',compact("employees","emp_status"));
+		$emp_status = DB::table("employstatus")->where("status_id","=",$id)->first(["employment_status"]);
+		return view('Admin.empindex',compact("employees","emp_status"));
     }
 
     public function search(Request $req){
@@ -31,7 +31,7 @@ class AdminController extends Controller
 
     public function show($id){
 		$employee = DB::table("employees")->where("id","=",$id)->first();
-		$emp_status = DB::table("employstatus")->where("id","=",$employee->emp_status_id)->first();
+		$emp_status = DB::table("employstatus")->where("status_id","=",$employee->emp_status_id)->first();
 		$employee->emp_status_id = $emp_status->employment_status;
 		$employee->basic_work_time = floor($employee->basic_work_time/60)."時間".($employee->basic_work_time%60)."分";
 		$attendances = DB::table("attendances")->where("emp_id","=",$employee->id)->orderBy('id', 'DESC')->take(3)->get();
@@ -81,7 +81,7 @@ class AdminController extends Controller
 
     public function timesearch($id ,Request $req){
     	$employee = DB::table("employees")->where("id","=",$id)->first();
-		$emp_status = DB::table("employstatus")->where("id","=",$employee->emp_status_id)->first();
+		$emp_status = DB::table("employstatus")->where("employstatus_id","=",$employee->emp_status_id)->first();
 		$employee->emp_status_id = $emp_status->employment_status;
 		$employee->basic_work_time = floor($employee->basic_work_time/60)."時間".($employee->basic_work_time%60)."分";
 		$attendances = DB::table("attendances")->where("emp_id","=",$employee->id)->orderBy('id', 'DESC')->take(3)->get();
