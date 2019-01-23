@@ -9,10 +9,10 @@ class EmployController extends Controller
 {
     public function addemp(Request $req)
     {
-
         $emp = $req->input('emp');
         $in = $req->input('in_overtime');
         $out = $req->input('out_overtime');
+        $late_work = $req->input('late_worktime');
         $late_o = $req->input('late_overtime');
         $holi = $req->input('holiday_work');
         $late_h = $req->input('late_holiday');
@@ -35,6 +35,7 @@ class EmployController extends Controller
             return redirect("/employ")->with('emp',"$emp")
                                       ->with('in',"$in")
                                       ->with('out',"$out")
+                                      ->with('late_work',"$lare_work")
                                       ->with('late_over',"$late_o")
                                       ->with('holiday',"$holi")
                                       ->with('late_holi',"$late_h")
@@ -51,6 +52,7 @@ class EmployController extends Controller
             'employment_status' => $emp,
             'in_overtime' => $in,
             'out_overtime' => $out,
+            'late_worktime' => $late_work,
             'late_overtime' => $late_o,
             'holiday_work' => $holi,
             'late_holiday_work' => $late_h,

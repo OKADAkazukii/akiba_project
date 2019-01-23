@@ -36,13 +36,13 @@
                 <div class="form_text" >基本給</div>
                 <input type="text" name="basic_salary" onblur="test(this)" size="19" maxlength="7" style="text-align: right" id="s_form" value=""/>
                 <div>※半角数値以外を入力するとアラートが表示されます。</div>
-                <div>※基本給を入力し基本勤務時間を選択すると、時給が自動計算されます。</div>
-            </div>
-            <div style="position:relative; left:210px;bottom:120px; ">
+                <div>※基本給を入力し基本勤務時間を選択すると、時給が自動計算されます。</div> 
+            </div> 
+            <div style="position:relative; left:210px;bottom:120px; ">        
             <div class="form_text">時給</div>
                 <input type="text" name="time_salary" onblur="test(this)" size="19" maxlength="7" style="text-align: right" id="t_form" value=""/>
             </div>
-
+           
                 <select name="basic_or_time" style="width:30%;position:relative; bottom:35px;" id="changeSelect"  onchange="salarychange();">
                     <option value="" selected disabled hidden>--計算給与の選択--</option>
                     <option value="0">基本給</option>
@@ -63,6 +63,7 @@ $(function() {
   var basic_work_time = $('#basic_work_time');
    $input.on('input', function(event){
      document.getElementById('changeSelect').value = ('0');
+     document.getElementById('t_form').readOnly = true;
    basic_work_time.on('input', function(event){
      var basic = $('#basic_work_time').val();
      var numberHh = Number(moment(basic, 'HH:mm').format('H'));
@@ -79,10 +80,10 @@ $(function() {
 $(function(){
   var $tms = $('#t_form');
   var basic_work_time = $('#basic_work_time');
-  $tms.on('change', function(event){
+  $tms.on('input', function(event){
     document.getElementById('changeSelect').value = ('1');
     document.getElementById('s_form').style.visibility = "hidden";
-  basic_work_time.on('change', function(event){
+  basic_work_time.on('input', function(event){
     var time = $('#basic_work_time').val();
     var numberHh = Number(moment(time, 'HH:mm').format('H'));
     var numberHm = Number(moment(time, 'HH:mm').format('m'));
@@ -100,15 +101,13 @@ function salarychange(){
     id = document.getElementById('changeSelect').value;
 
     if(id == '0'){
-      document.getElementById('s_form').readOnly = false;
-      document.getElementById('t_form').readOnly = true;
-    }else if (id == '1'){
-      document.getElementById('s_form').readOnly = true;
-      document.getElementById('t_form').readOnly = false;
-     };
+      location.reload();
+  }else{
+    if(id == '1'){
+      location.reload();
+       }
+    };
    };
 };
-window.onload = salarychange();
-
 </script>
 @endsection

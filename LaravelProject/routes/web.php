@@ -63,6 +63,8 @@ Route::post('/holidayupdate','HolidayController@updataholiday');
 
 Route::post('/addholiday', 'HolidayController@addholiday');
 
+Route::post('/deleteholiday','HolidayController@deleteholiday');
+
 Route::get('/employ',function(){
     return view('/Admin.employ');
 });
