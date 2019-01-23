@@ -3,6 +3,7 @@
 @section('content')
 <body>
     <div class="insertholiday">{{ session('addholiday') }}</div>
+    <div>{{ session('delholiday') }}</div>
     @if (session('message'))
       <div class="alert alert-success">{{ session('message') }}</div>
     @endif
@@ -16,6 +17,15 @@
       <input type="submit" value="送信">
     </form>
   </div>
+  <div>
+    <h3>休日削除</h3>
+    <form action="/deleteholiday" method="post">
+      {{ csrf_field() }}
+      <label>日付 :<input type="date" name="delete" ></label>
+      <input type="submit" value="送信">
+    </form>
+  </div>
+  
   <div class= row>
     <div class="col-md-6">
       <div><h4>---今年の休日---</h4></div>

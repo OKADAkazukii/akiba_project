@@ -61,9 +61,15 @@ class HolidayController extends Controller
         return view ('Admin.holiday',compact('holiget','year','nextyear'));
    }
 
-    public function calendar(Request $request, $t)
+    public function deleteholiday(Request $req)
     {
-
+        $delday = $req->input('delete');
+        $countday = DB::table('holidays')->where('holiday','=',$delday)->count();
+        if($countday==1) {
+            DB::table('holidays')->where('holiday','=',$delday)->delete();
+            return redirect("/holiday")->with('delholiday',"$delday を削除いたしました");
+        }else{
+            return redirect("/holiday")->with('delholiday',"$delday は休日ではありません");
+        }
     }
 }
-
