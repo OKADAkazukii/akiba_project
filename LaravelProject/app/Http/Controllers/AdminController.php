@@ -25,7 +25,7 @@ class AdminController extends Controller
 			'search' => 'required'
 		]);
 		$employees = DB::table("employees")->where("name","like","%{$validated_search["search"]}%")->get();
-		$emp_status = DB::table("employstatus")->get();
+		$emp_status = DB::table("employstatus")->groupBy('status_id')->get();
         return view('Admin.signin',compact("employees","emp_status","validated_search"));
     }
 
@@ -81,7 +81,7 @@ class AdminController extends Controller
 
     public function timesearch($id ,Request $req){
     	$employee = DB::table("employees")->where("id","=",$id)->first();
-		$emp_status = DB::table("employstatus")->where("employstatus_id","=",$employee->emp_status_id)->first();
+		$emp_status = DB::table("employstatus")->where("id","=",$employee->emp_status_id)->first();
 		$employee->emp_status_id = $emp_status->employment_status;
 		$employee->basic_work_time = floor($employee->basic_work_time/60)."時間".($employee->basic_work_time%60)."分";
 		$attendances = DB::table("attendances")->where("emp_id","=",$employee->id)->orderBy('id', 'DESC')->take(3)->get();
@@ -100,6 +100,7 @@ class AdminController extends Controller
     public function attendanceupdata(Request $req){
     	$validated_data = $req->validate([
                      'id' => 'required',
+                     'emp_id' => 'required',
                      'start_time' => 'required',
                      'finish_time' => 'required',
                      'rest_time' => 'required',
@@ -115,6 +116,6 @@ class AdminController extends Controller
 			'finish_time' => $validated_data['finish_time'],
 			'late_rest_time' => $validated_data['late_rest_time']
 		]);
-    	return redirect("/admin/show/{$validated_data["id"]}")->with('message',"出勤情報を変更しました");
+    	return redirect("/admin/show/{$validated_data["emp_id"]}")->with('message',"出勤情報を変更しました");
     }
 }

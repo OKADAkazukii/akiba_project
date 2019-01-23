@@ -6,6 +6,7 @@
         	<form action="/admin/show/{{ $attendance->id }}/attendanceupdata" method="post">
 			@csrf
 				<input type="hidden" name="id" value="{{$attendance->id}}">
+				<input type="hidden" name="emp_id" value="{{$attendance->emp_id}}">
 				<div>
 					<h5>日付</h5>
 					<input type="date" name="day" value="{{$attendance->day}}">
