@@ -78,3 +78,7 @@ Route::get('/manager/{employstatus_id}','UpdateController@employ');
 Route::post('/status/update','UpdateController@editempstatus');
 
 Route::get('/test','CalendarController@test');
+
+ROUTE::get('admin/salary','AdminController@salary');
+
+ROUTE::post('/admin/salary/reflection','AdminController@reflection');

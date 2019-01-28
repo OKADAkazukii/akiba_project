@@ -11,6 +11,7 @@
     <div class="row justify-content-center">
         <div class="col-md-3">
             <h3>管理者機能リンク</h3>
+            <a href="/admin/salary">給与情報一覧</a><br>
             <a href="/addemployee">雇用者の追加</a><br>
             <a href="/holiday">休日設定</a><br>
             <a href="/timesettingse">時間関連設定</a><br>
