@@ -1,60 +1,69 @@
-<link rel="stylesheet" href="{{ asset('/css/style.css') }}">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+ <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
 @extends('layouts.app')
 @section('content')
 <body>
-    <div class="insertholiday">{{ session('addholiday') }}</div>
-    <div>{{ session('delholiday') }}</div>
-    @if (session('message'))
-      <div class="alert alert-success">{{ session('message') }}</div>
+    @if (session('addholiday'))
+        <div id="addholiday" align="center" class="alert alert-success">{{ session('addholiday') }}</div>
     @endif
-  </div>
-  <br>
-  <div>
-    <h3>休日設定</h3>
-    <form action="/addholiday" method="post">
-      {{ csrf_field() }}
-      <label>日付 :<input type="date" name="date" ></label>
-      <input type="submit" value="送信">
-    </form>
-  </div>
-  <div>
-    <h3>休日削除</h3>
-    <form action="/deleteholiday" method="post">
-      {{ csrf_field() }}
-      <label>日付 :<input type="date" name="delete" ></label>
-      <input type="submit" value="送信">
-    </form>
-  </div>
-  
-  <div class= row>
-    <div class="col-md-6">
-      <div><h4>---今年の休日---</h4></div>
-        <?php
-          foreach ($holiget as $holisets){
-            $yyyy = date('Y',strtotime(($holisets->holiday)));
-          if($year == $yyyy){
-            echo $holisets->holiday.$holisets->holiday_name,'<br>'; 
-          }
-        }  
-      ?>
-    </div>  
-    <div class="col-md-6">
-      <div><h4>--来年の休日---</h4></div>
-        <?php
-          foreach ($holiget as $holigets){
-            $nextyyyy = date('Y',strtotime(($holigets->holiday)));
-          if($nextyear == $nextyyyy){
-            echo $holigets->holiday.$holigets->holiday_name,'<br>';
-          }
-        }
-      ?>
+    @if (session('alerdeyholiday'))
+        <div align="center" class="alert alert-danger">{{ session('alerdeyholiday') }}</div>
+    @endif
+    @if (session('delholiday'))
+        <div align="center" class="alert alert-success">{{ session('delholiday') }}</div>
+    @endif
+    @if (session('notholiday'))
+        <div align="center" class="alert alert-danger">{{ session('notholiday') }}</div>
+    @endif
+    @if (session('message'))
+        <div align="center" class="alert alert-success">{{ session('message') }}</div>
+    @endif
     </div>
-  </div>
-  <div>
-    <form action="/holidayupdate" method="post">
-      {{ csrf_field() }}
-      <button style="position:relative; top:160px;" type="submit" class="btn btn-success">祝日更新</button>
-    </form>
-  </div>
+    <div>
+        <div><h3>休日設定</h3></div>
+        <form action="/addholiday" method="post">
+            {{ csrf_field() }}
+            <label>日付 :<input type="date" name="date" ></label>
+            <input type="submit" value="送信">
+        </form>
+    </div>
+    <div>
+        <h3>休日削除</h3>
+        <form action="/deleteholiday" method="post">
+            {{ csrf_field() }}
+            <label>日付 :<input type="date" name="delete" ></label>
+            <input type="submit" value="送信">
+        </form>
+    </div>
+    <div class= row>
+        <div class="col-md-4">
+            <div class="会社指定休日"><h4>---今年の休日---</h4></div>
+                    @foreach ($holiget as $holisets)
+                        <?php $yyyy = date('Y',strtotime(($holisets->holiday)));?>
+                        @if($year == $yyyy)
+                            <div>{{$holisets->holiday.$holisets->holiday_name}}</div><br> 
+                        @endif
+                    @endforeach
+            </div> 
+            <div class="col-md-4">
+                <div><h4>--来年の休日---</h4></div>
+                        @foreach ($holiget as $holigets)
+                            <?php $nextyyyy = date('Y',strtotime(($holigets->holiday)));?>
+                            @if($nextyear == $nextyyyy)
+                                <div>{{$holigets->holiday.$holigets->holiday_name}}</div><br>
+                            @endif
+                        @endforeach
+                </div>
+            </div>
+            <div>
+                <form action="/holidayupdate" method="post">
+                    {{ csrf_field() }}
+                    <button style="position:relative; top:160px;" type="submit" class="btn btn-success">祝日更新</button>
+                </form>
+            </div>   
+        </div>
+    </div>
 </body>
+
 @endsection

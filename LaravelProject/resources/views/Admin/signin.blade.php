@@ -1,8 +1,12 @@
 <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
 @extends('layouts.app')
 @section('content')
-<div align="center"><h3>{{session('empupdate')}}</h3></div>
-<div align="center"><h3>{{session('insertemp')}}</h3></div>
+@if (session('empupdate'))
+<div align="center"class="alert alert-success" >{{session('empupdate')}}</div>
+@endif
+@if (session('insertemp'))
+<div align="center"class="alert alert-success" >{{session('insertemp')}}</div>
+@endif
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-3">
