@@ -34,8 +34,9 @@ class AdminController extends Controller
 		$emp_status = DB::table("employstatus")->where("status_id","=",$employee->emp_status_id)->first();
 		$employee->emp_status_id = $emp_status->employment_status;
 		$employee->basic_work_time = floor($employee->basic_work_time/60)."時間".($employee->basic_work_time%60)."分";
-		$attendances = DB::table("attendances")->where("emp_id","=",$employee->id)->orderBy('id', 'DESC')->take(3)->get();
-        return view('Admin.show',compact("employee","attendances"));
+		$attendances = DB::table("attendances")->where("emp_id","=",$employee->id)->orderBy('day', 'DESC')->get();
+        $salaries = DB::table("salaries")->where("emp_id","=",$employee->id)->orderBy('salary_year', 'DESC')->get();
+        return view('Admin.show',compact("employee","attendances","salaries"));
     }
 
     public function edit($id){
@@ -84,10 +85,11 @@ class AdminController extends Controller
 		$emp_status = DB::table("employstatus")->where("id","=",$employee->emp_status_id)->first();
 		$employee->emp_status_id = $emp_status->employment_status;
 		$employee->basic_work_time = floor($employee->basic_work_time/60)."時間".($employee->basic_work_time%60)."分";
-		$attendances = DB::table("attendances")->where("emp_id","=",$employee->id)->orderBy('id', 'DESC')->take(3)->get();
+		$attendances = DB::table("attendances")->where("emp_id","=",$employee->id)->orderBy('day', 'DESC')->get();
     	$day = $req->day;
     	$serch_attendances = DB::table("attendances")->where("emp_id","=",$id)->where("day","=",$day)->get();
-    	return view('Admin.show',compact("serch_attendances","employee","attendances"));
+        $salaries = DB::table("salaries")->where("emp_id","=",$employee->id)->orderBy('salary_month', 'DESC')->orderBy('salary_year', 'DESC')->get();
+    	return view('Admin.show',compact("serch_attendances","employee","attendances","salaries"));
     }
 
     public function timeedit($id){
@@ -117,5 +119,51 @@ class AdminController extends Controller
 			'late_rest_time' => $validated_data['late_rest_time']
 		]);
     	return redirect("/admin/show/{$validated_data["emp_id"]}")->with('message',"出勤情報を変更しました");
+    }
+
+    public function salary(){
+        $current_year = date('Y');
+        $last_year = date('Y', strtotime('-1 year'));
+        $last_year_salaries = DB::table("salaries")->where("salary_year","=",$last_year)->join('employees', 'salaries.emp_id', '=', 'employees.id')
+        ->join('employstatus', 'employees.emp_status_id', '=', 'employstatus.id')->orderBy("salary_month","ASC")->get();
+        $current_year_salaries = DB::table("salaries")->where("salary_year","=",$current_year)->join('employees', 'salaries.emp_id', '=', 'employees.id')
+        ->join('employstatus', 'employees.emp_status_id', '=', 'employstatus.id')->orderBy("salary_month","ASC")->get();
+        $most_old_salary = DB::table("salaries")->orderBy("salary_year","ASC")->first();
+        $most_old_year = $most_old_salary->salary_year."-01-01 00:00:00";
+        $select_years = array();
+        $target_year = date('Y-m-d H:i:s');
+        for($year=$most_old_year; $year<$target_year; $year=date("Y-m-d H:i:s",strtotime($year."+1 year"))){
+            $display_year = explode("-",$year);
+            $select_years[] = $display_year[0];
+        }
+        return view('admin.salary',compact("last_year_salaries","current_year_salaries","select_years"));
+    }
+
+    public function reflection(){
+        $salaries = DB::table("salary")->get();
+        foreach($salaries as $salary){
+            $salary_date = explode('-',$salary->salary_date);
+            $uniquecheck = DB::table("salaries")->where("emp_id","=",$salary->emp_id)->where("salary_year","=",$salary_date[0])
+                           ->where("salary_month","=",$salary_date[1])->where("salary_amount","=",$salary->salary)->count();
+            $same_salary = DB::table("salaries")->where("emp_id","=",$salary->emp_id)->where("salary_year","=",$salary_date[0])
+                           ->where("salary_month","=",$salary_date[1])->first();
+            if($uniquecheck == 1){
+                ;
+            }elseif(!empty($same_salary)){
+                DB::table("salaries")->where("id","=",$same_salary->id)->update([
+                    'salary_amount'=>$salary->salary
+                ]);
+            }else{
+                DB::table("salaries")->insert([
+                    'emp_id'=>$salary->emp_id,
+                    'allowance_id'=>1,
+                    'salary_year'=>$salary_date[0],
+                    'salary_month'=>$salary_date[1],
+                    'salary_amount'=>$salary->salary,
+                    'emp_status_id'=>$salary->emp_status_id,
+                ]);
+            }
+        }
+        return redirect('/admin/salary')->with('message',"現在の給与情報を反映しました");
     }
 }
