@@ -43,6 +43,7 @@
  color:#fff138;
  background-color:22146d;
 }
+
 //--↑ログイン画面のCSS↑--
 
 
@@ -162,23 +163,12 @@
 #disp-show2, #disp-show3{
  display:none;
 }
-//--↑ユーザーホーム画面のCSS↑--
-
-//--↓休日設定ページのCSS↓--
-
-
-.insertholiday{
- color: #1d643b;
- background-color: #d7f3e3;
- border-color: #c7eed8;
+#aaaaa{
+ color: red;
 }
-
-#float_test{
-  height: 150px;              /* 高さ指定 */
-    width: 150px;               /* 幅指定 */
-    background-color: #f00;     /* 背景色指定 */
-    margin:  10px;              /* 周りの余白指定 */
+#s_div{
+    float:left;
 }
-#aaa{
-    float:  left;   /* 回り込み指定 */
+#t_div{
+    
 }
