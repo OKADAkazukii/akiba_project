@@ -1,0 +1,9 @@
+SELECT 
+	 test.id,emp_id,day,start_time,rest_time,finish_time,late_rest_time,auto_finish_flag,relation_attendance_id,emp_status_id,name,basic_work_time,
+CASE WHEN test.finish_time - test.start_time >= 0
+	 THEN TIME_TO_SEC(test.finish_time)/60 - TIME_TO_SEC(test.start_time)/60 - test.rest_time - test.late_rest_time
+	 ELSE TIME_TO_SEC(test.finish_time)/60 - TIME_TO_SEC(test.start_time)/60+1440-test.rest_time - test.late_rest_time
+	 END AS worktime
+	 
+FROM attendances test
+LEFT JOIN employees emp ON test.emp_id = emp.id

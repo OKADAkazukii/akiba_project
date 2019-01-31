@@ -1,0 +1,8 @@
+SELECT *,
+CASE WHEN test.finish_time - test.start_time >= 0
+	 THEN LEAST(TIME_TO_SEC(test.finish_time)/60,TIME_TO_SEC((SELECT s0.late_overtime_time FROM settinges s0 LIMIT 1))/60)
+	 	- TIME_TO_SEC(test.start_time)/60 - test.rest_time - 480
+	 ELSE LEAST(TIME_TO_SEC(test.finish_time)/60+1440,TIME_TO_SEC((SELECT s0.late_overtime_time FROM settinges s0 LIMIT 1))/60)
+	 	- TIME_TO_SEC(test.start_time)/60 - test.rest_time - 480
+	 END AS out_overtime
+FROM in_overtime test

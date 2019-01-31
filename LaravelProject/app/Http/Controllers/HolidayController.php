@@ -39,6 +39,7 @@ class HolidayController extends Controller
                 'holiday' =>  $date ,
                 'holiday_name' => '会社指定休日'
             ]);
+
         return redirect("/holiday")->with('addholiday',"$date を休日に設定しました");
         }else{
         return redirect("/holiday")->with('alerdeyholiday',"$date はすでに休日です");
@@ -61,11 +62,12 @@ class HolidayController extends Controller
     {
         $delday = $req->input('delete');
         $countday = DB::table('holidays')->where('holiday','=',$delday)->count();
-        if($countday==1) {
+        $holi_name = DB::table('holidays')->where('holiday','=',$delday)->value('holiday_name');
+        if($countday==1 && $holi_name=='会社指定休日') {
             DB::table('holidays')->where('holiday','=',$delday)->delete();
             return redirect("/holiday")->with('delholiday',"$delday を削除いたしました");
         }else{
-            return redirect("/holiday")->with('notholiday',"$delday は休日ではありません");
+            return redirect("/holiday")->with('notholiday',"$delday は会社指定休日ではありません");
         }
     }
 }

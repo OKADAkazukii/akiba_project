@@ -1,0 +1,6 @@
+SELECT *,
+CASE WHEN TIME_TO_SEC((SELECT s0.change_date_time FROM settinges s0 LIMIT 1))/60 - test.new_finish_time < 0
+	 THEN TIME_TO_SEC((SELECT s0.change_date_time FROM settinges s0 LIMIT 1))/60+1440
+	 ELSE TIME_TO_SEC((SELECT s0.change_date_time FROM settinges s0 LIMIT 1))/60
+END AS new_change_date_time
+FROM late1 test

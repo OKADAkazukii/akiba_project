@@ -6,7 +6,7 @@
 			<h3>{{$emp_status->employment_status}}一覧</h3>
 			<?php
 			//--↓ページネーション↓--
-			define('MAX','1'); // 1ページの記事の最大表示数
+			define('MAX','15'); // 1ページの記事の最大表示数
 			$employees_a=array();
 			foreach($employees as $employee){
 			    $employees_a[] = array('id' => $employee->id,'name' => $employee->name,'login_hash' => $employee->login_hash);

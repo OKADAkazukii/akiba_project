@@ -51,7 +51,7 @@
                                     <a href="/admin/show/{{ $employee->id }}">詳細</a><br>
                                 </div>
                             @endif
-                            @if($forcount>=2)
+                            @if($forcount>=5)
                                 <div style="margin-left: 15px;">
                                     <a href="/admin/home/empindex/{{ $employee->emp_status_id }}">{{$status->employment_status}} 一覧へ</a>
                                 </div>

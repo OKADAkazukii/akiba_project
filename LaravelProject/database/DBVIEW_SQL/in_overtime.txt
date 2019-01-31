@@ -1,0 +1,18 @@
+SELECT *,
+CASE WHEN test.auto_finish_flag = 0
+	 THEN
+		CASE WHEN test.worktime > test.basic_work_time
+	 		 THEN LEAST(test.worktime,480)-test.basic_work_time
+	 		 ELSE 0
+		END
+	 ELSE
+	 CASE WHEN (SELECT worktime FROM work_time WHERE work_time.id = test.relation_attendance_id) > test.basic_work_time
+	 	THEN LEAST(worktime,(480-test.basic_work_time)-(LEAST((SELECT worktime FROM work_time WHERE work_time.id = test.relation_attendance_id),480)-test.basic_work_time))
+		ELSE
+	 		CASE WHEN test.worktime+(SELECT worktime FROM work_time WHERE work_time.id = test.relation_attendance_id) > test.basic_work_time
+	 			THEN LEAST(test.worktime+(SELECT worktime FROM work_time WHERE work_time.id = test.relation_attendance_id),480)-test.basic_work_time
+	 			ELSE 0
+			END
+	 END
+END AS in_overtime
+FROM work_time test

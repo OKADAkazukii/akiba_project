@@ -8,20 +8,20 @@
         <div id="addholiday" align="center" class="alert alert-success">{{ session('addholiday') }}</div>
     @endif
     @if (session('alerdeyholiday'))
-        <div align="center" class="alert alert-danger">{{ session('alerdeyholiday') }}</div>
+        <div id="alerdeyholiday" align="center" class="alert alert-danger">{{ session('alerdeyholiday') }}</div>
     @endif
     @if (session('delholiday'))
-        <div align="center" class="alert alert-success">{{ session('delholiday') }}</div>
+        <div id="delholiday" align="center" class="alert alert-success">{{ session('delholiday') }}</div>
     @endif
     @if (session('notholiday'))
-        <div align="center" class="alert alert-danger">{{ session('notholiday') }}</div>
+        <div id="notholiday" align="center" class="alert alert-danger">{{ session('notholiday') }}</div>
     @endif
     @if (session('message'))
-        <div align="center" class="alert alert-success">{{ session('message') }}</div>
+        <div id="message" align="center" class="alert alert-success">{{ session('message') }}</div>
     @endif
     </div>
     <div>
-        <div><h3>休日設定</h3></div>
+        <div><h4>休日設定</h4></div>
         <form action="/addholiday" method="post">
             {{ csrf_field() }}
             <label>日付 :<input type="date" name="date" ></label>
@@ -29,11 +29,17 @@
         </form>
     </div>
     <div>
-        <h3>休日削除</h3>
+        <h4>指定休日の削除</h4>
         <form action="/deleteholiday" method="post">
             {{ csrf_field() }}
             <label>日付 :<input type="date" name="delete" ></label>
             <input type="submit" value="送信">
+        </form>
+    </div>
+    <div>
+        <form action="/holidayupdate" method="post">
+            {{ csrf_field() }}
+            <button style="position:relative; top:20px;margin-bottom: 30px;" type="submit" class="btn btn-success">祝日更新</button>
         </form>
     </div>
     <div class= row>
@@ -56,14 +62,18 @@
                         @endforeach
                 </div>
             </div>
-            <div>
-                <form action="/holidayupdate" method="post">
-                    {{ csrf_field() }}
-                    <button style="position:relative; top:160px;" type="submit" class="btn btn-success">祝日更新</button>
-                </form>
-            </div>   
         </div>
     </div>
 </body>
-
+<script>
+$(document).ready(function(){
+    setTimeout(function(){
+        $('#addholiday').fadeOut(3000)
+        $('#alerdeyholiday').fadeOut(3000)
+        $('#delholiday').fadeOut(3000)
+        $('#notholiday').fadeOut(3000)
+        $('#message').fadeOut(3000)
+    });
+});
+</script>
 @endsection

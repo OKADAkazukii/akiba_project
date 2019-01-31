@@ -1,0 +1,20 @@
+SELECT
+teate.emp_id,teate.emp_status_id,name,IFNULL(t_inover,0)AS t_inover,IFNULL(t_outover,0)AS t_outover,
+IFNULL(t_latework,0)AS t_latework,IFNULL(t_lateover,0)AS t_lateover,IFNULL(t_holi_work,0)AS t_holi_work,
+IFNULL(t_holi_late,0)AS t_holi_late,IFNULL(sum_worktime,0)AS sum_worktime,IFNULL(sum_in_overtime,0)AS sum_in_overtime,
+IFNULL(sum_out_overtime,0)AS sum_out_overtime,IFNULL(sum_late_work,0)AS sum_late_work,IFNULL(sum_late_overtime,0)AS sum_late_overtime,
+IFNULL(holiday_worktime,0)AS holiday_worktime,IFNULL(holiday_late_time,0)AS holiday_late_time,
+CASE WHEN CurDate() <= CONCAT(DATE_FORMAT(CurDate(),'%Y-%m-'),teate.closing_day)
+	 THEN DATE_FORMAT(now() - INTERVAL 1 month,'%Y-%m')
+	 ELSE DATE_FORMAT(now() ,'%Y-%m')
+	 END AS salary_date,
+CASE WHEN basic_or_time = 0
+	 THEN IFNULL(basic_salary,0) + IFNULL(t_inover,0) + IFNULL(t_outover,0) + IFNULL(t_latework,0)
+	        + IFNULL(t_lateover,0) + IFNULL(t_holi_work,0) + IFNULL(t_holi_late,0)
+	 ELSE (SELECT IFNULL(sum_time_salary,0) FROM time_salary_sum_on_closingday WHERE employees.id = time_salary_sum_on_closingday.emp_id)
+	        + IFNULL(t_inover,0) + IFNULL(t_outover,0) + IFNULL(t_latework,0) + IFNULL(t_lateover,0) + IFNULL(t_holi_work,0) + IFNULL(t_holi_late,0)
+	 END AS salary
+FROM (employees INNER JOIN teate ON employees.id = teate.emp_id) 
+     LEFT JOIN holi_and_sunday_teate ON employees.id = holi_and_sunday_teate.emp_id
+	 INNER JOIN weekdays_sum_worktime ON employees.id = weekdays_sum_worktime.emp_id
+WHERE retirement_day = '0000-00-00'

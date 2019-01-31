@@ -1,0 +1,22 @@
+SELECT 
+emp_id, emp_status_id, employment_status, closing_day,
+CASE WHEN CurDate() <= CONCAT(DATE_FORMAT(CurDate(),'%Y-%m-'),closing_day)
+	 THEN DATE_FORMAT(now() - INTERVAL 2 month,'%Y-%m')
+	 ELSE DATE_FORMAT(now() - INTERVAL 1 month,'%Y-%m')
+	 END AS salary_date,
+SUM((CEILING(in_overtime/60 * (time_salary*st_in_overtime)))) AS t_inover,
+SUM((CEILING(out_overtime/60 * (time_salary*st_out_overtime)))) AS t_outover,
+SUM((CEILING(late_work/60 * (time_salary*st_late_worktime)))) AS t_latework,
+SUM((CEILING(late_overtime/60 * (time_salary*st_late_overtime)))) AS t_lateover
+FROM late6_late_overtime LEFT JOIN holidays holi ON late6_late_overtime.day = holi.holiday
+WHERE  DATE_FORMAT(day , '%w') != DATE_FORMAT( now() , '0') AND
+	   holi.holiday IS NULL AND
+	   CASE WHEN  CURDATE() <= CONCAT(DATE_FORMAT(CurDate(),'%Y-%m-'),closing_day)
+	 	    THEN
+	 	      day BETWEEN DATE_ADD(DATE_ADD(DATE_FORMAT(now(),CONCAT('%Y-%m-',closing_day)),INTERVAL -2 MONTH),INTERVAL +1 DAY) AND
+	 	      DATE_ADD(DATE_FORMAT(now(),CONCAT('%Y-%m-',closing_day)),INTERVAL -1 MONTH)
+	 	    ELSE
+	 	      day BETWEEN DATE_ADD(DATE_ADD(DATE_FORMAT(now(),CONCAT('%Y-%m-',closing_day)),INTERVAL -1 MONTH),INTERVAL +1 DAY) AND
+			  DATE_FORMAT(now(),CONCAT('%Y-%m-',closing_day))
+	 	    END
+GROUP BY emp_id

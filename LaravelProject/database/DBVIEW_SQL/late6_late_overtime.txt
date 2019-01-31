@@ -1,0 +1,30 @@
+SELECT
+    test.id, test.emp_id, emp.name, emp.basic_work_time, emp.basic_salary, emp.time_salary, emp.basic_or_time,
+	emp.retirement_day, emp.emp_status_id, status.employment_status,
+	status.in_overtime AS st_in_overtime, status.out_overtime AS st_out_overtime, status.late_worktime AS st_late_worktime,
+	status.late_overtime AS st_late_overtime,status.holiday_work AS st_holiday_work, status.late_holiday_work AS st_late_holiday_work,
+	status.closing_day, status.apply_start, status.apply_finish,
+	test.day, test.start_time, test.rest_time, test.finish_time, test.late_rest_time,
+	test.auto_finish_flag, test.relation_attendance_id, test.worktime, test.in_overtime,
+CASE WHEN test.out_overtime < 0
+	 THEN 0
+	 ELSE test.out_overtime
+	 END AS out_overtime,
+	test.late_work,
+CASE WHEN test.late_time >= 0
+	 THEN CASE WHEN TIME_TO_SEC(test.start_time)/60 + 480 + test.rest_time - test.new_late_overtime_time > 0
+	           THEN CASE WHEN test.late_time - (TIME_TO_SEC(test.start_time)/60 + 480 + test.rest_time - test.new_late_overtime_time) <= 0
+			             THEN 0
+						 ELSE test.late_time - (TIME_TO_SEC(test.start_time)/60 + 480 + test.rest_time - test.new_late_overtime_time)
+						 END
+			   ELSE test.late_time
+			   END
+	 ELSE 0
+	 END AS late_overtime
+FROM (late5_late_work test INNER JOIN employees emp ON test.emp_id = emp.id)
+	 INNER JOIN employstatus status ON test.emp_status_id = status.status_id
+	 AND status.apply_start <= test.day
+	 AND (status.apply_finish >= test.day
+	      OR status.apply_finish = '0000-00-00')
+WHERE
+	test.finish_time != '00:00:01'

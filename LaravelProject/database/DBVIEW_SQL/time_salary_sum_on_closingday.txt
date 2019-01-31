@@ -1,0 +1,22 @@
+SELECT
+emp_id,
+employment_status,
+closing_day,
+CASE WHEN CurDate() <= CONCAT(DATE_FORMAT(CurDate(),'%Y-%m-'),closing_day)
+	 THEN DATE_FORMAT(now() - INTERVAL 1 month,'%Y-%m')
+	 ELSE DATE_FORMAT(now() ,'%Y-%m')
+	 END AS salary_date,
+SUM(((worktime - in_overtime - out_overtime - late_overtime)/60 * time_salary)) AS sum_time_salary
+FROM  late6_late_overtime LEFT JOIN holidays holi ON late6_late_overtime.day = holi.holiday
+WHERE basic_or_time = 1 AND
+      DATE_FORMAT(late6_late_overtime.day , '%w') != DATE_FORMAT( now() , '0') AND 
+      holi.holiday IS NULL AND
+	  CASE WHEN CurDate() <= CONCAT(DATE_FORMAT(CurDate(),'%Y-%m-'),closing_day)
+	       THEN day BETWEEN 
+	         (DATE_FORMAT(now(),CONCAT('%Y-%m','-',closing_day))- INTERVAL 1 month) + INTERVAL 1 day AND
+	          DATE_FORMAT(now(),CONCAT('%Y-%m','-',closing_day)) 
+	       ELSE day BETWEEN 
+	          DATE_FORMAT(now(),CONCAT('%Y-%m','-',closing_day))+ INTERVAL 1 day AND
+	          DATE_FORMAT(now(),CONCAT('%Y-%m','-',closing_day))+ INTERVAL 1 month
+	       END
+GROUP BY emp_id

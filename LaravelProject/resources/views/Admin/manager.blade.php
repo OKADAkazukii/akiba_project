@@ -2,6 +2,9 @@
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 @extends('layouts.app')
 @section('content')
+@if (session('empupdate'))
+    <div id="empupdate" align="center"class="alert alert-success" >{{session('empupdate')}}</div>
+@endif
 <div>
     ---{{$emp_status[0]->employment_status}}---の料率変更ページ(現在の料率)
 </div>
@@ -46,4 +49,11 @@
         ?>
     </div>
 </div>
+<script>
+$(document).ready(function(){
+    setTimeout(function(){
+        $('#empupdate').fadeOut(3000)
+    });
+});
+</script>
 @endsection
