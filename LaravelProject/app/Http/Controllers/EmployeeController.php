@@ -11,7 +11,7 @@ class EmployeeController extends Controller
 		$login_hash_count = DB::table("employees")->where("login_hash","=",$login_hash)->count();
 		if($login_hash_count ==1 ){
 			$current_employee = DB::table("employees")->where("login_hash","=",$login_hash)->first();
-			$emp_status = DB::table("employstatus")->where("id","=",$current_employee->emp_status_id)->first();
+			$emp_status = DB::table("employstatus")->where("status_id","=",$current_employee->emp_status_id)->first();
 			$attendances = DB::table("attendances")->where("emp_id","=",$current_employee->id)->get();
 			$attendance = DB::table("attendances")->where("emp_id","=",$current_employee->id)->orderBy('id','desc')->first();
 			$holidays = DB::table("holidays")->get(['holiday']);
@@ -43,7 +43,7 @@ class EmployeeController extends Controller
 			}
 			return view("employee.home",compact('current_employee','emp_status','attendances','holidays_list','settinges','db_view_time','db_view_sumtime','db_view_albait','db_view_teate','db_view_restday_teate','start_time','form_rest_time','form_late_rest_time','db_view_salary'));
 		}else{
-			return redirect("/");
+			return redirect("https://www.google.co.jp/");
 		}
 	}
 

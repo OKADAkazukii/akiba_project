@@ -16,10 +16,14 @@ class CreateAllowanceTable extends Migration
         Schema::create('allowance', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('emp_id');
-            $table->decimal('overtime_a');
-            $table->decimal('late_overtime_a');
-            $table->integer('tardiness');
-            $table->decimal('absence');
+            $table->integer('t_year');
+            $table->integer('t_month');
+            $table->decimal('t_inover');
+            $table->decimal('t_outover');
+            $table->decimal('t_latework');
+            $table->decimal('t_lateover');
+            $table->decimal('t_holiwork');
+            $table->decimal('t_holilate');
         });
     }
 

@@ -16,12 +16,16 @@ class CreateSumsTable extends Migration
     {
         Schema::create('sums', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('pay_year_month');
-            $table->integer('total_in_overtime');
-            $table->integer('total_out_overtime');
-            $table->integer('total_late_worktime');
-            $table->integer('total_late_overtime');
-            $table->integer('total_worktime');
+            $table->integer('emp_id');
+            $table->integer('year');
+            $table->integer('month');
+            $table->integer('sum_worktime');
+            $table->integer('sum_in_overtime');
+            $table->integer('sum_outover_time');
+            $table->integer('sum_latework_time');
+            $table->integer('sum_lateover_time');
+            $table->integer('sum_holiwork_time');
+            $table->integer('sum_holilate_time');
         });
     }
     /**

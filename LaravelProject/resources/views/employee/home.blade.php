@@ -41,6 +41,7 @@ function display_income(num)
 ?>
 @extends('layouts.app')
 @section('content')
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
 
 <?php
 $hour_check = date("H");
@@ -77,9 +78,13 @@ echo '訪問者IPアドレス : '.$ip_address;
                             {{ csrf_field() }}
                             <input type="hidden" value="{{$current_employee->id}}" name="emp_id">
                             @if($start_time != "---------")
-                                <button type="submit" class="btn btn-default" style="padding:10px 20px;font-size:30px;color:gray;margin-right:15px;" disabled>出勤</button>
+                                <button type="submit" class="btn btn-default" style="padding:10px 20px;font-size:30px;color:gray;margin-right:15px;" disabled>
+                                    出勤
+                                </button>
                             @else
-                                <button type="submit" class="btn btn-info" style="padding:10px 20px;font-size:30px;color:white;margin-right:15px;">出勤</button>
+                                <button type="submit" class="btn btn-info" style="padding:10px 20px;font-size:30px;color:white;margin-right:15px;">
+                                    <i class="fa fa-sign-in" aria-hidden="true"></i>出勤
+                                </button>
                             @endif
                             <div style="position:relative; left:20%;">
                                 @if(isset($start_time))
@@ -91,9 +96,13 @@ echo '訪問者IPアドレス : '.$ip_address;
                             <input type="hidden" value="{{$current_employee->id}}" name="emp_id">
                             {{ csrf_field() }}
                             @if($start_time == "---------")
-                                <button type="submit" class="btn btn-default" style="padding:10px 20px;font-size:30px; color:gray;" disabled>退勤</button>
+                                <button type="submit" class="btn btn-default" style="padding:10px 20px;font-size:30px; color:gray;" disabled>
+                                    退勤
+                                </button>
                             @else
-                                <button type="submit" class="btn btn-success" style="padding:10px 20px;font-size:30px;" onclick="return submitcheck();">退勤</button>
+                                <button type="submit" class="btn btn-success" style="padding:10px 20px;font-size:30px;" onclick="return submitcheck();">
+                                    <i class="fa fa-sign-out" aria-hidden="true"></i>退勤
+                                </button>
                             @endif
                         </form>
                     </div>
@@ -113,7 +122,7 @@ echo '訪問者IPアドレス : '.$ip_address;
                 </div>
             </div>
             <div class="main-sum-area">
-                <div class="sum-area">ユーザー情報</div>
+                <div class="sum-area"><i class="fa fa-address-card fa-lg" aria-hidden="true"></i> ユーザー情報</div>
                 <div style="margin-left:10px;">
                     <div>従業員名：{{$current_employee->name}}</div>
                     <div>勤務形態：{{$emp_status->employment_status}}</div>
@@ -140,12 +149,13 @@ echo '訪問者IPアドレス : '.$ip_address;
         </div>
         <div class="col-md-8">
             <div class="main-box">
+                <i class="fa fa-calendar fa-lg" aria-hidden="true"></i>
                 <?php
                     $countdate = date("t");
                     $now_year = date("Y");
                     $now_month = date("m");
                     $before_month = date("Y-m", strtotime("-1 month"));
-                    $next_month = date("Y-m", strtotime("+1 month"));
+                    $next_month = date('Y-m', strtotime(date('Y-m-01').'+1 month'));
                     $now_day = date("j");
                     $starting_day = date("Y-m-01",strtotime('last day of this month'));
                     $next_starting_day = date("Y-m-d",strtotime('last day of this month')+86400);
@@ -303,7 +313,7 @@ echo '訪問者IPアドレス : '.$ip_address;
             <div class="container-fluid">
                 <div class="row sum-box">
                     <div class="col-md-4 sub-cl">
-                        <h4>時間合計</h4>
+                        <h4><i class="fa fa-clock-o" aria-hidden="true"></i> 時間合計</h4>
                         <div>勤務時間 <?php echo minutes_change_to_time($sum_worktime) ?></div>
                         @if($db_view_sumtime)
                             <div>所定内残業時間
@@ -337,7 +347,7 @@ echo '訪問者IPアドレス : '.$ip_address;
                         @endif
                     </div>
                     <div class="col-md-4 sub-cl">
-                        <h4>各種手当</h4>
+                        <h4><i class="fa fa-plus-square-o" aria-hidden="true"></i> 各種手当</h4>
                         <div id="disp-show2">
                             @if($db_view_teate)
                                 <div>所定内残業手当
@@ -375,7 +385,7 @@ echo '訪問者IPアドレス : '.$ip_address;
                         </div>
                     </div>
                     <div class="col-md-4 sub-cl">
-                        <h4>支払い給与額</h4>
+                        <h4><i class="fa fa-diamond" aria-hidden="true"></i> 支払い給与額</h4>
                         <div id="disp-show3">
                             @if($db_view_salary)
                                 <div>{{$db_view_salary->salary}}円</div>

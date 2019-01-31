@@ -1,12 +1,17 @@
 <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
 @extends('layouts.app')
 @section('content')
-<div align="center"><h3>{{session('empupdate')}}</h3></div>
-<div align="center"><h3>{{session('insertemp')}}</h3></div>
+@if (session('empupdate'))
+<div align="center"class="alert alert-success" >{{session('empupdate')}}</div>
+@endif
+@if (session('insertemp'))
+<div align="center"class="alert alert-success" >{{session('insertemp')}}</div>
+@endif
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-3">
             <h3>管理者機能リンク</h3>
+            <a href="/admin/salary">給与情報一覧</a><br>
             <a href="/addemployee">雇用者の追加</a><br>
             <a href="/holiday">休日設定</a><br>
             <a href="/timesettingse">時間関連設定</a><br>

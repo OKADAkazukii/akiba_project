@@ -1,0 +1,169 @@
+//--↓ログイン画面のCSS↓--
+{}
+.head_text1{
+ font-family:cursive;
+ font-size:30px;
+ font-weight:bold;
+ padding:15px 0;
+}
+.form_text{
+ font-family:cursive;
+ font-weight:bold;
+ font-size:19px;
+ position:relative;
+ left:-15px;
+ margin-top:15px;
+}
+.form{
+ width:30%;
+}
+.form_div{
+ position:relative;
+ left:7%;
+ margin:20px 0 120px 0;
+}
+
+.button1{
+ display:inline-block;
+ border-radius:5%;
+ font-size:12pt;
+ cursor:pointer;
+ padding:6px 12px;
+ background: linear-gradient(#3296ff,#1D62F0);
+ color:#ffffff;
+ line-height:1em;
+ transition:.3s;
+ box-shadow:6px 6px 3px #666666;
+ border:2px solid #778899;
+ margin-top:40px;
+ font-weight:bold;
+}
+.button1:hover{
+ box-shadow:none;
+ color:#fff138;
+ background-color:22146d;
+}
+//--↑ログイン画面のCSS↑--
+
+
+
+//--↓ユーザーホーム画面のCSS↓--
+.container-fluid {
+ margin-right: auto;
+ margin-left: auto;
+
+}
+.time-area{
+ border:solid 1px #778899;
+}
+.main-sum-area{
+ border:solid 1px #778899;
+ margin-top:40px;
+ margin-bottom:40px;
+}
+.sum-area{
+ width:100%;
+ height:40px;
+ background: linear-gradient(#3296ff,#1D62F0);
+ display:inline-block;
+ text-align:center;
+ border-bottom:solid 1px #778899;
+ font-size:18px;
+ color:white;
+ padding-top:8px;
+}
+.main-time-area{
+ width:100%;
+ height:40px;
+ background: linear-gradient(#3296ff,#1D62F0);
+ display:inline-block;
+ text-align:center;
+ border-bottom:solid 1px #778899;
+ margin-bottom:20px;
+ font-size:18px;
+ color:white;
+ padding-top:8px;
+}
+.resttime-area{
+ padding-left:5%;
+}
+.rest-text{
+ margin:30px 5px 0 5px;
+ display:inline-block;
+}
+.rest-text-form{
+ width:60px;
+}
+.rest-text2{
+ margin:20px 5px;
+ display:inline-block;
+}
+.excel{
+ border-right:solid 1px gray;
+ display:inline-block;
+ text-align:center;
+ width:75px;
+}
+.excel2{
+ border-right:solid 1px gray;
+ display:inline-block;
+ text-align:center;
+ font-size: 12px;
+ width:72px;
+}
+.hello{
+ padding: 5px 10px;
+ color: #494949;
+ background: #FFFF99;
+ border-left: solid 5px #3296ff;
+ border-bottom: solid 3px #d3d3d3;
+ width: 400px;
+ margin: 0 0 15px 5px;
+}
+.hello-name{
+ display: inline-block;
+ margin-bottom: 0;
+ font-weight: bold;
+ font-size: 28px;
+}
+.main-box{
+ height:40px;
+ background: linear-gradient(#3296ff,#1D62F0);
+ display:inline-block;
+ text-align:center;
+ border-bottom:solid 1px #778899;
+ font-size:18px;
+ color:white;
+ padding-top:8px;
+ margin-bottom:0;
+ width:758px;
+}
+.sum-box{
+ width:758px;
+ border: solid 1px gray;
+ margin-top: 10px;
+}
+.sub-cl{
+ padding:5px 10px;
+}
+#disp{
+ display:none;
+}
+#disp-show{
+ margin-top: 20px;
+}
+#disp-hidden{
+ margin-top: 20px;
+ display:none;
+}
+#disp-hidden2,#disp-hidden3{
+ color: red;
+}
+#disp-show2, #disp-show3{
+ display:none;
+}
+//--↑ユーザーホーム画面のCSS↑--
+
+#aaa{
+    color:red;
+}

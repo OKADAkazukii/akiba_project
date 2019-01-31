@@ -31,20 +31,17 @@ class HolidayController extends Controller
 	return redirect("/holiday")->with('message', 'CSVファイルを読み込み、カレンダーに反映しました');
 	}
 
-    public function addholiday(Request $req)
-    {
+    public function addholiday(Request $req){
         $date = $req->input('date');
-
         $shd = DB::table('holidays')->where('holiday','=',$date)->count();
         if($shd==0) {
             DB::table('holidays')->insert([
                 'holiday' =>  $date ,
                 'holiday_name' => '会社指定休日'
             ]);
-
         return redirect("/holiday")->with('addholiday',"$date を休日に設定しました");
         }else{
-        return redirect("/holiday")->with('addholiday',"$date はすでに休日です");
+        return redirect("/holiday")->with('alerdeyholiday',"$date はすでに休日です");
         }
         
     }
@@ -57,9 +54,8 @@ class HolidayController extends Controller
 
         $holiget = DB::table('holidays')->select('holiday','holiday_name')->orderBy('holiday','asc')->get();//DBの祝日を取得 
             
-
         return view ('Admin.holiday',compact('holiget','year','nextyear'));
-   }
+    }
 
     public function deleteholiday(Request $req)
     {
@@ -69,7 +65,7 @@ class HolidayController extends Controller
             DB::table('holidays')->where('holiday','=',$delday)->delete();
             return redirect("/holiday")->with('delholiday',"$delday を削除いたしました");
         }else{
-            return redirect("/holiday")->with('delholiday',"$delday は休日ではありません");
+            return redirect("/holiday")->with('notholiday',"$delday は休日ではありません");
         }
     }
 }
