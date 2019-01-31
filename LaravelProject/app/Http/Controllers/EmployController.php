@@ -44,7 +44,7 @@ class EmployController extends Controller
         }
 
         $addemp = DB::table('employstatus')->where('employment_status','=',$emp)->count();
-         if($addemp==0) {
+        if($addemp==0) {
             DB::table('employstatus')->insert([
                 'employment_status' => $emp,
                 'in_overtime' => $in,

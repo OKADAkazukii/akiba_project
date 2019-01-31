@@ -4,13 +4,13 @@
 @extends('layouts.app')
 @section('content')
 @if (session('result'))
-    <div align="center" class="alert alert-success">{{ session('result') }}</div>
+    <div id="result" align="center" class="alert alert-danger">{{ session('result') }}</div>
 @endif
 @if (session('elseemp'))
-    <div align="center" class="alert alert-danger">{{session('elseemp')}}</div>
+    <div id="elseemp" align="center" class="alert alert-danger">{{session('elseemp')}}</div>
 @endif
 @if (session('return'))
-    <div align="center" class="alert alert-danger">{{session('return')}}</div>
+    <div id="return" align="center" class="alert alert-danger">{{session('return')}}</div>
 @endif
     <h3>雇用形態追加</h3>
     <form action="/addemp" method="post">
@@ -30,17 +30,25 @@
         </table>
     </form>
 <script>
-    $(function(){
-        var check = $('#closingday');
-        check.on('change', function(event){
-            document.getElementById('last_day').checked = false;
-        });
+$(function(){
+    var check = $('#closingday');
+    check.on('change', function(event){
+        document.getElementById('last_day').checked = false;
     });
-    $(function() {
-        var lastday = $('#last_day');
-        lastday.on('click',function(event){
-            document.getElementById('closingday').value = ("");
-        });
+});
+$(function() {
+    var lastday = $('#last_day');
+    lastday.on('click',function(event){
+        document.getElementById('closingday').value = ("");
     });
+});
+$(document).ready(function(){
+    setTimeout(function(){
+        $('#result').fadeOut(3000)
+        $('#elseemp').fadeOut(3000)
+        $('#return').fadeOut(3000)
+    });
+});
+
 </script>
 @endsection

@@ -63,6 +63,6 @@ class UpdateController extends Controller
             'status_id' => $status_id
         ]);
         DB::table('employstatus')->where("status_id","=",$status_id)->update(['employment_status' => $status]);
-        return redirect("/admin/home/")->with('empupdate','更新完了');
+        return redirect("manager/$status_id")->with('empupdate','更新完了');
     }
 }
