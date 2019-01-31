@@ -21,9 +21,11 @@
 					{{ csrf_field() }}
 					<select name="year" style="margin-bottom:10px;">
 						<option value="" selected disabled hidden>--選択--</option>
-						@foreach($select_years as $select_year)
-							<option value="{{$select_year}}">{{$select_year}}</option>
-						@endforeach
+						@if(isset($select_years))
+							@foreach($select_years as $select_year)
+								<option value="{{$select_year}}">{{$select_year}}</option>
+							@endforeach
+						@endif
 					</select>年
 					<select name="month" style="margin-bottom:5px;">
 						<option value="" selected disabled hidden>--選択--</option>
@@ -36,9 +38,6 @@
 			</div>
 		</div>
 		<div class="col-md-9">
-			@if(false)
-				<div>テスト</div>
-			@endif
 			<div style="overflow: hidden;">
 				<h4>今年分の給与情報</h4>
 				@foreach($current_year_salaries as $current_year_salary)
@@ -46,7 +45,6 @@
 						<li>No.{{$loop->iteration}}</li>
 						<div>支払い月 : {{$current_year_salary->salary_month}}月</div>
 						<div>雇用者名 : {{$current_year_salary->name}}</div>
-						<div>勤務形態 : {{$current_year_salary->employment_status}}</div>
 						<div>給与金額 : {{ceil($current_year_salary->salary_amount)}}円</div>
 					</div>
 				@endforeach
@@ -58,7 +56,6 @@
 						<li>No.{{$loop->iteration}}</li>
 						<div>支払い月 : {{$last_year_salary->salary_month}}月</div>
 						<div>雇用者名 : {{$last_year_salary->name}}</div>
-						<div>勤務形態 : {{$last_year_salary->employment_status}}</div>
 						<div>給与金額 : {{ceil($last_year_salary->salary_amount)}}円</div>
 					</div>
 				@endforeach

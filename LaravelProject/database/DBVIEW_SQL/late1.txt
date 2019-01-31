@@ -1,0 +1,15 @@
+SELECT id,emp_id,day,start_time,rest_time,finish_time,late_rest_time,auto_finish_flag,relation_attendance_id,
+       emp_status_id,basic_work_time,worktime,in_overtime,
+CASE WHEN test.auto_finish_flag = 0
+	 THEN test.out_overtime
+	 ELSE
+		CASE WHEN (SELECT out_overtime FROM out_overtime WHERE out_overtime.id = test.relation_attendance_id) > 0
+			 THEN TIME_TO_SEC(finish_time)/60 - TIME_TO_SEC(start_time)/60 -rest_time
+			 ELSE test.worktime-(480-(SELECT worktime FROM out_overtime WHERE out_overtime.id = test.relation_attendance_id))
+	 END
+END as out_overtime,
+CASE WHEN test.finish_time - test.start_time >= 0
+	 THEN TIME_TO_SEC(finish_time)/60
+	 ELSE TIME_TO_SEC(finish_time)/60+1440
+END AS new_finish_time
+FROM out_overtime test

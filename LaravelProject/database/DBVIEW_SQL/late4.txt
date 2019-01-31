@@ -1,0 +1,4 @@
+SELECT *,
+LEAST(test.new_change_date_time,test.new_finish_time)
+- GREATEST(test.new_late_overtime_time,TIME_TO_SEC(test.start_time)/60) - test.late_rest_time AS late_time
+FROM late3 test

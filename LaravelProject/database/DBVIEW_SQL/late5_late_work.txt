@@ -1,0 +1,12 @@
+SELECT *,
+CASE WHEN test.late_time >= 0
+	 THEN CASE WHEN TIME_TO_SEC(test.start_time)/60 + 480 + test.rest_time - test.new_late_overtime_time > 0
+	           THEN CASE WHEN test.late_time - (TIME_TO_SEC(test.start_time)/60 + 480 + test.rest_time - test.new_late_overtime_time) <= 0
+			             THEN test.late_time
+						 ELSE test.late_time - (test.late_time - (TIME_TO_SEC(test.start_time)/60 + 480 + test.rest_time - test.new_late_overtime_time))
+						 END
+			   ELSE 0
+			   END
+	 ELSE 0
+	 END AS late_work
+FROM late4 test
