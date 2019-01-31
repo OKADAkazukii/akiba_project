@@ -2,6 +2,9 @@
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 @extends('layouts.app')
 @section('content')
+@if (session('empupdate'))
+    <div id="empupdate" align="center"class="alert alert-success" >{{session('empupdate')}}</div>
+@endif
 <div>
     ---{{$emp_status[0]->employment_status}}---の料率変更ページ(現在の料率)
 </div>
@@ -16,7 +19,6 @@
             <label>所定内残業料率：<input type="number" name="in_overtime" step="0.01" min="0" value={{$emp_status[0]->in_overtime}}></label><br>
             <label>所定外残業料率：<input type="number" name="out_overtime" step="0.01" min="0" value={{$emp_status[0]->out_overtime}}></label><br>
             <label>所定外深夜勤務料率：<input type="number" name="late_worktime" step="0.01" min="0" value={{$emp_status[0]->late_worktime}}></label><br>
-            <div>↑通常勤務分を除いた上乗せ部分のみ 例)0.25</div>
             <label>所定外深夜残業料率：<input type="number" name="late_overtime" step="0.01" min="0" value={{$emp_status[0]->late_overtime}}></label><br>
             <label>法定外休日出勤料率：<input type="number" name="holiday_work" step="0.01" min="0" value={{$emp_status[0]->holiday_work}}></label><br>
             <label>法定外休日残業料率：<input type="number" name="late_holiday" step="0.01" min="0" value={{$emp_status[0]->late_holiday_work}}></label><br>
@@ -46,4 +48,11 @@
         ?>
     </div>
 </div>
+<script>
+$(document).ready(function(){
+    setTimeout(function(){
+        $('#empupdate').fadeOut(3000)
+    });
+});
+</script>
 @endsection
