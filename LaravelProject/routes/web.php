@@ -82,3 +82,5 @@ Route::get('/test','CalendarController@test');
 ROUTE::get('admin/salary','AdminController@salary');
 
 ROUTE::post('/admin/salary/reflection','AdminController@reflection');
+
+ROUTE::post('/admin/salary/download','AdminController@download');

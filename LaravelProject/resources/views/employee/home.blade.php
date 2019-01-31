@@ -155,7 +155,7 @@ echo '訪問者IPアドレス : '.$ip_address;
                     $now_year = date("Y");
                     $now_month = date("m");
                     $before_month = date("Y-m", strtotime("-1 month"));
-                    $next_month = date("Y-m", strtotime("+1 month"));
+                    $next_month = date('Y-m', strtotime(date('Y-m-01').'+1 month'));
                     $now_day = date("j");
                     $starting_day = date("Y-m-01",strtotime('last day of this month'));
                     $next_starting_day = date("Y-m-d",strtotime('last day of this month')+86400);

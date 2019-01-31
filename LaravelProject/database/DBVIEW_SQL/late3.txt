@@ -1,0 +1,8 @@
+SELECT *,
+CASE WHEN test.new_change_date_time - TIME_TO_SEC((SELECT s0.late_overtime_time FROM settinges s0 LIMIT 1))/60 < 0
+	 THEN CASE WHEN TIME_TO_SEC((SELECT s0.late_overtime_time FROM settinges s0 LIMIT 1))/60 - 1440 <= 0
+	           THEN 0
+			   END
+	 ELSE TIME_TO_SEC((SELECT s0.late_overtime_time FROM settinges s0 LIMIT 1))/60
+END AS new_late_overtime_time
+FROM late2 test
