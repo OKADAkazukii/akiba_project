@@ -40,20 +40,6 @@
         </table>
     </form>
 <script>
-<<<<<<< HEAD
-    $(function(){
-        var check = $('#closingday');
-        check.on('change', function(event){
-            document.getElementById('last_day').checked = false;
-        });
-    });
-    $(function() {
-        var lastday = $('#last_day');
-        lastday.on('click',function(event){
-            document.getElementById('closingday').value = ("");
-        });
-    });
-=======
 $(function(){
     var check = $('#closingday');
     check.on('change', function(event){
@@ -73,7 +59,5 @@ $(document).ready(function(){
         $('#return').fadeOut(3000)
     });
 });
-
->>>>>>> 0aff3d8acf976050af048078ddbba170c9b97741
 </script>
 @endsection
